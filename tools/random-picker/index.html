@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <meta name="description" data-i18n="tool_random_picker_meta_desc" content="免费在线随机抽取工具，支持自定义词条集合、设置权重概率、放回/不放回模式，老虎机与翻转动效可选。">
+  <meta name="keywords" data-i18n="site_keywords" content="在线工具,免费工具,随机抽取,工具集合,效率工具">
+  <title data-i18n="tool_random_picker_meta_title">Free Online Custom Picker - Weighted Probability & Animations | ToolVerse</title>
+  <meta property="og:title" content="自定义抽取器 - 免费在线随机抽签工具 | ToolVerse">
+  <meta property="og:description" content="免费在线随机抽取工具，支持权重概率、放回/不放回抽取，多种动效可选。">
+  <meta property="og:url" content="https://newTrekking.com/tools/random-picker/">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://newTrekking.com/tools/random-picker/">
+  <link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/random-picker/">
+  <link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/random-picker/">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Outfit','Noto Sans SC','sans-serif'],
+            body: ['Noto Sans SC','Outfit','sans-serif'],
+            mono: ['JetBrains Mono','monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --grad: linear-gradient(135deg,#6366f1 0%,#8b5cf6 40%,#ec4899 100%);
+      --grad-subtle: linear-gradient(135deg,#f0f4ff 0%,#faf0ff 50%,#fff0f8 100%);
+    }
+    *{box-sizing:border-box}
+    body{font-family:'Noto Sans SC','Outfit',sans-serif;background:#f8f7ff;min-height:100vh}
+    .grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .grad-btn{background:var(--grad);background-size:200% 200%;transition:transform .2s,box-shadow .2s}
+    .grad-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(139,92,246,.4)}
+    .grad-btn:active{transform:translateY(0);box-shadow:none}
+    .grad-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+    /* Panel / Card */
+    .panel{background:white;border:1px solid rgba(139,92,246,.12);border-radius:18px;padding:20px 22px}
+    .section-title{font-size:13px;font-weight:600;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+
+    /* Tabs */
+    .tab-bar{display:flex;gap:4px;background:#f3f0ff;border-radius:12px;padding:4px}
+    .tab-btn{flex:1;padding:8px 12px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;background:none;color:#6b7280;transition:all .2s}
+    .tab-btn.active{background:white;color:#7c3aed;box-shadow:0 2px 8px rgba(139,92,246,.15)}
+
+    /* Textarea */
+    .entry-textarea{width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-size:14px;font-family:'Noto Sans SC',sans-serif;resize:vertical;min-height:160px;outline:none;transition:border-color .2s,box-shadow .2s;color:#1e1b4b;line-height:1.7}
+    .entry-textarea:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.1)}
+
+    /* Number input */
+    .num-input{padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;width:100%;outline:none;transition:border-color .2s;color:#1e1b4b}
+    .num-input:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.1)}
+
+    /* Weight table */
+    .weight-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f3f4f6}
+    .weight-row:last-child{border-bottom:none}
+    .weight-label{flex:1;font-size:13px;color:#374151;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .weight-input{width:72px;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:13px;text-align:center;outline:none;transition:border-color .2s}
+    .weight-input:focus{border-color:#8b5cf6}
+
+    /* Toggle switch */
+    .toggle{position:relative;display:inline-flex;align-items:center;cursor:pointer;gap:8px;font-size:14px;color:#374151}
+    .toggle input{opacity:0;width:0;height:0;position:absolute}
+    .toggle-track{width:40px;height:22px;background:#d1d5db;border-radius:11px;transition:.3s;position:relative;flex-shrink:0}
+    .toggle-track::after{content:'';position:absolute;left:3px;top:3px;width:16px;height:16px;background:white;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+    .toggle input:checked+.toggle-track{background:#8b5cf6}
+    .toggle input:checked+.toggle-track::after{left:21px}
+
+    /* Radio */
+    .radio-option{display:flex;align-items:center;gap:8px;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:12px;cursor:pointer;transition:all .2s;font-size:14px}
+    .radio-option:hover{border-color:#c4b5fd;background:#faf5ff}
+    .radio-option.selected{border-color:#8b5cf6;background:#f5f3ff;color:#5b21b6}
+    .radio-dot{width:16px;height:16px;border-radius:50%;border:2px solid #d1d5db;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .radio-option.selected .radio-dot{border-color:#8b5cf6}
+    .radio-dot::after{content:'';width:8px;height:8px;border-radius:50%;background:#8b5cf6;opacity:0;transition:.2s}
+    .radio-option.selected .radio-dot::after{opacity:1}
+
+    /* ════════ RESULT DISPLAY ════════ */
+    #result-display{
+      min-height:200px;border-radius:18px;
+      background:linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899);
+      background-size:200% 200%;
+      animation:gradBg 4s ease infinite;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      position:relative;overflow:hidden;
+    }
+    @keyframes gradBg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+    /* Idle state */
+    #result-display.idle::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+    }
+
+    /* ─── Slot machine ─── */
+    .slot-reel{
+      font-family:'Outfit','Noto Sans SC',sans-serif;
+      font-size:clamp(24px,5vw,42px);font-weight:800;
+      color:white;text-align:center;letter-spacing:.02em;
+      position:relative;z-index:1;
+      text-shadow:0 2px 20px rgba(0,0,0,.2);
+    }
+    .slot-reel.spinning{animation:slotSpin .08s steps(1) infinite}
+    @keyframes slotSpin{0%{opacity:.4}50%{opacity:1}100%{opacity:.4}}
+
+    /* ─── Card flip ─── */
+    .flip-wrap{perspective:600px;position:relative;z-index:1}
+    .flip-card{width:clamp(160px,40vw,220px);height:clamp(100px,20vw,130px);position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+    .flip-card.flipping{animation:flipAnim .6s ease forwards}
+    @keyframes flipAnim{
+      0%{transform:rotateY(0)}
+      49%{transform:rotateY(90deg)}
+      50%{transform:rotateY(90deg)}
+      100%{transform:rotateY(0)}
+    }
+    .flip-front,.flip-back{
+      position:absolute;inset:0;backface-visibility:hidden;
+      border-radius:14px;display:flex;align-items:center;justify-content:center;
+      font-size:clamp(16px,3vw,24px);font-weight:700;color:#5b21b6;
+      background:white;box-shadow:0 8px 32px rgba(0,0,0,.12);
+      padding:12px;text-align:center;word-break:break-all;
+    }
+    .flip-back{transform:rotateY(180deg);background:linear-gradient(135deg,#ede9fe,#fce7f3)}
+
+    /* Result items (multi-draw) */
+    .result-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;position:relative;z-index:1;padding:12px}
+    .result-chip{
+      background:rgba(255,255,255,.9);color:#5b21b6;
+      font-size:14px;font-weight:600;padding:8px 16px;border-radius:30px;
+      box-shadow:0 4px 12px rgba(0,0,0,.1);
+      animation:chipIn .3s ease forwards;opacity:0;
+    }
+    @keyframes chipIn{from{opacity:0;transform:scale(.7) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+    /* ─── History ─── */
+    .history-item{
+      display:flex;align-items:center;gap:10px;padding:10px 14px;
+      border-radius:12px;background:#faf5ff;
+      border:1px solid #ede9fe;font-size:13px;
+      animation:fadeIn .3s ease;
+    }
+    @keyframes fadeIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+    .history-num{width:22px;height:22px;border-radius:50%;background:var(--grad);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+    /* Remaining pills */
+    .remaining-pill{font-size:12px;padding:4px 10px;border-radius:20px;background:#ede9fe;color:#5b21b6;font-weight:500}
+
+    /* Toast */
+    #toast{
+      position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+      background:#1e1b4b;color:white;padding:10px 20px;border-radius:30px;
+      font-size:14px;opacity:0;transition:all .3s;pointer-events:none;z-index:999;white-space:nowrap;
+    }
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    /* Language */
+    .language-dropdown{position:relative}
+    .language-btn{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;cursor:pointer;border:1.5px solid rgba(139,92,246,.3);background:white;font-size:14px;color:#5b21b6;transition:all .2s}
+    .language-btn:hover{border-color:#8b5cf6;background:#faf5ff}
+    .language-dropdown-auto{display:none;position:absolute;right:0;top:calc(100% + 8px);background:white;border:1px solid rgba(139,92,246,.2);border-radius:14px;box-shadow:0 10px 40px rgba(139,92,246,.15);min-width:130px;z-index:100;max-height:280px;overflow-y:auto;padding:6px}
+    .language-dropdown-auto.open{display:block}
+    .language-option{display:block;width:100%;text-align:left;padding:8px 14px;border-radius:8px;border:none;background:none;font-size:14px;color:#374151;text-decoration:none;cursor:pointer;transition:background .15s}
+    .language-option:hover{background:#f3e8ff;color:#7c3aed}
+
+    /* Breadcrumb */
+    .breadcrumb a{color:#8b5cf6;text-decoration:none}
+    .breadcrumb a:hover{text-decoration:underline}
+
+    /* Scrollbar */
+    .weight-scroll{max-height:220px;overflow-y:auto}
+    .weight-scroll::-webkit-scrollbar{width:4px}
+    .weight-scroll::-webkit-scrollbar-track{background:transparent}
+    .weight-scroll::-webkit-scrollbar-thumb{background:#d8b4fe;border-radius:4px}
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"SoftwareApplication",
+        "name":"自定义抽取器",
+        "applicationCategory":"UtilitiesApplication",
+        "operatingSystem":"Web",
+        "offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},
+        "url":"https://newTrekking.com/tools/random-picker/",
+        "description":"免费在线随机抽取工具，支持自定义词条、权重概率、放回/不放回模式",
+        "provider":{"@type":"Organization","name":"ToolVerse","url":"https://newTrekking.com"}
+      },
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"首页","item":"https://newTrekking.com/"},
+          {"@type":"ListItem","position":2,"name":"自定义抽取器","item":"https://newTrekking.com/tools/random-picker/"}
+        ]
+      },
+      {
+        "@type":"FAQPage",
+        "mainEntity":[
+          {"@type":"Question","name":"什么是不放回抽取？","acceptedAnswer":{"@type":"Answer","text":"不放回抽取指每次抽中的词条从池中移除，不再参与后续抽取，确保每个词条最多被抽中一次。"}},
+          {"@type":"Question","name":"如何设置不同概率？","acceptedAnswer":{"@type":"Answer","text":"开启「自定义权重」后，为每个词条输入权重数值，数值越大被抽中的概率越高。例如A填2、B填1，则A被抽中的概率约为2/3。"}},
+          {"@type":"Question","name":"支持批量生成序号吗？","acceptedAnswer":{"@type":"Answer","text":"支持。切换到「序号生成」标签，设置起始与结束编号和可选前缀，即可自动生成有序编号集合参与抽取。"}}
+        ]
+      }
+    ]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5713173586841314"
+     crossorigin="anonymous">
+  </script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-purple-100">
+  <nav class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 no-underline">
+      <div class="w-8 h-8 rounded-xl grad-btn flex items-center justify-center text-white font-bold text-sm">T</div>
+      <span class="font-display font-bold text-xl grad-text">ToolVerse</span>
+    </a>
+    <div class="hidden md:flex items-center gap-6">
+      <a href="/" class="text-sm text-gray-500 hover:text-purple-600 transition-colors no-underline" data-i18n="nav_home">Home</a>
+      <a href="/#all-tools" class="text-sm text-gray-500 hover:text-purple-600 transition-colors no-underline" data-i18n="nav_tools">All Tools</a>
+    </div>
+    <div class="language-dropdown">
+      <button class="language-btn" id="lang-btn" onclick="toggleLangMenu()" aria-label="选择语言" aria-expanded="false">
+        <span>🌐</span>
+        <span id="current-language">中文</span>
+        <span style="font-size:10px">▼</span>
+      </button>
+      <div class="language-dropdown-auto" id="lang-menu">
+        <button class="language-option" onclick="loadLang('zh')">🇨🇳 中文</button>
+        <button class="language-option" onclick="loadLang('en')">🇺🇸 English</button>
+        <button class="language-option" onclick="loadLang('ja')">🇯🇵 日本語</button>
+        <button class="language-option" onclick="loadLang('ko')">🇰🇷 한국어</button>
+        <button class="language-option" onclick="loadLang('es')">🇪🇸 Español</button>
+        <button class="language-option" onclick="loadLang('fr')">🇫🇷 Français</button>
+        <button class="language-option" onclick="loadLang('de')">🇩🇪 Deutsch</button>
+        <button class="language-option" onclick="loadLang('pt')">🇧🇷 Português</button>
+        <button class="language-option" onclick="loadLang('ru')">🇷🇺 Русский</button>
+        <button class="language-option" onclick="loadLang('ar')">🇸🇦 العربية</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Breadcrumb -->
+<div class="max-w-6xl mx-auto px-4 py-3 breadcrumb text-sm text-gray-400">
+  <a href="/" data-i18n="nav_home">Home</a>
+  <span class="mx-2">/</span>
+  <span class="text-gray-600" data-i18n="tool_random_picker_name">Random Picker</span>
+</div>
+
+<!-- MAIN -->
+<main class="max-w-6xl mx-auto px-4 pb-16">
+
+  <!-- Page Header — left: text info, right: demo (auto-hidden when empty) -->
+  <article class="mb-8">
+    <div class="flex flex-col md:flex-row md:items-start gap-6">
+
+      <!-- Left: title + description -->
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-4 mb-2">
+          <div class="w-14 h-14 flex-shrink-0 rounded-2xl flex items-center justify-center text-3xl" style="background:linear-gradient(135deg,#ede9fe,#fce7f3);border:2px solid rgba(139,92,246,.2)">🎲</div>
+          <div class="min-w-0">
+            <h1 class="font-display font-bold text-2xl md:text-3xl text-gray-900" data-i18n="tool_random_picker_name">Random Picker</h1>
+            <p class="text-sm text-gray-500 mt-1" data-i18n="tool_random_picker_desc">A versatile random picker with custom entries, weighted probability, and replacement modes</p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-400 leading-relaxed mt-3 max-w-xl" data-i18n="tool_random_picker_longdesc">
+          ToolVerse Random Picker makes random draws easy for raffles, name picking, and more. Enter custom items or generate numbered sets, assign probability weights, and choose replace or no-replace mode.
+        </p>
+      </div>
+
+      <!-- Right: demo (hidden by default, revealed by loadDemo()) -->
+      <div id="demo-section" class="hidden md:w-80 lg:w-96 flex-shrink-0">
+        <p class="text-xs font-semibold text-purple-400 uppercase tracking-widest mb-2" data-i18n="demo_title">How It Works</p>
+
+        <!-- video -->
+        <div id="demo-video" class="hidden rounded-xl overflow-hidden border border-purple-100 shadow-sm">
+          <video id="demo-video-el" controls playsinline class="w-full" style="max-height:260px;object-fit:contain"></video>
+        </div>
+
+        <!-- gif -->
+        <div id="demo-gif" class="hidden rounded-xl overflow-hidden border border-purple-100 shadow-sm">
+          <img id="demo-gif-el" alt="demo" class="w-full object-contain" style="max-height:260px">
+        </div>
+
+        <!-- image carousel -->
+        <div id="demo-carousel" class="hidden">
+          <div class="relative rounded-xl overflow-hidden border border-purple-100 shadow-sm" style="background:#f8f7ff">
+            <div id="carousel-track" class="flex transition-transform duration-400 ease-in-out" style="will-change:transform"></div>
+            <button onclick="carouselPrev()" id="c-prev"
+              class="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 border border-purple-100 shadow flex items-center justify-center text-purple-500 hover:bg-purple-50 transition-colors text-base"
+              aria-label="Previous">‹</button>
+            <button onclick="carouselNext()" id="c-next"
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 border border-purple-100 shadow flex items-center justify-center text-purple-500 hover:bg-purple-50 transition-colors text-base"
+              aria-label="Next">›</button>
+            <div id="carousel-dots" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5"></div>
+          </div>
+          <div id="carousel-thumbs" class="flex gap-1.5 mt-2 overflow-x-auto pb-1"></div>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <!-- ══ LEFT COLUMN: Settings ══ -->
+    <div class="space-y-4">
+
+      <!-- 1. Entry Input -->
+      <div class="panel">
+        <p class="section-title" data-i18n="picker_input_label">Entry List</p>
+
+        <!-- Tab bar -->
+        <div class="tab-bar mb-4">
+          <button class="tab-btn active" id="tab-manual" onclick="switchInputTab('manual')">
+            <span data-i18n="picker_tab_manual">Manual Input</span>
+          </button>
+          <button class="tab-btn" id="tab-numbered" onclick="switchInputTab('numbered')">
+            <span data-i18n="picker_tab_numbered">Numbered Set</span>
+          </button>
+        </div>
+
+        <!-- Manual input -->
+        <div id="pane-manual">
+          <textarea class="entry-textarea" id="entry-text"
+            data-i18n-placeholder="picker_input_placeholder"
+            placeholder="每行输入一个词条，例如：&#10;张三&#10;李四&#10;王五"
+            aria-label="Entry list input"></textarea>
+          <p class="text-xs text-gray-400 mt-2" id="entry-count">0 entries</p>
+        </div>
+
+        <!-- Numbered input -->
+        <div id="pane-numbered" class="hidden space-y-3">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-xs text-gray-500 mb-1 block" data-i18n="picker_numbered_start">Start Number</label>
+              <input type="number" class="num-input" id="num-start" value="1" min="1">
+            </div>
+            <div>
+              <label class="text-xs text-gray-500 mb-1 block" data-i18n="picker_numbered_end">End Number</label>
+              <input type="number" class="num-input" id="num-end" value="10" min="1">
+            </div>
+          </div>
+          <div>
+            <label class="text-xs text-gray-500 mb-1 block" data-i18n="picker_numbered_prefix">Prefix (optional)</label>
+            <input type="text" class="num-input" id="num-prefix"
+              data-i18n-placeholder="picker_numbered_prefix_placeholder"
+              placeholder="例如：参赛者">
+          </div>
+          <button onclick="generateNumbered()"
+            class="w-full grad-btn text-white font-semibold py-2.5 rounded-xl text-sm"
+            data-i18n="picker_numbered_generate">Generate Numbered Set</button>
+          <p class="text-xs text-gray-400" id="numbered-preview"></p>
+        </div>
+      </div>
+
+      <!-- 2. Weight Settings -->
+      <div class="panel">
+        <div class="flex items-center justify-between mb-3">
+          <p class="section-title mb-0" data-i18n="picker_weight_title">Weight Settings</p>
+          <label class="toggle">
+            <input type="checkbox" id="weight-toggle" onchange="toggleWeights()">
+            <div class="toggle-track"></div>
+            <span class="text-sm" data-i18n="picker_weight_toggle">Enable Custom Weights</span>
+          </label>
+        </div>
+        <p class="text-xs text-gray-400 mb-3" data-i18n="picker_weight_hint">Leave empty for equal probability. Higher numbers = higher chance.</p>
+        <div class="weight-scroll" id="weight-list">
+          <p class="text-sm text-gray-400 italic" id="weight-empty" data-i18n="picker_weight_empty">Enter entries first</p>
+        </div>
+      </div>
+
+      <!-- 3. Mode & Count -->
+      <div class="panel">
+        <p class="section-title" data-i18n="picker_mode_title">Draw Mode</p>
+        <div class="space-y-2 mb-5">
+          <div class="radio-option selected" id="mode-noreplace" onclick="selectMode('noreplace')">
+            <div class="radio-dot"></div>
+            <span data-i18n="picker_mode_noreplace">Without Replacement (default)</span>
+          </div>
+          <div class="radio-option" id="mode-replace" onclick="selectMode('replace')">
+            <div class="radio-dot"></div>
+            <span data-i18n="picker_mode_replace">With Replacement (repeatable)</span>
+          </div>
+        </div>
+
+        <label class="text-xs text-gray-500 mb-2 block" data-i18n="picker_count_label">Draw Count</label>
+        <div class="flex items-center gap-3">
+          <button onclick="adjustCount(-1)" class="w-9 h-9 rounded-full border-2 border-purple-200 text-purple-600 font-bold text-lg flex items-center justify-center hover:bg-purple-50 transition-colors">−</button>
+          <input type="number" id="draw-count" value="1" min="1"
+            class="num-input text-center font-bold text-lg" style="width:72px">
+          <button onclick="adjustCount(1)" class="w-9 h-9 rounded-full border-2 border-purple-200 text-purple-600 font-bold text-lg flex items-center justify-center hover:bg-purple-50 transition-colors">+</button>
+        </div>
+      </div>
+
+      <!-- 4. Animation Style -->
+      <div class="panel">
+        <p class="section-title" data-i18n="picker_anim_title">Animation Style</p>
+        <div class="grid grid-cols-3 gap-2">
+          <div class="radio-option selected flex-col text-center" id="anim-slot" onclick="selectAnim('slot')">
+            <div class="text-2xl mb-1">🎰</div>
+            <div class="radio-dot mx-auto mb-1"></div>
+            <span class="text-xs" data-i18n="picker_anim_slot">Slot Machine</span>
+          </div>
+          <div class="radio-option flex-col text-center" id="anim-flip" onclick="selectAnim('flip')">
+            <div class="text-2xl mb-1">🃏</div>
+            <div class="radio-dot mx-auto mb-1"></div>
+            <span class="text-xs" data-i18n="picker_anim_flip">Card Flip</span>
+          </div>
+          <div class="radio-option flex-col text-center" id="anim-none" onclick="selectAnim('none')">
+            <div class="text-2xl mb-1">⚡</div>
+            <div class="radio-dot mx-auto mb-1"></div>
+            <span class="text-xs" data-i18n="picker_anim_none">No Animation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ RIGHT COLUMN: Draw ══ -->
+    <div class="space-y-4">
+
+      <!-- Result Display -->
+      <div id="result-display" class="idle" role="region" aria-live="polite" aria-label="Draw result">
+        <div id="result-idle" class="text-white/60 text-center">
+          <div class="text-5xl mb-3">🎲</div>
+          <p class="text-lg font-medium" data-i18n="picker_btn_draw">Draw Now</p>
+        </div>
+        <div id="result-slot" class="slot-reel hidden"></div>
+        <div id="result-flip" class="flip-wrap hidden">
+          <div class="flip-card" id="flip-card">
+            <div class="flip-front" id="flip-front">?</div>
+            <div class="flip-back" id="flip-back"></div>
+          </div>
+        </div>
+        <div id="result-chips" class="result-chips hidden"></div>
+      </div>
+
+      <!-- Draw buttons -->
+      <div class="flex gap-3">
+        <button id="draw-btn" onclick="doDraw()"
+          class="flex-1 grad-btn text-white font-bold py-4 rounded-2xl text-lg tracking-wide"
+          data-i18n="picker_btn_draw">Draw Now</button>
+        <button onclick="resetDraw()"
+          class="px-5 py-4 rounded-2xl border-2 border-purple-200 text-purple-600 font-semibold hover:bg-purple-50 transition-colors text-sm"
+          data-i18n="picker_btn_reset">Reset</button>
+      </div>
+
+      <!-- Remaining counter -->
+      <div class="flex items-center justify-between px-1">
+        <span class="text-sm text-gray-500" data-i18n="picker_remaining">Remaining</span>
+        <div id="remaining-display" class="flex gap-2 flex-wrap justify-end"></div>
+      </div>
+
+      <!-- History -->
+      <div class="panel">
+        <div class="flex items-center justify-between mb-3">
+          <p class="section-title mb-0" data-i18n="picker_history_title">History</p>
+          <button onclick="clearHistory()" class="text-xs text-gray-400 hover:text-red-400 transition-colors"data-i18n="clear">Clear<//button>
+        </div>
+        <div id="history-list" class="space-y-2 max-h-64 overflow-y-auto">
+          <p class="text-sm text-gray-400 italic" id="history-empty" data-i18n="picker_history_empty">No history yet</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════ FAQ (SEO Content) ═════ -->
+  <section class="mt-12 max-w-3xl">
+    <h2 class="font-display font-bold text-xl text-gray-800 mb-6" data-i18n="faq_title">Frequently Asked Questions</h2>
+
+    <div class="space-y-4">
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="faq_q1">What is draw without replacement?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="faq_a1">
+          Without replacement means each drawn item is removed from the pool and won't appear again, ensuring every item is picked at most once. Ideal for fair raffles or attendance calls.
+        </p>
+      </details>
+
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="faq_q2">How do I set different probabilities?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="faq_a2">
+          Enable "Custom Weights" and enter a number for each item. Higher numbers mean higher chances. For example, if A = 2 and B = 1, A has roughly a 2/3 chance of being picked.
+        </p>
+      </details>
+
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="faq_q3">Can I generate a numbered set automatically?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="faq_a3">
+          Yes. Switch to the "Numbered Set" tab, set your start and end numbers and an optional prefix, then click Generate. Great for seat numbers, contestant IDs, and more.
+        </p>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="border-t border-purple-100 bg-white mt-8">
+  <div class="max-w-6xl mx-auto px-4 py-10">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg grad-btn flex items-center justify-center text-white font-bold text-xs">T</div>
+        <span class="font-display font-semibold grad-text">ToolVerse</span>
+      </div>
+      <nav class="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+        <a href="/privacy/" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="/terms/" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_terms">Terms of Service</a>
+        <a href="mailto:zhefanshen3@gmail.com" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_contact">Contact Us</a>
+      </nav>
+      <p class="text-xs text-gray-400" data-i18n="footer_copyright">© 2025 ToolVerse. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+let entries = [];          // {label, weight, available}
+let pool = [];             // indices of available entries
+let inputMode = 'manual';  // 'manual' | 'numbered'
+let drawMode = 'noreplace';
+let animMode = 'slot';
+let weightsEnabled = false;
+let historyLog = [];
+let drawIndex = 0;
+
+// ══════════════════════════════════════════════
+//  i18n
+// ══════════════════════════════════════════════
+let T = {};
+const LANG_NAMES = {zh:'中文',en:'English',ja:'日本語',ko:'한국어',es:'Español',fr:'Français',de:'Deutsch',pt:'Português',ru:'Русский',ar:'العربية'};
+
+function toggleLangMenu() {
+  const menu = document.getElementById('lang-menu');
+  const btn  = document.getElementById('lang-btn');
+  const open = menu.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+}
+function closeLangMenu() {
+  const menu = document.getElementById('lang-menu');
+  const btn  = document.getElementById('lang-btn');
+  if (menu) { menu.classList.remove('open'); btn.setAttribute('aria-expanded', false); }
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.language-dropdown')) closeLangMenu();
+});
+let currentLang = localStorage.getItem('tv_lang') || 'en';
+
+async function loadLang(lang) {
+  try {
+    const r = await fetch(`/locales/${lang}.json`);
+    if (!r.ok) throw new Error();
+    T = await r.json();
+    applyT();
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
+    localStorage.setItem('tv_lang', lang);
+    currentLang = lang;
+    document.getElementById('current-language').textContent = LANG_NAMES[lang] || lang;
+    closeLangMenu();
+  } catch(e) {}
+}
+
+function applyT() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = T[el.dataset.i18n]; if (!v) return;
+    if (el.tagName === 'META') { el.content = v; }
+    else if (el.tagName === 'TITLE') { el.textContent = v; }
+    else { el.textContent = v; }
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const v = T[el.dataset.i18nPlaceholder]; if (v) el.placeholder = v;
+  });
+}
+
+function t(key, fallback) { return T[key] || fallback || key; }
+
+// ══════════════════════════════════════════════
+//  INPUT TAB
+// ══════════════════════════════════════════════
+function switchInputTab(mode) {
+  inputMode = mode;
+  ['manual','numbered'].forEach(m => {
+    document.getElementById('tab-'+m).classList.toggle('active', m === mode);
+    document.getElementById('pane-'+m).classList.toggle('hidden', m !== mode);
+  });
+}
+
+// ── Manual textarea listener ──
+document.getElementById('entry-text').addEventListener('input', () => {
+  parseEntries();
+  updateWeightList();
+  updateRemaining();
+});
+
+function parseEntries() {
+  const lines = document.getElementById('entry-text').value
+    .split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  entries = lines.map(l => ({ label: l, weight: 1 }));
+  resetPool();
+  document.getElementById('entry-count').textContent = `${entries.length} entries`;
+}
+
+// ── Numbered generator ──
+function generateNumbered() {
+  const start = parseInt(document.getElementById('num-start').value) || 1;
+  const end = parseInt(document.getElementById('num-end').value) || 10;
+  const prefix = document.getElementById('num-prefix').value.trim();
+  if (start > end) { showToast('起始编号不能大于结束编号'); return; }
+  if (end - start > 9999) { showToast('范围最大支持 10000 个'); return; }
+  entries = [];
+  for (let i = start; i <= end; i++) {
+    entries.push({ label: prefix ? `${prefix}${i}` : String(i), weight: 1 });
+  }
+  resetPool();
+  document.getElementById('numbered-preview').textContent = `已生成 ${entries.length} 个词条（${entries[0].label} ~ ${entries[entries.length-1].label}）`;
+  updateWeightList();
+  updateRemaining();
+}
+
+// ══════════════════════════════════════════════
+//  WEIGHT
+// ══════════════════════════════════════════════
+function toggleWeights() {
+  weightsEnabled = document.getElementById('weight-toggle').checked;
+  updateWeightList();
+}
+
+function updateWeightList() {
+  const container = document.getElementById('weight-list');
+  if (entries.length === 0) {
+    container.innerHTML = '<p class="text-sm text-gray-400 italic" id="weight-empty">' + t('picker_weight_empty','Enter entries first') + '</p>';
+    return;
+  }
+  if (!weightsEnabled) {
+    container.innerHTML = '<p class="text-sm text-gray-400 italic">' + t('picker_weight_hint','Leave empty for equal probability') + '</p>';
+    return;
+  }
+  container.innerHTML = entries.map((e, i) => `
+    <div class="weight-row">
+      <span class="weight-label" title="${e.label}">${e.label}</span>
+      <input type="number" class="weight-input" min="0.01" step="0.01" value="${e.weight}"
+        onchange="setWeight(${i}, this.value)" aria-label="${e.label}">
+    </div>
+  `).join('');
+}
+
+function setWeight(i, v) {
+  const w = parseFloat(v);
+  entries[i].weight = (isNaN(w) || w <= 0) ? 1 : w;
+}
+
+// ══════════════════════════════════════════════
+//  MODE & COUNT & ANIM
+// ══════════════════════════════════════════════
+function selectMode(m) {
+  drawMode = m;
+  ['replace','noreplace'].forEach(id => {
+    document.getElementById('mode-'+id).classList.toggle('selected', id === m);
+  });
+  resetPool();
+  updateRemaining();
+}
+
+function selectAnim(a) {
+  animMode = a;
+  ['slot','flip','none'].forEach(id => {
+    document.getElementById('anim-'+id).classList.toggle('selected', id === a);
+  });
+}
+
+function adjustCount(delta) {
+  const el = document.getElementById('draw-count');
+  const v = Math.max(1, (parseInt(el.value) || 1) + delta);
+  el.value = v;
+}
+
+// ══════════════════════════════════════════════
+//  POOL
+// ══════════════════════════════════════════════
+function resetPool() {
+  pool = entries.map((_, i) => i);
+}
+
+function updateRemaining() {
+  const el = document.getElementById('remaining-display');
+  if (drawMode === 'replace') {
+    el.innerHTML = `<span class="remaining-pill">${entries.length} / ${entries.length}</span>`;
+    return;
+  }
+  const total = entries.length;
+  const rem = pool.length;
+  el.innerHTML = `<span class="remaining-pill">${rem} / ${total}</span>`;
+}
+
+// ══════════════════════════════════════════════
+//  DRAW LOGIC
+// ══════════════════════════════════════════════
+function weightedRandom(indices) {
+  if (!weightsEnabled) {
+    return indices[Math.floor(Math.random() * indices.length)];
+  }
+  const weights = indices.map(i => entries[i].weight);
+  const total = weights.reduce((a, b) => a + b, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < indices.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return indices[i];
+  }
+  return indices[indices.length - 1];
+}
+
+function doDraw() {
+  if (entries.length === 0) { showToast(t('picker_error_empty', '请先输入至少一个词条')); return; }
+
+  const count = parseInt(document.getElementById('draw-count').value) || 1;
+
+  if (drawMode === 'noreplace') {
+    if (pool.length === 0) { showToast(t('picker_all_drawn', '所有词条已抽完，请重置后继续')); return; }
+    if (count > pool.length) { showToast(t('picker_error_count', '抽取数量不能超过剩余词条数')); return; }
+  }
+
+  // Pick results
+  let picked = [];
+  let tempPool = [...pool];
+
+  for (let i = 0; i < count; i++) {
+    if (drawMode === 'replace') {
+      picked.push(weightedRandom(entries.map((_, j) => j)));
+    } else {
+      if (tempPool.length === 0) break;
+      const idx = weightedRandom(tempPool);
+      picked.push(idx);
+      tempPool = tempPool.filter(x => x !== idx);
+    }
+  }
+
+  if (drawMode === 'noreplace') {
+    pool = tempPool;
+  }
+
+  const labels = picked.map(i => entries[i].label);
+  drawIndex++;
+
+  // Record history
+  historyLog.unshift({ round: drawIndex, labels });
+  renderHistory();
+  updateRemaining();
+
+  // Animate
+  animateResult(labels, count);
+}
+
+// ══════════════════════════════════════════════
+//  ANIMATIONS
+// ══════════════════════════════════════════════
+function hideAllResults() {
+  document.getElementById('result-idle').classList.add('hidden');
+  document.getElementById('result-slot').classList.add('hidden');
+  document.getElementById('result-flip').classList.add('hidden');
+  document.getElementById('result-chips').classList.add('hidden');
+}
+
+function animateResult(labels, count) {
+  const display = document.getElementById('result-display');
+  display.classList.remove('idle');
+  hideAllResults();
+
+  if (count > 1 || animMode === 'none') {
+    showChips(labels);
+    return;
+  }
+
+  const label = labels[0];
+
+  if (animMode === 'slot') {
+    runSlotAnim(label);
+  } else if (animMode === 'flip') {
+    runFlipAnim(label);
+  }
+}
+
+function runSlotAnim(finalLabel) {
+  const reel = document.getElementById('result-slot');
+  reel.classList.remove('hidden');
+  reel.classList.add('spinning');
+
+  const fakeEntries = entries.map(e => e.label);
+  let ticks = 0;
+  const totalTicks = 22 + Math.floor(Math.random() * 10);
+
+  const interval = setInterval(() => {
+    const fake = fakeEntries[Math.floor(Math.random() * fakeEntries.length)];
+    reel.textContent = fake;
+    ticks++;
+    if (ticks >= totalTicks) {
+      clearInterval(interval);
+      reel.classList.remove('spinning');
+      reel.textContent = finalLabel;
+      reel.style.animation = 'chipIn .4s ease forwards';
+      setTimeout(() => reel.style.animation = '', 500);
+    }
+  }, 80);
+}
+
+function runFlipAnim(finalLabel) {
+  const wrap = document.getElementById('result-flip');
+  const card = document.getElementById('flip-card');
+  const back = document.getElementById('flip-back');
+  wrap.classList.remove('hidden');
+  back.textContent = finalLabel;
+  card.classList.add('flipping');
+  setTimeout(() => {
+    card.classList.remove('flipping');
+    document.getElementById('flip-front').textContent = finalLabel;
+  }, 600);
+}
+
+function showChips(labels) {
+  const container = document.getElementById('result-chips');
+  container.classList.remove('hidden');
+  container.innerHTML = '';
+  labels.forEach((l, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'result-chip';
+    chip.style.animationDelay = `${i * 80}ms`;
+    chip.textContent = l;
+    container.appendChild(chip);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  HISTORY
+// ══════════════════════════════════════════════
+function renderHistory() {
+  const list = document.getElementById('history-list');
+  const empty = document.getElementById('history-empty');
+  if (historyLog.length === 0) {
+    list.innerHTML = '<p class="text-sm text-gray-400 italic" id="history-empty">' + t('picker_history_empty','暂无记录') + '</p>';
+    return;
+  }
+  list.innerHTML = historyLog.slice(0, 20).map(item => `
+    <div class="history-item">
+      <div class="history-num">${item.round}</div>
+      <span class="flex-1 text-gray-700">${item.labels.join('、')}</span>
+    </div>
+  `).join('');
+}
+
+function clearHistory() {
+  historyLog = [];
+  renderHistory();
+}
+
+// ══════════════════════════════════════════════
+//  RESET
+// ══════════════════════════════════════════════
+function resetDraw() {
+  resetPool();
+  updateRemaining();
+  drawIndex = 0;
+  historyLog = [];
+  renderHistory();
+  // Reset display
+  const display = document.getElementById('result-display');
+  display.classList.add('idle');
+  hideAllResults();
+  document.getElementById('result-idle').classList.remove('hidden');
+  document.getElementById('flip-front').textContent = '?';
+}
+
+// ══════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+loadLang(currentLang);
+updateRemaining();
+loadDemo();
+
+// ══════════════════════════════════════════════
+//  DEMO LOADER
+// ══════════════════════════════════════════════
+let carouselIndex = 0;
+let carouselItems = [];
+
+async function loadDemo() {
+  try {
+    const res = await fetch('./demo/manifest.json');
+    if (!res.ok) return;
+    const manifest = await res.json();
+    if (!manifest.items || manifest.items.length === 0) return;
+
+    document.getElementById('demo-section').classList.remove('hidden');
+
+    if (manifest.type === 'video') {
+      const el = document.getElementById('demo-video');
+      document.getElementById('demo-video-el').src = './demo/' + manifest.items[0];
+      el.classList.remove('hidden');
+
+    } else if (manifest.type === 'gif') {
+      const el = document.getElementById('demo-gif');
+      document.getElementById('demo-gif-el').src = './demo/' + manifest.items[0];
+      el.classList.remove('hidden');
+
+    } else if (manifest.type === 'images') {
+      carouselItems = manifest.items;
+      initCarousel();
+    }
+  } catch(e) { /* no demo/manifest.json = silent */ }
+}
+
+function initCarousel() {
+  if (carouselItems.length === 0) return;
+  document.getElementById('demo-carousel').classList.remove('hidden');
+
+  const track = document.getElementById('carousel-track');
+  const dots  = document.getElementById('carousel-dots');
+  const thumbs = document.getElementById('carousel-thumbs');
+
+  carouselItems.forEach((src, i) => {
+    // slide
+    const slide = document.createElement('div');
+    slide.style.cssText = 'min-width:100%;display:flex;align-items:center;justify-content:center;max-height:260px;';
+    const img = document.createElement('img');
+    img.src = './demo/' + src;
+    img.alt = 'Demo ' + (i + 1);
+    img.style.cssText = 'max-height:260px;max-width:100%;object-fit:contain;';
+    slide.appendChild(img);
+    track.appendChild(slide);
+
+    // dot
+    const dot = document.createElement('button');
+    dot.style.cssText = 'width:8px;height:8px;border-radius:50%;border:none;cursor:pointer;transition:.2s;';
+    dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+    dot.onclick = () => goToSlide(i);
+    dots.appendChild(dot);
+
+    // thumb
+    const thumb = document.createElement('img');
+    thumb.src = './demo/' + src;
+    thumb.alt = 'Thumb ' + (i + 1);
+    thumb.style.cssText = 'width:60px;height:44px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;flex-shrink:0;transition:.2s;';
+    thumb.onclick = () => goToSlide(i);
+    thumbs.appendChild(thumb);
+  });
+
+  // hide arrows if only 1 image
+  if (carouselItems.length <= 1) {
+    document.getElementById('c-prev').style.display = 'none';
+    document.getElementById('c-next').style.display = 'none';
+    dots.style.display = 'none';
+  }
+
+  goToSlide(0);
+}
+
+function goToSlide(i) {
+  carouselIndex = i;
+  document.getElementById('carousel-track').style.transform = `translateX(-${i * 100}%)`;
+  document.querySelectorAll('#carousel-dots button').forEach((d, j) => {
+    d.style.background = j === i ? '#8b5cf6' : '#d8b4fe';
+    d.style.width = j === i ? '20px' : '8px';
+    d.style.borderRadius = '4px';
+  });
+  document.querySelectorAll('#carousel-thumbs img').forEach((t, j) => {
+    t.style.borderColor = j === i ? '#8b5cf6' : 'transparent';
+    t.style.opacity = j === i ? '1' : '0.6';
+  });
+}
+
+function carouselPrev() {
+  goToSlide((carouselIndex - 1 + carouselItems.length) % carouselItems.length);
+}
+function carouselNext() {
+  goToSlide((carouselIndex + 1) % carouselItems.length);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "_readme": "演示资源配置文件。type 可选: 'video'|'gif'|'images'。留空数组则不显示演示区。",
+  "titleKey": "demo_title",
+  "type": "images",
+  "items": ["CustomPicker.png"]
+}

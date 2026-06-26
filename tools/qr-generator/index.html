@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <meta name="description" data-i18n="tool_qr_generator_meta_desc" content="Free online QR code generator — create QR codes for URLs, text, and more. Custom size, colors, and error correction. Download as PNG instantly.">
+  <meta name="keywords" data-i18n="site_keywords" content="online tools,free tools,qr code generator,qr code maker">
+  <title data-i18n="tool_qr_generator_meta_title">Free Online QR Code Generator - Custom Color & Size | ToolVerse</title>
+  <meta property="og:title" content="Free Online QR Code Generator | ToolVerse">
+  <meta property="og:description" content="Create QR codes for URLs, text, and more. Custom size, colors, error correction level. Download as PNG instantly.">
+  <meta property="og:url" content="https://newTrekking.com/tools/qr-generator/">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://newTrekking.com/tools/qr-generator/">
+  <link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/qr-generator/">
+  <link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/qr-generator/">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { display: ['Outfit','Noto Sans SC','sans-serif'], body: ['Noto Sans SC','Outfit','sans-serif'] } } }
+    }
+  </script>
+  <style>
+    :root { --grad: linear-gradient(135deg,#6366f1 0%,#8b5cf6 40%,#ec4899 100%); }
+    *{box-sizing:border-box}
+    body{font-family:'Noto Sans SC','Outfit',sans-serif;background:#f8f7ff;min-height:100vh}
+    .grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .grad-btn{background:var(--grad);background-size:200% 200%;transition:transform .2s,box-shadow .2s}
+    .grad-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(139,92,246,.4)}
+    .grad-btn:active{transform:translateY(0);box-shadow:none}
+    .grad-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+    .panel{background:white;border:1px solid rgba(139,92,246,.12);border-radius:18px;padding:20px 22px}
+    .section-title{font-size:13px;font-weight:600;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+
+    /* Textarea / input */
+    .tv-input{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-size:14px;font-family:'Noto Sans SC',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;color:#1e1b4b;background:white}
+    .tv-input:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.1)}
+    textarea.tv-input{resize:vertical;min-height:110px;line-height:1.7}
+
+    /* Range slider */
+    .tv-range{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:linear-gradient(to right,#8b5cf6 var(--pct,50%),#e5e7eb var(--pct,50%));outline:none}
+    .tv-range::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:white;border:2.5px solid #8b5cf6;cursor:pointer;box-shadow:0 2px 6px rgba(139,92,246,.3)}
+    .tv-range::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:white;border:2.5px solid #8b5cf6;cursor:pointer;box-shadow:0 2px 6px rgba(139,92,246,.3)}
+
+    /* Color swatch */
+    .color-wrap{position:relative;width:40px;height:40px;border-radius:10px;border:1.5px solid #e5e7eb;overflow:hidden;cursor:pointer;flex-shrink:0}
+    .color-wrap input[type=color]{position:absolute;inset:-4px;width:calc(100%+8px);height:calc(100%+8px);border:none;padding:0;cursor:pointer;opacity:0}
+    .color-swatch{position:absolute;inset:0;border-radius:9px;pointer-events:none}
+
+    /* Error correction pills */
+    .ec-pill{padding:7px 14px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid #e5e7eb;background:white;color:#6b7280;transition:all .2s}
+    .ec-pill.active{background:var(--grad);color:white;border-color:transparent}
+
+    /* QR preview */
+    #qr-wrap{display:flex;align-items:center;justify-content:center;min-height:220px;border-radius:16px;background:#faf5ff;border:1.5px dashed #d8b4fe;transition:background .3s}
+    #qr-wrap.has-qr{background:white;border-style:solid;border-color:rgba(139,92,246,.2)}
+    #qr-canvas-wrap{padding:16px;background:white;border-radius:12px;box-shadow:0 4px 24px rgba(139,92,246,.12)}
+    #qr-canvas-wrap canvas, #qr-canvas-wrap img{display:block}
+
+    /* Idle placeholder */
+    #qr-idle{text-align:center;color:#c4b5fd;pointer-events:none}
+
+    /* Download button */
+    .dl-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:14px;font-size:15px;font-weight:600;letter-spacing:.01em;transition:all .2s;border:none;cursor:pointer}
+
+    /* Language dropdown */
+    .language-dropdown{position:relative}
+    .language-btn{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;cursor:pointer;border:1.5px solid rgba(139,92,246,.3);background:white;font-size:14px;color:#5b21b6;transition:all .2s}
+    .language-btn:hover{border-color:#8b5cf6;background:#faf5ff}
+    .language-dropdown-auto{display:none;position:absolute;right:0;top:calc(100% + 8px);background:white;border:1px solid rgba(139,92,246,.2);border-radius:14px;box-shadow:0 10px 40px rgba(139,92,246,.15);min-width:130px;z-index:100;max-height:280px;overflow-y:auto;padding:6px}
+    .language-dropdown-auto.open{display:block}
+    .language-option{display:block;width:100%;text-align:left;padding:8px 14px;border-radius:8px;border:none;background:none;font-size:14px;color:#374151;cursor:pointer;transition:background .15s}
+    .language-option:hover{background:#f3e8ff;color:#7c3aed}
+    .breadcrumb a{color:#8b5cf6;text-decoration:none}
+    .breadcrumb a:hover{text-decoration:underline}
+    #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1e1b4b;color:white;padding:10px 20px;border-radius:30px;font-size:14px;opacity:0;transition:all .3s;pointer-events:none;z-index:999;white-space:nowrap}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"SoftwareApplication",
+        "name":"QR Code Generator",
+        "applicationCategory":"UtilitiesApplication",
+        "operatingSystem":"Web",
+        "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+        "url":"https://newTrekking.com/tools/qr-generator/",
+        "description":"Free online QR code generator with custom colors, size, and error correction level.",
+        "provider":{"@type":"Organization","name":"ToolVerse","url":"https://newTrekking.com"}
+      },
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Home","item":"https://newTrekking.com/"},
+          {"@type":"ListItem","position":2,"name":"QR Code Generator","item":"https://newTrekking.com/tools/qr-generator/"}
+        ]
+      },
+      {
+        "@type":"FAQPage",
+        "mainEntity":[
+          {"@type":"Question","name":"What is a QR code?","acceptedAnswer":{"@type":"Answer","text":"A QR (Quick Response) code is a 2D barcode that encodes text, URLs, or other data and can be scanned by smartphones instantly."}},
+          {"@type":"Question","name":"What is error correction level?","acceptedAnswer":{"@type":"Answer","text":"Error correction allows QR codes to be read even when partially damaged. L=7%, M=15%, Q=25%, H=30% of the code can be obscured and still scan correctly. Higher levels make the QR code denser."}},
+          {"@type":"Question","name":"Can I use custom colors?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can set any foreground and background color. Ensure sufficient contrast between the two colors for reliable scanning."}}
+        ]
+      }
+    ]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5713173586841314"
+     crossorigin="anonymous">
+  </script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-purple-100">
+  <nav class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 no-underline">
+      <div class="w-8 h-8 rounded-xl grad-btn flex items-center justify-center text-white font-bold text-sm">T</div>
+      <span class="font-display font-bold text-xl grad-text">ToolVerse</span>
+    </a>
+    <div class="hidden md:flex items-center gap-6">
+      <a href="/" class="text-sm text-gray-500 hover:text-purple-600 transition-colors no-underline" data-i18n="nav_home">Home</a>
+      <a href="/#all-tools" class="text-sm text-gray-500 hover:text-purple-600 transition-colors no-underline" data-i18n="nav_tools">All Tools</a>
+    </div>
+    <div class="language-dropdown">
+      <button class="language-btn" id="lang-btn" onclick="toggleLangMenu()" aria-label="Language" aria-expanded="false">
+        <span>🌐</span><span id="current-language">English</span><span style="font-size:10px">▼</span>
+      </button>
+      <div class="language-dropdown-auto" id="lang-menu">
+        <button class="language-option" onclick="loadLang('zh')">🇨🇳 中文</button>
+        <button class="language-option" onclick="loadLang('en')">🇺🇸 English</button>
+        <button class="language-option" onclick="loadLang('ja')">🇯🇵 日本語</button>
+        <button class="language-option" onclick="loadLang('ko')">🇰🇷 한국어</button>
+        <button class="language-option" onclick="loadLang('es')">🇪🇸 Español</button>
+        <button class="language-option" onclick="loadLang('fr')">🇫🇷 Français</button>
+        <button class="language-option" onclick="loadLang('de')">🇩🇪 Deutsch</button>
+        <button class="language-option" onclick="loadLang('pt')">🇧🇷 Português</button>
+        <button class="language-option" onclick="loadLang('ru')">🇷🇺 Русский</button>
+        <button class="language-option" onclick="loadLang('ar')">🇸🇦 العربية</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Breadcrumb -->
+<div class="max-w-6xl mx-auto px-4 py-3 breadcrumb text-sm text-gray-400">
+  <a href="/" data-i18n="nav_home">Home</a>
+  <span class="mx-2">/</span>
+  <span class="text-gray-600" data-i18n="tool_qr_generator_name">QR Code Generator</span>
+</div>
+
+<main class="max-w-6xl mx-auto px-4 pb-16">
+
+  <!-- Tool Header -->
+  <article class="mb-8">
+    <div class="flex flex-col md:flex-row md:items-start gap-6">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-4 mb-2">
+          <div class="w-14 h-14 flex-shrink-0 rounded-2xl flex items-center justify-center text-3xl" style="background:linear-gradient(135deg,#ede9fe,#fce7f3);border:2px solid rgba(139,92,246,.2)">🔳</div>
+          <div class="min-w-0">
+            <h1 class="font-display font-bold text-2xl md:text-3xl text-gray-900" data-i18n="tool_qr_generator_name">QR Code Generator</h1>
+            <p class="text-sm text-gray-500 mt-1" data-i18n="tool_qr_generator_desc">Generate QR codes for URLs, text, and more — custom colors, size, and error correction</p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-400 leading-relaxed mt-3 max-w-xl" data-i18n="tool_qr_generator_longdesc">
+          ToolVerse QR Code Generator lets you create QR codes instantly in your browser — no upload, no server. Enter any URL or text, adjust the size, pick foreground and background colors, set error correction level, and download a crisp PNG in one click.
+        </p>
+      </div>
+
+      <!-- Demo slot (hidden until demo/manifest.json has items) -->
+      <div id="demo-section" class="hidden md:w-80 lg:w-96 flex-shrink-0">
+        <p class="text-xs font-semibold text-purple-400 uppercase tracking-widest mb-2" data-i18n="demo_title">How It Works</p>
+        <div id="demo-video" class="hidden rounded-xl overflow-hidden border border-purple-100 shadow-sm">
+          <video id="demo-video-el" controls playsinline class="w-full" style="max-height:260px;object-fit:contain"></video>
+        </div>
+        <div id="demo-gif" class="hidden rounded-xl overflow-hidden border border-purple-100 shadow-sm">
+          <img id="demo-gif-el" alt="demo" class="w-full object-contain" style="max-height:260px">
+        </div>
+        <div id="demo-carousel" class="hidden">
+          <div class="relative rounded-xl overflow-hidden border border-purple-100 shadow-sm" style="background:#f8f7ff">
+            <div id="carousel-track" class="flex transition-transform duration-400 ease-in-out" style="will-change:transform"></div>
+            <button onclick="carouselPrev()" id="c-prev" class="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 border border-purple-100 shadow flex items-center justify-center text-purple-500 hover:bg-purple-50 transition-colors text-base" aria-label="Previous">‹</button>
+            <button onclick="carouselNext()" id="c-next" class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 border border-purple-100 shadow flex items-center justify-center text-purple-500 hover:bg-purple-50 transition-colors text-base" aria-label="Next">›</button>
+            <div id="carousel-dots" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5"></div>
+          </div>
+          <div id="carousel-thumbs" class="flex gap-1.5 mt-2 overflow-x-auto pb-1"></div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Tool Body -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <!-- LEFT: Settings -->
+    <div class="space-y-4">
+
+      <!-- 1. Content input -->
+      <div class="panel">
+        <p class="section-title" data-i18n="qr_content_label">Content</p>
+        <textarea id="qr-input" class="tv-input"
+          data-i18n-placeholder="qr_input_placeholder"
+          placeholder="Enter a URL or any text…"
+          aria-label="QR code content"
+          oninput="scheduleGenerate()"></textarea>
+        <div class="flex gap-2 mt-3 flex-wrap" id="preset-btns">
+          <button onclick="setPreset('https://')"      class="text-xs px-3 py-1.5 rounded-full border border-purple-200 text-purple-600 hover:bg-purple-50 transition-colors" data-i18n="qr_preset_url">URL</button>
+          <button onclick="setPreset('tel:')"           class="text-xs px-3 py-1.5 rounded-full border border-purple-200 text-purple-600 hover:bg-purple-50 transition-colors" data-i18n="qr_preset_phone">Phone</button>
+          <button onclick="setPreset('mailto:')"        class="text-xs px-3 py-1.5 rounded-full border border-purple-200 text-purple-600 hover:bg-purple-50 transition-colors" data-i18n="qr_preset_email">Email</button>
+          <button onclick="setPreset('WIFI:T:WPA;S:;P:;;')" class="text-xs px-3 py-1.5 rounded-full border border-purple-200 text-purple-600 hover:bg-purple-50 transition-colors" data-i18n="qr_preset_wifi">Wi-Fi</button>
+        </div>
+      </div>
+
+      <!-- 2. Size -->
+      <div class="panel">
+        <div class="flex items-center justify-between mb-3">
+          <p class="section-title mb-0" data-i18n="qr_size_label">Size</p>
+          <span class="text-sm font-semibold text-purple-700" id="size-val">256 px</span>
+        </div>
+        <input type="range" id="size-range" class="tv-range" min="128" max="512" step="32" value="256"
+          oninput="onSizeChange(this.value)" aria-label="QR code size">
+        <div class="flex justify-between text-xs text-gray-400 mt-1">
+          <span>128</span><span>512</span>
+        </div>
+      </div>
+
+      <!-- 3. Colors -->
+      <div class="panel">
+        <p class="section-title" data-i18n="qr_color_label">Colors</p>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-xs text-gray-500 mb-2" data-i18n="qr_fg_color">Foreground</p>
+            <div class="flex items-center gap-3">
+              <div class="color-wrap" title="Pick foreground color">
+                <div class="color-swatch" id="fg-swatch" style="background:#000000"></div>
+                <input type="color" id="fg-color" value="#000000" oninput="onColorChange()">
+              </div>
+              <input type="text" id="fg-hex" class="tv-input" value="#000000"
+                maxlength="7" style="width:96px;padding:8px 10px;font-size:13px;font-family:monospace"
+                oninput="onHexInput('fg')" aria-label="Foreground hex color">
+            </div>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500 mb-2" data-i18n="qr_bg_color">Background</p>
+            <div class="flex items-center gap-3">
+              <div class="color-wrap" title="Pick background color">
+                <div class="color-swatch" id="bg-swatch" style="background:#ffffff"></div>
+                <input type="color" id="bg-color" value="#ffffff" oninput="onColorChange()">
+              </div>
+              <input type="text" id="bg-hex" class="tv-input" value="#ffffff"
+                maxlength="7" style="width:96px;padding:8px 10px;font-size:13px;font-family:monospace"
+                oninput="onHexInput('bg')" aria-label="Background hex color">
+            </div>
+          </div>
+        </div>
+        <button onclick="swapColors()" class="mt-3 text-xs text-purple-500 hover:text-purple-700 transition-colors flex items-center gap-1">
+          <span>⇄</span> <span data-i18n="qr_swap_colors">Swap colors</span>
+        </button>
+      </div>
+
+      <!-- 4. Error correction -->
+      <div class="panel">
+        <p class="section-title" data-i18n="qr_ec_label">Error Correction</p>
+        <div class="flex gap-2 flex-wrap" id="ec-group">
+          <button class="ec-pill" data-ec="L" onclick="selectEC('L')" title="7% recovery">L</button>
+          <button class="ec-pill active" data-ec="M" onclick="selectEC('M')" title="15% recovery">M</button>
+          <button class="ec-pill" data-ec="Q" onclick="selectEC('Q')" title="25% recovery">Q</button>
+          <button class="ec-pill" data-ec="H" onclick="selectEC('H')" title="30% recovery">H</button>
+        </div>
+        <p class="text-xs text-gray-400 mt-3" id="ec-hint">M — 15% of the code can be obscured and still scan. Good for most uses.</p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Preview + Download -->
+    <div class="space-y-4">
+
+      <div class="panel">
+        <p class="section-title" data-i18n="qr_preview_label">Preview</p>
+
+        <div id="qr-wrap">
+          <!-- idle state -->
+          <div id="qr-idle">
+            <div style="font-size:52px;margin-bottom:8px">🔳</div>
+            <p class="text-sm" data-i18n="qr_idle_hint">Enter content to generate</p>
+          </div>
+          <!-- generated QR -->
+          <div id="qr-canvas-wrap" class="hidden"></div>
+        </div>
+
+        <!-- Download -->
+        <div class="mt-4 space-y-2">
+          <button id="dl-btn" onclick="downloadQR()"
+            class="dl-btn grad-btn text-white"
+            disabled
+            data-i18n="qr_download_png">⬇ Download PNG</button>
+          <button id="copy-btn" onclick="copyQR()"
+            class="dl-btn text-purple-700 border-2 border-purple-200 hover:bg-purple-50 transition-colors bg-white"
+            disabled
+            data-i18n="qr_copy_clipboard">⎘ Copy to Clipboard</button>
+        </div>
+      </div>
+
+      <!-- Info card -->
+      <div class="panel" style="background:linear-gradient(135deg,#faf5ff,#fff0fb)">
+        <p class="text-xs font-semibold text-purple-500 uppercase tracking-widest mb-2" data-i18n="qr_tips_title">Tips</p>
+        <ul class="text-xs text-gray-500 space-y-1.5 leading-relaxed list-none">
+          <li>💡 <span data-i18n="qr_tip_contrast">Ensure high contrast between foreground and background for reliable scanning.</span></li>
+          <li>🔒 <span data-i18n="qr_tip_local">All processing happens locally in your browser — nothing is uploaded.</span></li>
+          <li>📐 <span data-i18n="qr_tip_size">Use 256px+ for print. 128px is fine for digital display.</span></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="mt-12 max-w-3xl">
+    <h2 class="font-display font-bold text-xl text-gray-800 mb-6" data-i18n="faq_title">Frequently Asked Questions</h2>
+    <div class="space-y-4">
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="qr_faq_q1">What is a QR code?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="qr_faq_a1">A QR (Quick Response) code is a 2D barcode that encodes text, URLs, or other data. Smartphones can scan them instantly with the camera app — no special reader needed.</p>
+      </details>
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="qr_faq_q2">What is error correction level?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="qr_faq_a2">Error correction allows a QR code to be read even if part of it is damaged or covered. L=7%, M=15%, Q=25%, H=30% of the code can be obscured and still scan. Higher levels produce a denser pattern — use H if you plan to add a logo overlay.</p>
+      </details>
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="qr_faq_q3">Can I use custom colors?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="qr_faq_a3">Yes. Pick any foreground and background color. Make sure there is strong contrast between the two — light on dark or dark on light — for scanners to reliably detect the pattern.</p>
+      </details>
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="qr_faq_q4">Is my data safe?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="qr_faq_a4">Completely. The QR code is generated entirely inside your browser using JavaScript. No data is sent to any server.</p>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="border-t border-purple-100 bg-white mt-8">
+  <div class="max-w-6xl mx-auto px-4 py-10">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg grad-btn flex items-center justify-center text-white font-bold text-xs">T</div>
+        <span class="font-display font-semibold grad-text">ToolVerse</span>
+      </div>
+      <nav class="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+        <a href="/privacy/" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="/terms/" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_terms">Terms of Service</a>
+        <a href="mailto:zhefanshen3@gmail.com" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_contact">Contact Us</a>
+      </nav>
+      <p class="text-xs text-gray-400" data-i18n="footer_copyright">© 2025 ToolVerse. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<!-- ═══ SHARED JS ═══ -->
+<script>
+let currentLang = localStorage.getItem('tv_lang') || 'en';
+let T = {};
+const LANG_NAMES = {zh:'中文',en:'English',ja:'日本語',ko:'한국어',es:'Español',fr:'Français',de:'Deutsch',pt:'Português',ru:'Русский',ar:'العربية'};
+
+function toggleLangMenu() {
+  const menu = document.getElementById('lang-menu');
+  const btn  = document.getElementById('lang-btn');
+  const open = menu.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+}
+function closeLangMenu() {
+  const menu = document.getElementById('lang-menu');
+  const btn  = document.getElementById('lang-btn');
+  if (menu) { menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.language-dropdown')) closeLangMenu();
+});
+async function loadLang(lang) {
+  try {
+    const res = await fetch('/locales/' + lang + '.json');
+    if (!res.ok) throw new Error();
+    T = await res.json();
+    applyT();
+    updateECHint(); // ← T 已更新，此时读取翻译正确
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
+    localStorage.setItem('tv_lang', lang);
+    currentLang = lang;
+    document.getElementById('current-language').textContent = LANG_NAMES[lang] || lang;
+    closeLangMenu();
+  } catch(e) { console.warn('Lang load failed:', lang); }
+}
+function applyT() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    const v = T[el.dataset.i18n]; if (!v) return;
+    if (el.tagName === 'META') { el.content = v; }
+    else if (el.tagName === 'TITLE') { document.title = v; }
+    else { el.textContent = v; }
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+    const v = T[el.dataset.i18nPlaceholder]; if (v) el.placeholder = v;
+  });
+}
+function t(key, fallback) { return T[key] || fallback || key; }
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// Demo loader
+let carouselIndex = 0, carouselItems = [];
+async function loadDemo() {
+  try {
+    const res = await fetch('./demo/manifest.json');
+    if (!res.ok) return;
+    const manifest = await res.json();
+    if (!manifest.items || manifest.items.length === 0) return;
+    document.getElementById('demo-section').classList.remove('hidden');
+    if (manifest.type === 'video') {
+      document.getElementById('demo-video-el').src = './demo/' + manifest.items[0];
+      document.getElementById('demo-video').classList.remove('hidden');
+    } else if (manifest.type === 'gif') {
+      document.getElementById('demo-gif-el').src = './demo/' + manifest.items[0];
+      document.getElementById('demo-gif').classList.remove('hidden');
+    } else if (manifest.type === 'images') {
+      carouselItems = manifest.items; initCarousel();
+    }
+  } catch(e) {}
+}
+function initCarousel() {
+  if (!carouselItems.length) return;
+  document.getElementById('demo-carousel').classList.remove('hidden');
+  const track = document.getElementById('carousel-track');
+  const dots  = document.getElementById('carousel-dots');
+  const thumbs = document.getElementById('carousel-thumbs');
+  carouselItems.forEach(function(src, i) {
+    const slide = document.createElement('div');
+    slide.style.cssText = 'min-width:100%;display:flex;align-items:center;justify-content:center;max-height:260px;';
+    const img = document.createElement('img'); img.src = './demo/'+src; img.alt='Demo '+(i+1);
+    img.style.cssText = 'max-height:260px;max-width:100%;object-fit:contain;';
+    slide.appendChild(img); track.appendChild(slide);
+    const dot = document.createElement('button');
+    dot.style.cssText = 'width:8px;height:8px;border-radius:50%;border:none;cursor:pointer;transition:.2s;';
+    dot.setAttribute('aria-label','Slide '+(i+1)); dot.onclick = function(){ goToSlide(i); };
+    dots.appendChild(dot);
+    const thumb = document.createElement('img'); thumb.src='./demo/'+src; thumb.alt='Thumb '+(i+1);
+    thumb.style.cssText='width:60px;height:44px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;flex-shrink:0;transition:.2s;';
+    thumb.onclick = function(){ goToSlide(i); }; thumbs.appendChild(thumb);
+  });
+  if (carouselItems.length <= 1) {
+    document.getElementById('c-prev').style.display='none';
+    document.getElementById('c-next').style.display='none';
+    document.getElementById('carousel-dots').style.display='none';
+  }
+  goToSlide(0);
+}
+function goToSlide(i) {
+  carouselIndex = i;
+  document.getElementById('carousel-track').style.transform='translateX(-'+(i*100)+'%)';
+  document.querySelectorAll('#carousel-dots button').forEach(function(d,j){
+    d.style.background=j===i?'#8b5cf6':'#d8b4fe'; d.style.width=j===i?'20px':'8px'; d.style.borderRadius='4px';
+  });
+  document.querySelectorAll('#carousel-thumbs img').forEach(function(t,j){
+    t.style.borderColor=j===i?'#8b5cf6':'transparent'; t.style.opacity=j===i?'1':'0.6';
+  });
+}
+function carouselPrev(){ goToSlide((carouselIndex-1+carouselItems.length)%carouselItems.length); }
+function carouselNext(){ goToSlide((carouselIndex+1)%carouselItems.length); }
+</script>
+
+<!-- ═══ TOOL JS ═══ -->
+<script>
+// ── State ──
+let qrInstance = null;
+let currentEC  = 'M';
+let generateTimer = null;
+
+const EC_HINTS = {
+  L: 'qr_ec_hint_l',
+  M: 'qr_ec_hint_m',
+  Q: 'qr_ec_hint_q',
+  H: 'qr_ec_hint_h',
+};
+
+// ── Size slider ──
+function onSizeChange(val) {
+  document.getElementById('size-val').textContent = val + ' px';
+  const min = 128, max = 512;
+  const pct = ((val - min) / (max - min) * 100).toFixed(1);
+  document.getElementById('size-range').style.setProperty('--pct', pct + '%');
+  scheduleGenerate();
+}
+
+// init slider fill
+onSizeChange(256);
+
+// ── Colors ──
+function onColorChange() {
+  const fg = document.getElementById('fg-color').value;
+  const bg = document.getElementById('bg-color').value;
+  document.getElementById('fg-swatch').style.background = fg;
+  document.getElementById('bg-swatch').style.background = bg;
+  document.getElementById('fg-hex').value = fg;
+  document.getElementById('bg-hex').value = bg;
+  scheduleGenerate();
+}
+
+function onHexInput(which) {
+  const hexEl = document.getElementById(which + '-hex');
+  let v = hexEl.value.trim();
+  if (!v.startsWith('#')) v = '#' + v;
+  if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+    document.getElementById(which + '-color').value = v;
+    document.getElementById(which + '-swatch').style.background = v;
+    scheduleGenerate();
+  }
+}
+
+function swapColors() {
+  const fg = document.getElementById('fg-color').value;
+  const bg = document.getElementById('bg-color').value;
+  document.getElementById('fg-color').value = bg;
+  document.getElementById('bg-color').value = fg;
+  onColorChange();
+}
+
+// ── Error correction ──
+function selectEC(level) {
+  currentEC = level;
+  document.querySelectorAll('.ec-pill').forEach(function(p) {
+    p.classList.toggle('active', p.dataset.ec === level);
+  });
+  updateECHint();
+  scheduleGenerate();
+}
+
+function updateECHint() {
+  const hints = {
+    L: t('qr_ec_hint_l', 'L — 7% recovery. Smallest and simplest pattern.'),
+    M: t('qr_ec_hint_m', 'M — 15% recovery. Good for most uses.'),
+    Q: t('qr_ec_hint_q', 'Q — 25% recovery. Recommended for printed materials.'),
+    H: t('qr_ec_hint_h', 'H — 30% recovery. Best for QR codes with logo overlays.'),
+  };
+  const el = document.getElementById('ec-hint');
+  if (el) el.textContent = hints[currentEC];
+}
+
+// ── Preset buttons ──
+function setPreset(prefix) {
+  const input = document.getElementById('qr-input');
+  if (!input.value.startsWith(prefix)) {
+    input.value = prefix;
+    input.focus();
+    input.setSelectionRange(prefix.length, prefix.length);
+  }
+  scheduleGenerate();
+}
+
+// ── Generate (debounced) ──
+function scheduleGenerate() {
+  clearTimeout(generateTimer);
+  generateTimer = setTimeout(generateQR, 300);
+}
+
+function generateQR() {
+  const content = document.getElementById('qr-input').value.trim();
+  const size    = parseInt(document.getElementById('size-range').value);
+  const fg      = document.getElementById('fg-color').value;
+  const bg      = document.getElementById('bg-color').value;
+  const wrap    = document.getElementById('qr-canvas-wrap');
+  const idle    = document.getElementById('qr-idle');
+  const qrWrap  = document.getElementById('qr-wrap');
+
+  if (!content) {
+    wrap.classList.add('hidden');
+    idle.classList.remove('hidden');
+    qrWrap.classList.remove('has-qr');
+    setDownloadEnabled(false);
+    return;
+  }
+
+  // Clear previous
+  wrap.innerHTML = '';
+  wrap.classList.remove('hidden');
+  idle.classList.add('hidden');
+  qrWrap.classList.add('has-qr');
+
+  try {
+    new QRCode(wrap, {
+      text: content,
+      width: size,
+      height: size,
+      colorDark: fg,
+      colorLight: bg,
+      correctLevel: QRCode.CorrectLevel[currentEC],
+    });
+    setDownloadEnabled(true);
+  } catch(e) {
+    wrap.innerHTML = '<p class="text-sm text-red-400 text-center p-4">' + t('qr_error_too_long', 'Content too long for this error correction level. Try level L or shorten the text.') + '</p>';
+    setDownloadEnabled(false);
+  }
+}
+
+function setDownloadEnabled(enabled) {
+  document.getElementById('dl-btn').disabled   = !enabled;
+  document.getElementById('copy-btn').disabled = !enabled;
+}
+
+// ── Download ──
+function getCanvas() {
+  return document.querySelector('#qr-canvas-wrap canvas') ||
+         (function(){
+           const img = document.querySelector('#qr-canvas-wrap img');
+           if (!img) return null;
+           const c = document.createElement('canvas');
+           c.width = img.naturalWidth || img.width;
+           c.height = img.naturalHeight || img.height;
+           c.getContext('2d').drawImage(img, 0, 0);
+           return c;
+         })();
+}
+
+function downloadQR() {
+  const canvas = getCanvas();
+  if (!canvas) return;
+  const a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png');
+  const content = document.getElementById('qr-input').value.trim().slice(0, 30).replace(/[^a-z0-9]/gi, '_') || 'qrcode';
+  a.download = 'qrcode_' + content + '.png';
+  a.click();
+  showToast(t('qr_downloaded', 'Downloaded!'));
+}
+
+async function copyQR() {
+  const canvas = getCanvas();
+  if (!canvas) return;
+  try {
+    canvas.toBlob(async function(blob) {
+      await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+      showToast(t('qr_copied', 'Copied to clipboard!'));
+    });
+  } catch(e) {
+    showToast(t('qr_copy_failed', 'Copy failed — please download instead.'));
+  }
+}
+
+// ── Init ──
+loadLang(currentLang);
+loadDemo();
+</script>
+
+</body>
+</html>

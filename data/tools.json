@@ -1,0 +1,16 @@
+[
+  {
+    "slug": "random-picker",
+    "nameKey": "tool_random_picker_name",
+    "descKey": "tool_random_picker_desc",
+    "longDescKey": "tool_random_picker_longdesc",
+    "category": "utility",
+    "categoryKey": "cat_utility",
+    "icon": "🎲",
+    "color": "purple",
+    "keywords": ["抽签", "随机抽取", "抽奖", "random picker", "lottery"],
+    "isNew": true,
+    "isFeatured": true,
+    "component": "RandomPicker"
+  }
+]

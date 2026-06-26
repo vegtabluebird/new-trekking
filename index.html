@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <meta name="description" data-i18n="site_description" content="ToolVerse 提供免费、快速、无需安装的在线工具集合，涵盖随机抽取、文字处理、开发工具等，助力提升效率。">
+  <meta name="keywords" data-i18n="site_keywords" content="在线工具,免费工具,随机抽取,工具集合,效率工具">
+  <title data-i18n="site_name">ToolVerse</title>
+  <meta property="og:title" content="ToolVerse - 你的在线工具宇宙">
+  <meta property="og:description" content="ToolVerse 提供免费、快速、无需安装的在线工具集合">
+  <meta property="og:url" content="https://newTrekking.com/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://newTrekking.com/">
+  <link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/">
+  <link rel="alternate" hreflang="en" href="https://newTrekking.com/en/">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Outfit', 'Noto Sans SC', 'sans-serif'],
+            body: ['Noto Sans SC', 'Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50:  '#faf5ff',
+              100: '#f3e8ff',
+              400: '#c084fc',
+              500: '#a855f7',
+              600: '#9333ea',
+              700: '#7e22ce',
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'fade-up': 'fadeUp 0.6s ease forwards',
+            'gradient-x': 'gradientX 4s ease infinite',
+          },
+          keyframes: {
+            float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+            fadeUp: { from: { opacity: 0, transform: 'translateY(20px)' }, to: { opacity: 1, transform: 'translateY(0)' } },
+            gradientX: { '0%,100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --grad-main: linear-gradient(135deg, #6366f1 0%, #8b5cf6 40%, #ec4899 100%);
+      --grad-subtle: linear-gradient(135deg, #f0f4ff 0%, #faf0ff 50%, #fff0f8 100%);
+      --grad-card: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(250,245,255,0.7));
+    }
+    * { box-sizing: border-box; }
+    body { font-family: 'Noto Sans SC', 'Outfit', sans-serif; background: #f8f7ff; }
+
+    /* Gradient text */
+    .grad-text {
+      background: var(--grad-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .grad-btn {
+      background: var(--grad-main);
+      background-size: 200% 200%;
+      animation: gradientX 3s ease infinite;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .grad-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(139,92,246,0.4); }
+    .grad-btn:active { transform: translateY(0); }
+
+    /* Hero orbs */
+    .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35; pointer-events: none; }
+
+    /* Glass card */
+    .glass-card {
+      background: var(--grad-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(139,92,246,0.15);
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    }
+    .glass-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(139,92,246,0.15);
+      border-color: rgba(139,92,246,0.35);
+    }
+
+    /* Category filter pills */
+    .cat-pill {
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1.5px solid rgba(139,92,246,0.2);
+    }
+    .cat-pill:hover, .cat-pill.active {
+      background: var(--grad-main);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Language dropdown */
+    .language-dropdown { position: relative; }
+    .language-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 20px; cursor: pointer;
+      border: 1.5px solid rgba(139,92,246,0.3);
+      background: white; font-size: 14px; color: #5b21b6;
+      transition: all 0.2s;
+    }
+    .language-btn:hover { border-color: #8b5cf6; background: #faf5ff; }
+    .language-dropdown-auto {
+      display: none; position: absolute; right: 0; top: calc(100% + 8px);
+      background: white; border: 1px solid rgba(139,92,246,0.2);
+      border-radius: 14px; box-shadow: 0 10px 40px rgba(139,92,246,0.15);
+      min-width: 130px; z-index: 100;
+      max-height: 280px; overflow-y: auto;
+      padding: 6px;
+    }
+    .language-dropdown-auto.open { display: block; }
+    .language-option {
+      display: block; width: 100%; text-align: left;
+      padding: 8px 14px; border-radius: 8px; border: none; background: none;
+      font-size: 14px; color: #374151; text-decoration: none; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .language-option:hover { background: #f3e8ff; color: #7c3aed; }
+
+    /* Tool icon ring */
+    .tool-icon-ring {
+      background: linear-gradient(135deg, #ede9fe, #fce7f3);
+      border: 2px solid rgba(139,92,246,0.2);
+    }
+
+    /* Stagger animation */
+    .stagger-1 { animation-delay: 0.1s; opacity: 0; }
+    .stagger-2 { animation-delay: 0.2s; opacity: 0; }
+    .stagger-3 { animation-delay: 0.3s; opacity: 0; }
+    .stagger-4 { animation-delay: 0.4s; opacity: 0; }
+
+    /* Scrollbar */
+    .language-dropdown-auto::-webkit-scrollbar { width: 4px; }
+    .language-dropdown-auto::-webkit-scrollbar-track { background: transparent; }
+    .language-dropdown-auto::-webkit-scrollbar-thumb { background: #d8b4fe; border-radius: 4px; }
+
+    /* Badge */
+    .badge-new {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white; font-size: 10px; padding: 2px 8px;
+      border-radius: 20px; font-weight: 600; letter-spacing: 0.05em;
+    }
+    .badge-featured {
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      color: white; font-size: 10px; padding: 2px 8px;
+      border-radius: 20px; font-weight: 600;
+    }
+
+    /* Search */
+    .search-wrap { position: relative; }
+    .search-wrap input {
+      padding: 12px 20px 12px 46px; border-radius: 14px; width: 100%;
+      border: 1.5px solid rgba(139,92,246,0.2); background: white;
+      font-size: 15px; color: #1e1b4b; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-wrap input:focus { border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,0.1); }
+    .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #a78bfa; }
+
+    /* JSON-LD */
+    [data-hidden] { display: none; }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ToolVerse",
+    "url": "https://newTrekking.com/",
+    "description": "ToolVerse 提供免费、快速、无需安装的在线工具集合",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://newTrekking.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5713173586841314"
+     crossorigin="anonymous">
+  </script>
+</head>
+<body class="min-h-screen">
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-purple-100">
+  <nav class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2 no-underline">
+      <div class="w-8 h-8 rounded-xl grad-btn flex items-center justify-center text-white font-bold text-sm">T</div>
+      <span class="font-display font-700 text-xl grad-text">ToolVerse</span>
+    </a>
+
+    <!-- Nav Links -->
+    <div class="hidden md:flex items-center gap-6">
+      <a href="/" class="text-sm font-medium text-purple-700 no-underline" data-i18n="nav_home">Home</a>
+      <a href="#all-tools" class="text-sm text-gray-500 hover:text-purple-600 transition-colors no-underline" data-i18n="nav_tools">All Tools</a>
+    </div>
+
+    <!-- Right: Language + CTA -->
+    <div class="flex items-center gap-3">
+      <!-- Language Dropdown -->
+      <div class="language-dropdown">
+        <button class="language-btn" id="lang-btn" onclick="toggleLangMenu()" aria-label="选择语言" aria-expanded="false">
+          <span>🌐</span>
+          <span id="current-language">中文</span>
+          <span style="font-size:10px">▼</span>
+        </button>
+        <div class="language-dropdown-auto" id="lang-menu">
+          <button class="language-option" onclick="loadLang('zh')">🇨🇳 中文</button>
+          <button class="language-option" onclick="loadLang('en')">🇺🇸 English</button>
+          <button class="language-option" onclick="loadLang('ja')">🇯🇵 日本語</button>
+          <button class="language-option" onclick="loadLang('ko')">🇰🇷 한국어</button>
+          <button class="language-option" onclick="loadLang('es')">🇪🇸 Español</button>
+          <button class="language-option" onclick="loadLang('fr')">🇫🇷 Français</button>
+          <button class="language-option" onclick="loadLang('de')">🇩🇪 Deutsch</button>
+          <button class="language-option" onclick="loadLang('pt')">🇧🇷 Português</button>
+          <button class="language-option" onclick="loadLang('ru')">🇷🇺 Русский</button>
+          <button class="language-option" onclick="loadLang('ar')">🇸🇦 العربية</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section class="relative overflow-hidden pt-20 pb-24 px-4" style="background: var(--grad-subtle);">
+  <!-- Background orbs -->
+  <div class="orb w-96 h-96 bg-purple-400" style="top:-100px;left:-80px"></div>
+  <div class="orb w-80 h-80 bg-pink-400" style="bottom:-60px;right:-60px"></div>
+  <div class="orb w-60 h-60 bg-indigo-400" style="top:30%;left:60%"></div>
+
+  <div class="relative max-w-4xl mx-auto text-center">
+    <!-- Floating emoji -->
+    <div class="text-6xl mb-6 animate-float inline-block">🎲</div>
+
+    <h1 class="font-display font-800 text-4xl md:text-6xl mb-4 leading-tight text-gray-900">
+      <span data-i18n="hero_title">Your Online Tool Universe</span>
+    </h1>
+    <p class="text-lg md:text-xl text-gray-500 mb-10 max-w-2xl mx-auto animate-fade-up stagger-1" data-i18n="hero_sub">
+      Free, fast, no installation needed. From random pickers to text tools, all in one place.
+    </p>
+
+    <!-- Search bar -->
+    <div class="max-w-lg mx-auto mb-8 animate-fade-up stagger-2">
+      <div class="search-wrap">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="search" id="search-input" data-i18n-placeholder="search_placeholder" placeholder="搜索工具…" aria-label="搜索工具">
+      </div>
+    </div>
+
+    <a href="#all-tools" class="inline-block grad-btn text-white font-600 px-8 py-3 rounded-full text-base animate-fade-up stagger-3" data-i18n="hero_cta">
+      Explore Tools    </a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ FEATURED ═══════════════════════════════ -->
+<section class="max-w-6xl mx-auto px-4 py-16">
+  <h2 class="font-display font-700 text-2xl text-gray-800 mb-8">
+    <span class="grad-text" data-i18n="featured_title">Featured Tools</span>
+  </h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="featured-grid">
+    <!-- Tool Card: Random Picker -->
+    <article class="glass-card rounded-2xl p-6 animate-fade-up stagger-1">
+      <div class="flex items-start justify-between mb-4">
+        <div class="tool-icon-ring w-14 h-14 rounded-xl flex items-center justify-center text-3xl">🎲</div>
+        <div class="flex gap-2">
+          <span class="badge-new" data-i18n="new_badge">New</span>
+          <span class="badge-featured" data-i18n="featured_badge">Featured</span>
+        </div>
+      </div>
+      <h3 class="font-display font-600 text-lg text-gray-800 mb-2">
+        <a href="/tools/random-picker/" class="no-underline text-gray-800 hover:text-purple-600 transition-colors" data-i18n="tool_random_picker_name" title="Random Picker - Free Online Random Draw Tool">
+          Random Picker
+        </a>
+      </h3>
+      <p class="text-sm text-gray-500 leading-relaxed mb-4" data-i18n="tool_random_picker_desc">
+        A versatile random picker with custom entries, weighted probability, and draw modes
+      </p>
+      <div class="flex items-center justify-between">
+        <span class="text-xs px-3 py-1 rounded-full text-purple-700" style="background:rgba(139,92,246,0.1)" data-i18n="cat_utility">Utility</span>
+        <a href="/tools/random-picker/" class="text-sm font-500 text-purple-600 hover:text-purple-800 transition-colors no-underline flex items-center gap-1">
+          <span data-i18n="use_now">Use Now</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <!-- Tool Card: QR Code Generator -->
+    <article class="glass-card rounded-2xl p-6 animate-fade-up stagger-2">
+      <div class="flex items-start justify-between mb-4">
+        <div class="tool-icon-ring w-14 h-14 rounded-xl flex items-center justify-center text-3xl">🔳</div>
+        <div class="flex gap-2">
+          <span class="badge-new" data-i18n="new_badge">New</span>
+        </div>
+      </div>
+      <h3 class="font-display font-600 text-lg text-gray-800 mb-2">
+        <a href="/tools/qr-generator/" class="no-underline text-gray-800 hover:text-purple-600 transition-colors" data-i18n="tool_qr_generator_name" title="QR Code Generator - Free Online QR Code Maker">
+          QR Code Generator
+        </a>
+      </h3>
+      <p class="text-sm text-gray-500 leading-relaxed mb-4" data-i18n="tool_qr_generator_desc">
+        Generate QR codes for URLs, text, and more — custom colors, size, and error correction
+      </p>
+      <div class="flex items-center justify-between">
+        <span class="text-xs px-3 py-1 rounded-full text-purple-700" style="background:rgba(139,92,246,0.1)" data-i18n="cat_utility">Utility</span>
+        <a href="/tools/qr-generator/" class="text-sm font-500 text-purple-600 hover:text-purple-800 transition-colors no-underline flex items-center gap-1">
+          <span data-i18n="use_now">Use Now</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <!-- Placeholder card (upcoming tools teaser) -->
+    <article class="glass-card rounded-2xl p-6 opacity-50 hidden md:block">
+      <div class="tool-icon-ring w-14 h-14 rounded-xl flex items-center justify-center text-3xl mb-4">🔧</div>
+      <h3 class="font-display font-600 text-lg text-gray-400 mb-2" data-i18n="coming_soon">Coming Soon…</h3>
+      <p class="text-sm text-gray-400" data-i18n="coming_soon_desc">More tools are on the way</p>
+    </article>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ ALL TOOLS ═══════════════════════════════ -->
+<section id="all-tools" class="max-w-6xl mx-auto px-4 pb-20">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+    <h2 class="font-display font-700 text-2xl text-gray-800" data-i18n="all_tools_title">All Tools</h2>
+    <!-- Category pills -->
+    <div class="flex flex-wrap gap-2" id="cat-filters">
+      <button class="cat-pill active text-sm px-4 py-2 rounded-full font-500 bg-white text-gray-600" data-cat="all" data-i18n="cat_all">All</button>
+      <button class="cat-pill text-sm px-4 py-2 rounded-full font-500 bg-white text-gray-600" data-cat="utility" data-i18n="cat_utility">Utility</button>
+      <button class="cat-pill text-sm px-4 py-2 rounded-full font-500 bg-white text-gray-600" data-cat="developer" data-i18n="cat_developer">Developer</button>
+      <button class="cat-pill text-sm px-4 py-2 rounded-full font-500 bg-white text-gray-600" data-cat="text" data-i18n="cat_text">Text</button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="tools-grid">
+    <!-- Tool: Random Picker -->
+    <article class="glass-card rounded-2xl p-5 tool-card" data-cat="utility" data-name="Random Picker random picker">
+      <div class="flex items-start justify-between mb-3">
+        <div class="tool-icon-ring w-12 h-12 rounded-xl flex items-center justify-center text-2xl">🎲</div>
+        <span class="badge-new" data-i18n="new_badge">New</span>
+      </div>
+      <h3 class="font-600 text-base text-gray-800 mb-1">
+        <a href="/tools/random-picker/" class="no-underline text-gray-800 hover:text-purple-600 transition-colors" data-i18n="tool_random_picker_name">Random Picker</a>
+      </h3>
+      <p class="text-xs text-gray-500 leading-relaxed mb-3 line-clamp-2" data-i18n="tool_random_picker_desc">
+        A versatile random picker with custom entries, weighted probability, and replacement modes
+      </p>
+      <span class="text-xs px-2.5 py-1 rounded-full text-purple-700" style="background:rgba(139,92,246,0.1)" data-i18n="cat_utility">Utility</span>
+    </article>
+
+    <!-- Tool: QR Code Generator -->
+    <article class="glass-card rounded-2xl p-5 tool-card" data-cat="utility" data-name="QR Code Generator qr code qrcode">
+      <div class="flex items-start justify-between mb-3">
+        <div class="tool-icon-ring w-12 h-12 rounded-xl flex items-center justify-center text-2xl">🔳</div>
+        <span class="badge-new" data-i18n="new_badge">New</span>
+      </div>
+      <h3 class="font-600 text-base text-gray-800 mb-1">
+        <a href="/tools/qr-generator/" class="no-underline text-gray-800 hover:text-purple-600 transition-colors" data-i18n="tool_qr_generator_name">QR Code Generator</a>
+      </h3>
+      <p class="text-xs text-gray-500 leading-relaxed mb-3 line-clamp-2" data-i18n="tool_qr_generator_desc">
+        Generate QR codes for URLs, text, and more — custom colors, size, and error correction
+      </p>
+      <span class="text-xs px-2.5 py-1 rounded-full text-purple-700" style="background:rgba(139,92,246,0.1)" data-i18n="cat_utility">Utility</span>
+    </article>
+  </div>
+
+  <!-- No results -->
+  <div id="no-results" class="hidden text-center py-16 text-gray-400">
+    <div class="text-5xl mb-4">🔍</div>
+    <p class="text-lg" data-i18n="no_results">No matching tools found</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer class="border-t border-purple-100 bg-white">
+  <div class="max-w-6xl mx-auto px-4 py-10">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg grad-btn flex items-center justify-center text-white font-bold text-xs">T</div>
+        <span class="font-display font-600 grad-text">ToolVerse</span>
+      </div>
+      <nav class="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+        <a href="/privacy/" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="/terms/" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_terms">Terms of Service</a>
+        <a href="mailto:zhefanshen3@gmail.com" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_contact">Contact Us</a>
+      </nav>
+      <p class="text-xs text-gray-400" data-i18n="footer_copyright">© 2025 ToolVerse. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════ SCRIPTS ═══════════════════════════════ -->
+<script>
+  // ── 全局：语言菜单（onclick 属性需要全局函数） ──
+  function toggleLangMenu() {
+    const menu = document.getElementById('lang-menu');
+    const btn  = document.getElementById('lang-btn');
+    const open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  }
+  function closeLangMenu() {
+    const menu = document.getElementById('lang-menu');
+    const btn  = document.getElementById('lang-btn');
+    if (menu) { menu.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+  }
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.language-dropdown')) closeLangMenu();
+  });
+
+  // ── 全局：i18n ──
+  let currentLang = localStorage.getItem('tv_lang') || 'en';
+  let translations = {};
+  const LANG_NAMES = {zh:'中文',en:'English',ja:'日本語',ko:'한국어',es:'Español',fr:'Français',de:'Deutsch',pt:'Português',ru:'Русский',ar:'العربية'};
+
+  async function loadLang(lang) {
+    try {
+      const res = await fetch('/locales/' + lang + '.json');
+      if (!res.ok) throw new Error('not found');
+      translations = await res.json();
+      applyTranslations();
+      document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
+      localStorage.setItem('tv_lang', lang);
+      currentLang = lang;
+      document.getElementById('current-language').textContent = LANG_NAMES[lang] || lang;
+      closeLangMenu();
+    } catch(e) { console.warn('Lang load failed:', lang, e); }
+  }
+
+  function applyTranslations() {
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      const val = translations[el.dataset.i18n];
+      if (!val) return;
+      if (el.tagName === 'META') { el.content = val; }
+      else if (el.tagName === 'TITLE') { document.title = val; }
+      else { el.textContent = val; }
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+      const val = translations[el.dataset.i18nPlaceholder];
+      if (val) el.placeholder = val;
+    });
+  }
+
+  // ── 搜索 & 分类筛选 ──
+  let activeCat = 'all';
+
+  function filterTools() {
+    const q = document.getElementById('search-input').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.tool-card');
+    let visible = 0;
+    cards.forEach(function(card) {
+      const matchCat = activeCat === 'all' || card.dataset.cat === activeCat;
+      const matchQ   = !q || (card.dataset.name || '').toLowerCase().includes(q);
+      card.style.display = (matchCat && matchQ) ? '' : 'none';
+      if (matchCat && matchQ) visible++;
+    });
+    document.getElementById('no-results').classList.toggle('hidden', visible > 0);
+  }
+
+  document.getElementById('search-input').addEventListener('input', filterTools);
+  document.querySelectorAll('.cat-pill').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.cat-pill').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      activeCat = btn.dataset.cat;
+      filterTools();
+    });
+  });
+
+  // ── 初始化 ──
+  loadLang(currentLang);
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.style.animationPlayState = 'running'; });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.animate-fade-up').forEach(function(el) {
+    el.style.animationPlayState = 'paused';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>

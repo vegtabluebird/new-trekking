@@ -1,0 +1,6 @@
+{
+  "_readme": "演示资源配置。type: 'video'|'gif'|'images'。items 为空数组则不显示演示区。",
+  "titleKey": "demo_title",
+  "type": "images",
+  "items": []
+}

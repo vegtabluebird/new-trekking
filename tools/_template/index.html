@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- ▼▼▼ 每个工具必须修改的 SEO 三件套 ▼▼▼ -->
+  <meta name="description" data-i18n="tool_SLUG_meta_desc" content="[EN meta description here]">
+  <meta name="keywords" data-i18n="site_keywords" content="online tools,free tools">
+  <title data-i18n="tool_SLUG_meta_title">[EN Tool Name] - Free Online Tool | ToolVerse</title>
+  <meta property="og:title" content="[EN Tool Name] - Free Online Tool | ToolVerse">
+  <meta property="og:description" content="[EN meta description here]">
+  <meta property="og:url" content="https://newTrekking.com/tools/SLUG/">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://newTrekking.com/tools/SLUG/">
+  <link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/SLUG/">
+  <link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/SLUG/">
+  <!-- ▲▲▲ -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { display: ['Outfit','Noto Sans SC','sans-serif'], body: ['Noto Sans SC','Outfit','sans-serif'] } } }
+    }
+  </script>
+  <style>
+    :root { --grad: linear-gradient(135deg,#6366f1 0%,#8b5cf6 40%,#ec4899 100%); }
+    *{box-sizing:border-box}
+    body{font-family:'Noto Sans SC','Outfit',sans-serif;background:#f8f7ff;min-height:100vh}
+    .grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .grad-btn{background:var(--grad);background-size:200% 200%;transition:transform .2s,box-shadow .2s}
+    .grad-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(139,92,246,.4)}
+    .panel{background:white;border:1px solid rgba(139,92,246,.12);border-radius:18px;padding:20px 22px}
+    .section-title{font-size:13px;font-weight:600;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+    /* Language dropdown */
+    .language-dropdown{position:relative}
+    .language-btn{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;cursor:pointer;border:1.5px solid rgba(139,92,246,.3);background:white;font-size:14px;color:#5b21b6;transition:all .2s}
+    .language-btn:hover{border-color:#8b5cf6;background:#faf5ff}
+    .language-dropdown-auto{display:none;position:absolute;right:0;top:calc(100% + 8px);background:white;border:1px solid rgba(139,92,246,.2);border-radius:14px;box-shadow:0 10px 40px rgba(139,92,246,.15);min-width:130px;z-index:100;max-height:280px;overflow-y:auto;padding:6px}
+    .language-dropdown-auto.open{display:block}
+    .language-option{display:block;width:100%;text-align:left;padding:8px 14px;border-radius:8px;border:none;background:none;font-size:14px;color:#374151;cursor:pointer;transition:background .15s}
+    .language-option:hover{background:#f3e8ff;color:#7c3aed}
+    /* Breadcrumb */
+    .breadcrumb a{color:#8b5cf6;text-decoration:none}
+    .breadcrumb a:hover{text-decoration:underline}
+    /* Toast */
+    #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1e1b4b;color:white;padding:10px 20px;border-radius:30px;font-size:14px;opacity:0;transition:all .3s;pointer-events:none;z-index:999}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  </style>
+
+  <!-- ▼ JSON-LD 结构化数据，修改 name/description/url ▼ -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"SoftwareApplication",
+        "name":"[Tool Name EN]",
+        "applicationCategory":"UtilitiesApplication",
+        "operatingSystem":"Web",
+        "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+        "url":"https://newTrekking.com/tools/SLUG/",
+        "description":"[EN description]",
+        "provider":{"@type":"Organization","name":"ToolVerse","url":"https://newTrekking.com"}
+      },
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Home","item":"https://newTrekking.com/"},
+          {"@type":"ListItem","position":2,"name":"[Tool Name EN]","item":"https://newTrekking.com/tools/SLUG/"}
+        ]
+      }
+    ]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5713173586841314"
+     crossorigin="anonymous">
+  </script>
+</head>
+<body>
+
+<!-- HEADER (勿修改) -->
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-purple-100">
+  <nav class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 no-underline">
+      <div class="w-8 h-8 rounded-xl grad-btn flex items-center justify-center text-white font-bold text-sm">T</div>
+      <span class="font-display font-bold text-xl grad-text">ToolVerse</span>
+    </a>
+    <div class="hidden md:flex items-center gap-6">
+      <a href="/" class="text-sm text-gray-500 hover:text-purple-600 transition-colors no-underline" data-i18n="nav_home">Home</a>
+      <a href="/#all-tools" class="text-sm text-gray-500 hover:text-purple-600 transition-colors no-underline" data-i18n="nav_tools">All Tools</a>
+    </div>
+    <div class="language-dropdown">
+      <button class="language-btn" id="lang-btn" onclick="toggleLangMenu()" aria-label="Language" aria-expanded="false">
+        <span>🌐</span><span id="current-language">English</span><span style="font-size:10px">▼</span>
+      </button>
+      <div class="language-dropdown-auto" id="lang-menu">
+        <button class="language-option" onclick="loadLang('zh')">🇨🇳 中文</button>
+        <button class="language-option" onclick="loadLang('en')">🇺🇸 English</button>
+        <button class="language-option" onclick="loadLang('ja')">🇯🇵 日本語</button>
+        <button class="language-option" onclick="loadLang('ko')">🇰🇷 한국어</button>
+        <button class="language-option" onclick="loadLang('es')">🇪🇸 Español</button>
+        <button class="language-option" onclick="loadLang('fr')">🇫🇷 Français</button>
+        <button class="language-option" onclick="loadLang('de')">🇩🇪 Deutsch</button>
+        <button class="language-option" onclick="loadLang('pt')">🇧🇷 Português</button>
+        <button class="language-option" onclick="loadLang('ru')">🇷🇺 Русский</button>
+        <button class="language-option" onclick="loadLang('ar')">🇸🇦 العربية</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Breadcrumb -->
+<div class="max-w-6xl mx-auto px-4 py-3 breadcrumb text-sm text-gray-400">
+  <a href="/" data-i18n="nav_home">Home</a>
+  <span class="mx-2">/</span>
+  <!-- ▼ 修改工具名 ▼ -->
+  <span class="text-gray-600" data-i18n="tool_SLUG_name">[Tool Name EN]</span>
+</div>
+
+<main class="max-w-6xl mx-auto px-4 pb-16">
+
+  <!-- Tool Header — left: text, right: demo (auto-hidden when empty) -->
+  <article class="mb-8">
+    <div class="flex flex-col md:flex-row md:items-start gap-6">
+
+      <!-- Left: title + description -->
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-4 mb-2">
+          <!-- ▼ 修改 emoji 图标 ▼ -->
+          <div class="w-14 h-14 flex-shrink-0 rounded-2xl flex items-center justify-center text-3xl" style="background:linear-gradient(135deg,#ede9fe,#fce7f3);border:2px solid rgba(139,92,246,.2)">🔧</div>
+          <div class="min-w-0">
+            <h1 class="font-display font-bold text-2xl md:text-3xl text-gray-900" data-i18n="tool_SLUG_name">[Tool Name EN]</h1>
+            <p class="text-sm text-gray-500 mt-1" data-i18n="tool_SLUG_desc">[Short description EN]</p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-400 leading-relaxed mt-3 max-w-xl" data-i18n="tool_SLUG_longdesc">
+          [Long description EN - visible to crawlers for SEO]
+        </p>
+      </div>
+
+      <!-- Right: demo (hidden by default, revealed by loadDemo()) -->
+      <div id="demo-section" class="hidden md:w-80 lg:w-96 flex-shrink-0">
+        <p class="text-xs font-semibold text-purple-400 uppercase tracking-widest mb-2" data-i18n="demo_title">How It Works</p>
+        <div id="demo-video" class="hidden rounded-xl overflow-hidden border border-purple-100 shadow-sm">
+          <video id="demo-video-el" controls playsinline class="w-full" style="max-height:260px;object-fit:contain"></video>
+        </div>
+        <div id="demo-gif" class="hidden rounded-xl overflow-hidden border border-purple-100 shadow-sm">
+          <img id="demo-gif-el" alt="demo" class="w-full object-contain" style="max-height:260px">
+        </div>
+        <div id="demo-carousel" class="hidden">
+          <div class="relative rounded-xl overflow-hidden border border-purple-100 shadow-sm" style="background:#f8f7ff">
+            <div id="carousel-track" class="flex transition-transform duration-400 ease-in-out" style="will-change:transform"></div>
+            <button onclick="carouselPrev()" id="c-prev" class="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 border border-purple-100 shadow flex items-center justify-center text-purple-500 hover:bg-purple-50 transition-colors text-base" aria-label="Previous">‹</button>
+            <button onclick="carouselNext()" id="c-next" class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 border border-purple-100 shadow flex items-center justify-center text-purple-500 hover:bg-purple-50 transition-colors text-base" aria-label="Next">›</button>
+            <div id="carousel-dots" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5"></div>
+          </div>
+          <div id="carousel-thumbs" class="flex gap-1.5 mt-2 overflow-x-auto pb-1"></div>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- ▼▼▼ 工具主体区域 - 在此替换为实际工具 UI ▼▼▼ -->
+  <div class="panel">
+    <p class="section-title">Tool Area</p>
+    <p class="text-gray-400 text-sm">Replace this section with your tool's UI and logic.</p>
+  </div>
+  <!-- ▲▲▲ -->
+
+  <!-- FAQ Section -->
+  <section class="mt-12 max-w-3xl">
+    <h2 class="font-display font-bold text-xl text-gray-800 mb-6" data-i18n="faq_title">Frequently Asked Questions</h2>
+    <div class="space-y-4">
+      <!-- ▼ 复制此块添加 FAQ 条目，data-i18n key 用 tool_SLUG_faq_q1/a1 格式 ▼ -->
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="tool_SLUG_faq_q1">[FAQ Question 1]</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="tool_SLUG_faq_a1">[FAQ Answer 1]</p>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER (勿修改) -->
+<footer class="border-t border-purple-100 bg-white mt-8">
+  <div class="max-w-6xl mx-auto px-4 py-10">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg grad-btn flex items-center justify-center text-white font-bold text-xs">T</div>
+        <span class="font-display font-semibold grad-text">ToolVerse</span>
+      </div>
+      <nav class="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+        <a href="/privacy/" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="/terms/" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_terms">Terms of Service</a>
+        <a href="mailto:zhefanshen3@gmail.com" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_contact">Contact Us</a>
+      </nav>
+      <p class="text-xs text-gray-400" data-i18n="footer_copyright">© 2025 ToolVerse. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<!-- ═══ SHARED JS (勿修改) ═══ -->
+<script>
+let currentLang = localStorage.getItem('tv_lang') || 'en';
+let T = {};
+const LANG_NAMES = {zh:'中文',en:'English',ja:'日本語',ko:'한국어',es:'Español',fr:'Français',de:'Deutsch',pt:'Português',ru:'Русский',ar:'العربية'};
+
+function toggleLangMenu() {
+  const menu = document.getElementById('lang-menu');
+  const btn  = document.getElementById('lang-btn');
+  const open = menu.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+}
+function closeLangMenu() {
+  const menu = document.getElementById('lang-menu');
+  const btn  = document.getElementById('lang-btn');
+  if (menu) { menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.language-dropdown')) closeLangMenu();
+});
+
+async function loadLang(lang) {
+  try {
+    const res = await fetch('/locales/' + lang + '.json');
+    if (!res.ok) throw new Error();
+    T = await res.json();
+    applyT();
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
+    localStorage.setItem('tv_lang', lang);
+    currentLang = lang;
+    document.getElementById('current-language').textContent = LANG_NAMES[lang] || lang;
+    closeLangMenu();
+  } catch(e) { console.warn('Lang load failed:', lang); }
+}
+
+function applyT() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    const v = T[el.dataset.i18n]; if (!v) return;
+    if (el.tagName === 'META') { el.content = v; }
+    else if (el.tagName === 'TITLE') { document.title = v; }
+    else { el.textContent = v; }
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+    const v = T[el.dataset.i18nPlaceholder]; if (v) el.placeholder = v;
+  });
+}
+
+function t(key, fallback) { return T[key] || fallback || key; }
+
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// Demo loader + carousel (勿修改)
+let carouselIndex = 0, carouselItems = [];
+async function loadDemo() {
+  try {
+    const res = await fetch('./demo/manifest.json');
+    if (!res.ok) return;
+    const manifest = await res.json();
+    if (!manifest.items || manifest.items.length === 0) return;
+    document.getElementById('demo-section').classList.remove('hidden');
+    if (manifest.type === 'video') {
+      document.getElementById('demo-video-el').src = './demo/' + manifest.items[0];
+      document.getElementById('demo-video').classList.remove('hidden');
+    } else if (manifest.type === 'gif') {
+      document.getElementById('demo-gif-el').src = './demo/' + manifest.items[0];
+      document.getElementById('demo-gif').classList.remove('hidden');
+    } else if (manifest.type === 'images') {
+      carouselItems = manifest.items; initCarousel();
+    }
+  } catch(e) {}
+}
+function initCarousel() {
+  if (!carouselItems.length) return;
+  document.getElementById('demo-carousel').classList.remove('hidden');
+  const track = document.getElementById('carousel-track');
+  const dots  = document.getElementById('carousel-dots');
+  const thumbs = document.getElementById('carousel-thumbs');
+  carouselItems.forEach(function(src, i) {
+    const slide = document.createElement('div');
+    slide.style.cssText = 'min-width:100%;display:flex;align-items:center;justify-content:center;max-height:420px;';
+    const img = document.createElement('img');
+    img.src = './demo/' + src; img.alt = 'Demo ' + (i+1);
+    img.style.cssText = 'max-height:420px;max-width:100%;object-fit:contain;';
+    slide.appendChild(img); track.appendChild(slide);
+    const dot = document.createElement('button');
+    dot.style.cssText = 'width:8px;height:8px;border-radius:50%;border:none;cursor:pointer;transition:.2s;';
+    dot.setAttribute('aria-label','Slide '+(i+1)); dot.onclick = function(){ goToSlide(i); };
+    dots.appendChild(dot);
+    const thumb = document.createElement('img');
+    thumb.src = './demo/' + src; thumb.alt = 'Thumb '+(i+1);
+    thumb.style.cssText = 'width:60px;height:44px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;flex-shrink:0;transition:.2s;';
+    thumb.onclick = function(){ goToSlide(i); }; thumbs.appendChild(thumb);
+  });
+  if (carouselItems.length <= 1) {
+    document.getElementById('c-prev').style.display = 'none';
+    document.getElementById('c-next').style.display = 'none';
+    dots.style.display = 'none';
+  }
+  goToSlide(0);
+}
+function goToSlide(i) {
+  carouselIndex = i;
+  document.getElementById('carousel-track').style.transform = 'translateX(-'+(i*100)+'%)';
+  document.querySelectorAll('#carousel-dots button').forEach(function(d,j){
+    d.style.background = j===i ? '#8b5cf6' : '#d8b4fe';
+    d.style.width = j===i ? '20px' : '8px';
+    d.style.borderRadius = '4px';
+  });
+  document.querySelectorAll('#carousel-thumbs img').forEach(function(t,j){
+    t.style.borderColor = j===i ? '#8b5cf6' : 'transparent';
+    t.style.opacity = j===i ? '1' : '0.6';
+  });
+}
+function carouselPrev() { goToSlide((carouselIndex-1+carouselItems.length)%carouselItems.length); }
+function carouselNext() { goToSlide((carouselIndex+1)%carouselItems.length); }
+
+// ═══ 初始化 ═══
+loadLang(currentLang);
+loadDemo();
+</script>
+
+<!-- ▼▼▼ 工具专属 JS 写在这里 ▼▼▼ -->
+<script>
+// Your tool logic here
+</script>
+
+</body>
+</html>
