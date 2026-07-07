@@ -8,10 +8,10 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <meta name="description" data-i18n="tool_random_picker_meta_desc" content="免费在线随机抽取工具，支持自定义词条集合、设置权重概率、放回/不放回模式，老虎机与翻转动效可选。">
-  <meta name="keywords" data-i18n="site_keywords" content="在线工具,免费工具,随机抽取,工具集合,效率工具">
+  <meta name="keywords" data-i18n="tool_random_picker_keywords" content="random picker wheel,name picker,item randomizer,random name generator,random draw tool">
   <title data-i18n="tool_random_picker_meta_title">Random Picker Wheel - Free Online Name & Item Randomizer | ToolVerse</title>
-  <meta property="og:title" content="自定义抽取器 - 免费在线随机抽签工具 | ToolVerse">
-  <meta property="og:description" content="免费在线随机抽取工具，支持权重概率、放回/不放回抽取，多种动效可选。">
+  <meta property="og:title" data-i18n="og_random_picker_title" content="Random Picker Wheel - Free Online Name & Item Randomizer | ToolVerse">
+  <meta property="og:description" data-i18n="og_random_picker_desc" content="Free online random picker — custom entries, weighted probability, replacement modes, slot-machine and flip animations.">
   <meta property="og:url" content="https://newTrekking.com/tools/random-picker/">
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://newTrekking.com/tools/random-picker/">
@@ -192,27 +192,27 @@
     "@graph":[
       {
         "@type":"SoftwareApplication",
-        "name":"自定义抽取器",
+        "name":"Random Picker",
         "applicationCategory":"UtilitiesApplication",
         "operatingSystem":"Web",
-        "offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},
+        "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
         "url":"https://newTrekking.com/tools/random-picker/",
-        "description":"免费在线随机抽取工具，支持自定义词条、权重概率、放回/不放回模式",
+        "description":"Free online random picker with custom entries, weighted probability, and replacement modes",
         "provider":{"@type":"Organization","name":"ToolVerse","url":"https://newTrekking.com"}
       },
       {
         "@type":"BreadcrumbList",
         "itemListElement":[
-          {"@type":"ListItem","position":1,"name":"首页","item":"https://newTrekking.com/"},
-          {"@type":"ListItem","position":2,"name":"自定义抽取器","item":"https://newTrekking.com/tools/random-picker/"}
+          {"@type":"ListItem","position":1,"name":"Home","item":"https://newTrekking.com/"},
+          {"@type":"ListItem","position":2,"name":"Random Picker","item":"https://newTrekking.com/tools/random-picker/"}
         ]
       },
       {
         "@type":"FAQPage",
         "mainEntity":[
-          {"@type":"Question","name":"什么是不放回抽取？","acceptedAnswer":{"@type":"Answer","text":"不放回抽取指每次抽中的词条从池中移除，不再参与后续抽取，确保每个词条最多被抽中一次。"}},
-          {"@type":"Question","name":"如何设置不同概率？","acceptedAnswer":{"@type":"Answer","text":"开启「自定义权重」后，为每个词条输入权重数值，数值越大被抽中的概率越高。例如A填2、B填1，则A被抽中的概率约为2/3。"}},
-          {"@type":"Question","name":"支持批量生成序号吗？","acceptedAnswer":{"@type":"Answer","text":"支持。切换到「序号生成」标签，设置起始与结束编号和可选前缀，即可自动生成有序编号集合参与抽取。"}}
+          {"@type":"Question","name":"What is draw without replacement?","acceptedAnswer":{"@type":"Answer","text":"Without replacement means each drawn item is removed from the pool and won't appear again, ensuring every item is picked at most once."}},
+          {"@type":"Question","name":"How do I set different probabilities?","acceptedAnswer":{"@type":"Answer","text":"Enable Custom Weights and enter a number for each item. Higher numbers mean higher chances."}},
+          {"@type":"Question","name":"Can I generate a numbered set automatically?","acceptedAnswer":{"@type":"Answer","text":"Yes. Switch to the Numbered Set tab, set your start and end numbers and an optional prefix, then click Generate."}}
         ]
       }
     ]
@@ -235,7 +235,7 @@
       <a href="/#all-tools" class="text-sm text-gray-500 hover:text-purple-600 transition-colors no-underline" data-i18n="nav_tools">All Tools</a>
     </div>
     <div class="language-dropdown">
-      <button class="language-btn" id="lang-btn" onclick="toggleLangMenu()" aria-label="选择语言" aria-expanded="false">
+      <button class="language-btn" id="lang-btn" onclick="toggleLangMenu()" data-i18n-aria="aria_select_language" aria-label="Select language" aria-expanded="false">
         <span>🌐</span>
         <span id="current-language">中文</span>
         <span style="font-size:10px">▼</span>
@@ -599,6 +599,9 @@ function applyT() {
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const v = T[el.dataset.i18nPlaceholder]; if (v) el.placeholder = v;
   });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+    const v = T[el.dataset.i18nAria]; if (v) el.setAttribute('aria-label', v);
+  });
 }
 
 function t(key, fallback) { return T[key] || fallback || key; }
@@ -626,7 +629,7 @@ function parseEntries() {
     .split('\n').map(l => l.trim()).filter(l => l.length > 0);
   entries = lines.map(l => ({ label: l, weight: 1 }));
   resetPool();
-  document.getElementById('entry-count').textContent = `${entries.length} entries`;
+  document.getElementById('entry-count').textContent = `${entries.length} ${t('picker_entries_unit', 'entries')}`;
 }
 
 // ── Numbered generator ──
@@ -634,14 +637,14 @@ function generateNumbered() {
   const start = parseInt(document.getElementById('num-start').value) || 1;
   const end = parseInt(document.getElementById('num-end').value) || 10;
   const prefix = document.getElementById('num-prefix').value.trim();
-  if (start > end) { showToast('起始编号不能大于结束编号'); return; }
-  if (end - start > 9999) { showToast('范围最大支持 10000 个'); return; }
+  if (start > end) { showToast(t('picker_error_start_gt_end', 'Start number cannot be greater than end number')); return; }
+  if (end - start > 9999) { showToast(t('picker_error_range_max', 'Range supports up to 10,000 entries')); return; }
   entries = [];
   for (let i = start; i <= end; i++) {
     entries.push({ label: prefix ? `${prefix}${i}` : String(i), weight: 1 });
   }
   resetPool();
-  document.getElementById('numbered-preview').textContent = `已生成 ${entries.length} 个词条（${entries[0].label} ~ ${entries[entries.length-1].label}）`;
+  document.getElementById('numbered-preview').textContent = t('picker_numbered_preview', 'Generated {count} entries ({start}–{end})').replace('{count}', entries.length).replace('{start}', entries[0].label).replace('{end}', entries[entries.length-1].label);
   updateWeightList();
   updateRemaining();
 }
@@ -739,13 +742,13 @@ function weightedRandom(indices) {
 }
 
 function doDraw() {
-  if (entries.length === 0) { showToast(t('picker_error_empty', '请先输入至少一个词条')); return; }
+  if (entries.length === 0) { showToast(t('picker_error_empty', 'Please enter at least one item')); return; }
 
   const count = parseInt(document.getElementById('draw-count').value) || 1;
 
   if (drawMode === 'noreplace') {
-    if (pool.length === 0) { showToast(t('picker_all_drawn', '所有词条已抽完，请重置后继续')); return; }
-    if (count > pool.length) { showToast(t('picker_error_count', '抽取数量不能超过剩余词条数')); return; }
+    if (pool.length === 0) { showToast(t('picker_all_drawn', 'All items drawn. Reset to continue.')); return; }
+    if (count > pool.length) { showToast(t('picker_error_count', 'Draw count cannot exceed remaining items')); return; }
   }
 
   // Pick results
@@ -864,7 +867,7 @@ function renderHistory() {
   const list = document.getElementById('history-list');
   const empty = document.getElementById('history-empty');
   if (historyLog.length === 0) {
-    list.innerHTML = '<p class="text-sm text-gray-400 italic" id="history-empty">' + t('picker_history_empty','暂无记录') + '</p>';
+    list.innerHTML = '<p class="text-sm text-gray-400 italic" id="history-empty">' + t('picker_history_empty','No history yet') + '</p>';
     return;
   }
   list.innerHTML = historyLog.slice(0, 20).map(item => `

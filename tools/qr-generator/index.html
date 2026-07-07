@@ -8,10 +8,10 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <meta name="description" data-i18n="tool_qr_generator_meta_desc" content="Free online QR code generator — create QR codes for URLs, text, and more. Custom size, colors, and error correction. Download as PNG instantly.">
-  <meta name="keywords" data-i18n="site_keywords" content="online tools,free tools,qr code generator,qr code maker">
+  <meta name="keywords" data-i18n="tool_qr_generator_keywords" content="qr code generator,qr code maker,free qr generator,custom qr code,qr code online">
   <title data-i18n="tool_qr_generator_meta_title">QR Code Generator Free - Create Custom QR Codes Online | ToolVerse</title>
-  <meta property="og:title" content="Free Online QR Code Generator | ToolVerse">
-  <meta property="og:description" content="Create QR codes for URLs, text, and more. Custom size, colors, error correction level. Download as PNG instantly.">
+  <meta property="og:title" data-i18n="og_qr_generator_title" content="QR Code Generator Free - Create Custom QR Codes Online | ToolVerse">
+  <meta property="og:description" data-i18n="og_qr_generator_desc" content="Create QR codes for URLs, text, and more. Custom size, colors, error correction level. Download as PNG instantly.">
   <meta property="og:url" content="https://newTrekking.com/tools/qr-generator/">
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://newTrekking.com/tools/qr-generator/">
@@ -134,7 +134,7 @@
       <a href="/#all-tools" class="text-sm text-gray-500 hover:text-purple-600 transition-colors no-underline" data-i18n="nav_tools">All Tools</a>
     </div>
     <div class="language-dropdown">
-      <button class="language-btn" id="lang-btn" onclick="toggleLangMenu()" aria-label="Language" aria-expanded="false">
+      <button class="language-btn" id="lang-btn" onclick="toggleLangMenu()" data-i18n-aria="aria_select_language" aria-label="Select language" aria-expanded="false">
         <span>🌐</span><span id="current-language">English</span><span style="font-size:10px">▼</span>
       </button>
       <div class="language-dropdown-auto" id="lang-menu">
@@ -273,10 +273,10 @@
       <div class="panel">
         <p class="section-title" data-i18n="qr_ec_label">Error Correction</p>
         <div class="flex gap-2 flex-wrap" id="ec-group">
-          <button class="ec-pill" data-ec="L" onclick="selectEC('L')" title="7% recovery">L</button>
-          <button class="ec-pill active" data-ec="M" onclick="selectEC('M')" title="15% recovery">M</button>
-          <button class="ec-pill" data-ec="Q" onclick="selectEC('Q')" title="25% recovery">Q</button>
-          <button class="ec-pill" data-ec="H" onclick="selectEC('H')" title="30% recovery">H</button>
+          <button class="ec-pill" data-ec="L" onclick="selectEC('L')" data-i18n-title="qr_ec_title_l" title="7% recovery">L</button>
+          <button class="ec-pill active" data-ec="M" onclick="selectEC('M')" data-i18n-title="qr_ec_title_m" title="15% recovery">M</button>
+          <button class="ec-pill" data-ec="Q" onclick="selectEC('Q')" data-i18n-title="qr_ec_title_q" title="25% recovery">Q</button>
+          <button class="ec-pill" data-ec="H" onclick="selectEC('H')" data-i18n-title="qr_ec_title_h" title="30% recovery">H</button>
         </div>
         <p class="text-xs text-gray-400 mt-3" id="ec-hint">M — 15% of the code can be obscured and still scan. Good for most uses.</p>
       </div>
@@ -425,6 +425,12 @@ function applyT() {
   });
   document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
     const v = T[el.dataset.i18nPlaceholder]; if (v) el.placeholder = v;
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach(function(el) {
+    const v = T[el.dataset.i18nAria]; if (v) el.setAttribute('aria-label', v);
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(function(el) {
+    const v = T[el.dataset.i18nTitle]; if (v) el.title = v;
   });
 }
 function t(key, fallback) { return T[key] || fallback || key; }

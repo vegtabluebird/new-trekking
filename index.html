@@ -10,8 +10,8 @@
   <meta name="description" data-i18n="site_description" content="ToolVerse 提供免费、快速、无需安装的在线工具集合，涵盖随机抽取、文字处理、开发工具等，助力提升效率。">
   <meta name="keywords" data-i18n="site_keywords" content="在线工具,免费工具,随机抽取,工具集合,效率工具">
   <title data-i18n="site_name">Free Online Tools - Random Picker, QR Generator & More | ToolVerse</title>
-  <meta property="og:title" content="ToolVerse - 你的在线工具宇宙">
-  <meta property="og:description" content="ToolVerse 提供免费、快速、无需安装的在线工具集合">
+  <meta property="og:title" data-i18n="og_site_title" content="Free Online Tools - Random Picker, QR Generator & More | ToolVerse">
+  <meta property="og:description" data-i18n="og_site_desc" content="ToolVerse offers free, fast, install-free online tools including random pickers, text processors, and developer utilities to boost your productivity.">
   <meta property="og:url" content="https://newTrekking.com/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
@@ -183,7 +183,7 @@
     "@type": "WebSite",
     "name": "ToolVerse",
     "url": "https://newTrekking.com/",
-    "description": "ToolVerse 提供免费、快速、无需安装的在线工具集合",
+    "description": "ToolVerse offers free, fast, install-free online tools including random pickers, text processors, and developer utilities.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": "https://newTrekking.com/search?q={search_term_string}",
@@ -215,7 +215,7 @@
     <div class="flex items-center gap-3">
       <!-- Language Dropdown -->
       <div class="language-dropdown">
-        <button class="language-btn" id="lang-btn" onclick="toggleLangMenu()" aria-label="选择语言" aria-expanded="false">
+        <button class="language-btn" id="lang-btn" onclick="toggleLangMenu()" data-i18n-aria="aria_select_language" aria-label="Select language" aria-expanded="false">
           <span>🌐</span>
           <span id="current-language">中文</span>
           <span style="font-size:10px">▼</span>
@@ -259,7 +259,7 @@
     <div class="max-w-lg mx-auto mb-8 animate-fade-up stagger-2">
       <div class="search-wrap">
         <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="search" id="search-input" data-i18n-placeholder="search_placeholder" placeholder="搜索工具…" aria-label="搜索工具">
+        <input type="search" id="search-input" data-i18n-placeholder="search_placeholder" placeholder="Search tools…" data-i18n-aria="aria_search_tools" aria-label="Search tools">
       </div>
     </div>
 
@@ -453,6 +453,10 @@
     document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
       const val = translations[el.dataset.i18nPlaceholder];
       if (val) el.placeholder = val;
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach(function(el) {
+      const val = translations[el.dataset.i18nAria];
+      if (val) el.setAttribute('aria-label', val);
     });
   }
 
