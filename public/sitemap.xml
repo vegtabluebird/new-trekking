@@ -43,4 +43,24 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/timestamp-converter/"/>
   </url>
 
+  <!-- 工具：Favicon 生成器 -->
+  <url>
+    <loc>https://newTrekking.com/tools/favicon-generator/</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/favicon-generator/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/favicon-generator/"/>
+  </url>
+
+  <!-- 工具：视频转 GIF -->
+  <url>
+    <loc>https://newTrekking.com/tools/video-to-gif/</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/video-to-gif/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/video-to-gif/"/>
+  </url>
+
 </urlset>

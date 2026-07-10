@@ -40,5 +40,19 @@
     "isNew": true,
     "isFeatured": true,
     "component": "FaviconGenerator"
+  },
+  {
+    "slug": "video-to-gif",
+    "nameKey": "tool_video_to_gif_name",
+    "descKey": "tool_video_to_gif_desc",
+    "longDescKey": "tool_video_to_gif_longdesc",
+    "category": "utility",
+    "categoryKey": "cat_utility",
+    "icon": "🎞️",
+    "color": "purple",
+    "keywords": ["video to gif", "mp4 to gif", "gif maker", "video to gif converter", "make gif from video", "webm to gif", "free gif maker"],
+    "isNew": true,
+    "isFeatured": true,
+    "component": "VideoToGif"
   }
 ]
