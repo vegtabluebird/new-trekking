@@ -23,8 +23,6 @@
   <meta name="twitter:description" data-i18n="og_video_to_gif_desc" content="Convert videos to GIFs online — trim, resize, adjust FPS and quality. All processed locally in your browser. No upload, no watermark.">
   <meta name="twitter:image" content="https://newTrekking.com/og-image.png">
   <link rel="canonical" href="https://newTrekking.com/tools/video-to-gif/">
-  <link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/video-to-gif/">
-  <link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/video-to-gif/">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -206,7 +204,7 @@
           <video id="demo-video-el" controls playsinline class="w-full" style="max-height:260px;object-fit:contain"></video>
         </div>
         <div id="demo-gif" class="hidden rounded-xl overflow-hidden border border-purple-100 shadow-sm">
-          <img id="demo-gif-el" alt="demo" class="w-full object-contain" style="max-height:260px">
+          <img id="demo-gif-el" alt="Video to GIF Converter tool demo" class="w-full object-contain" style="max-height:260px">
         </div>
         <div id="demo-carousel" class="hidden">
           <div class="relative rounded-xl overflow-hidden border border-purple-100 shadow-sm" style="background:#f8f7ff">
@@ -314,7 +312,7 @@
       <div class="panel" id="result-panel" style="display:none">
         <p class="section-title" data-i18n="vg_result_title">Generated GIF</p>
         <div class="text-center">
-          <img id="gif-preview" alt="Generated GIF" class="rounded-xl mx-auto" style="max-width:100%;max-height:360px;box-shadow:0 4px 20px rgba(0,0,0,.1)">
+          <img id="gif-preview" alt="Generated GIF preview" class="rounded-xl mx-auto" style="max-width:100%;max-height:360px;box-shadow:0 4px 20px rgba(0,0,0,.1)">
           <div class="flex items-center justify-center gap-2 mt-3 flex-wrap">
             <p id="gif-size" class="text-sm text-gray-500"></p>
             <button onclick="downloadGif()" class="dl-btn primary" data-i18n="vg_download">⬇ Download GIF</button>
@@ -334,6 +332,27 @@
       </div>
     </div>
   </div>
+
+  <!-- Related Tools -->
+  <section class="mt-12 max-w-3xl">
+    <h2 class="font-display font-bold text-xl text-gray-800 mb-6" data-i18n="related_tools">Related Tools</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <a href="/tools/favicon-generator/" class="panel no-underline hover:border-purple-300 transition-colors flex items-center gap-4" style="padding:16px 18px">
+        <div class="w-12 h-12 flex-shrink-0 rounded-xl flex items-center justify-center text-2xl" style="background:linear-gradient(135deg,#ede9fe,#fce7f3);border:2px solid rgba(139,92,246,.2)">🖼️</div>
+        <div>
+          <p class="font-semibold text-gray-800 text-sm" data-i18n="tool_favicon_generator_name">Favicon Generator</p>
+          <p class="text-xs text-gray-400" data-i18n="tool_favicon_generator_desc">Upload any image and generate favicon.ico and PNG icons</p>
+        </div>
+      </a>
+      <a href="/tools/qr-generator/" class="panel no-underline hover:border-purple-300 transition-colors flex items-center gap-4" style="padding:16px 18px">
+        <div class="w-12 h-12 flex-shrink-0 rounded-xl flex items-center justify-center text-2xl" style="background:linear-gradient(135deg,#ede9fe,#fce7f3);border:2px solid rgba(139,92,246,.2)">🔳</div>
+        <div>
+          <p class="font-semibold text-gray-800 text-sm" data-i18n="tool_qr_generator_name">QR Code Generator</p>
+          <p class="text-xs text-gray-400" data-i18n="tool_qr_generator_desc">Generate QR codes for URLs, text, and more</p>
+        </div>
+      </a>
+    </div>
+  </section>
 
   <!-- FAQ -->
   <section class="mt-12 max-w-3xl">
@@ -486,14 +505,14 @@ function initCarousel() {
   carouselItems.forEach(function(src, i) {
     const slide = document.createElement('div');
     slide.style.cssText = 'min-width:100%;display:flex;align-items:center;justify-content:center;max-height:260px;';
-    const img = document.createElement('img'); img.src = './demo/'+src; img.alt='Demo '+(i+1);
+    const img = document.createElement('img'); img.src = './demo/'+src; img.alt='Tool screenshot '+(i+1);
     img.style.cssText = 'max-height:260px;max-width:100%;object-fit:contain;';
     slide.appendChild(img); track.appendChild(slide);
     const dot = document.createElement('button');
     dot.style.cssText = 'width:8px;height:8px;border-radius:50%;border:none;cursor:pointer;transition:.2s;';
     dot.setAttribute('aria-label','Slide '+(i+1)); dot.onclick = function(){ goToSlide(i); };
     dots.appendChild(dot);
-    const thumb = document.createElement('img'); thumb.src='./demo/'+src; thumb.alt='Thumb '+(i+1);
+    const thumb = document.createElement('img'); thumb.src='./demo/'+src; thumb.alt='Thumbnail '+(i+1);
     thumb.style.cssText='width:60px;height:44px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;flex-shrink:0;transition:.2s;';
     thumb.onclick = function(){ goToSlide(i); }; thumbs.appendChild(thumb);
   });

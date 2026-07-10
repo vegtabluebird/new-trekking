@@ -23,8 +23,6 @@
   <meta name="twitter:description" data-i18n="og_random_picker_desc" content="Free online random picker — custom entries, weighted probability, replacement modes, slot-machine and flip animations.">
   <meta name="twitter:image" content="https://newTrekking.com/og-image.png">
   <link rel="canonical" href="https://newTrekking.com/tools/random-picker/">
-  <link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/random-picker/">
-  <link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/random-picker/">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -257,7 +255,7 @@
     <div class="language-dropdown">
       <button class="language-btn" id="lang-btn" onclick="toggleLangMenu()" data-i18n-aria="aria_select_language" aria-label="Select language" aria-expanded="false">
         <span>🌐</span>
-        <span id="current-language">中文</span>
+        <span id="current-language">English</span>
         <span style="font-size:10px">▼</span>
       </button>
       <div class="language-dropdown-auto" id="lang-menu">
@@ -315,7 +313,7 @@
 
         <!-- gif -->
         <div id="demo-gif" class="hidden rounded-xl overflow-hidden border border-purple-100 shadow-sm">
-          <img id="demo-gif-el" alt="demo" class="w-full object-contain" style="max-height:260px">
+          <img id="demo-gif-el" alt="Random Picker tool demo" class="w-full object-contain" style="max-height:260px">
         </div>
 
         <!-- image carousel -->
@@ -499,6 +497,27 @@
       </div>
     </div>
   </div>
+
+  <!-- ═════ Related Tools ═════ -->
+  <section class="mt-12 max-w-3xl">
+    <h2 class="font-display font-bold text-xl text-gray-800 mb-6" data-i18n="related_tools">Related Tools</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <a href="/tools/timestamp-converter/" class="panel no-underline hover:border-purple-300 transition-colors flex items-center gap-4" style="padding:16px 18px">
+        <div class="w-12 h-12 flex-shrink-0 rounded-xl flex items-center justify-center text-2xl" style="background:linear-gradient(135deg,#ede9fe,#fce7f3);border:2px solid rgba(139,92,246,.2)">⏱️</div>
+        <div>
+          <p class="font-semibold text-gray-800 text-sm" data-i18n="tool_timestamp_converter_name">Unix Timestamp Converter</p>
+          <p class="text-xs text-gray-400" data-i18n="tool_timestamp_converter_desc">Convert between Unix timestamps and human-readable dates</p>
+        </div>
+      </a>
+      <a href="/tools/video-to-gif/" class="panel no-underline hover:border-purple-300 transition-colors flex items-center gap-4" style="padding:16px 18px">
+        <div class="w-12 h-12 flex-shrink-0 rounded-xl flex items-center justify-center text-2xl" style="background:linear-gradient(135deg,#ede9fe,#fce7f3);border:2px solid rgba(139,92,246,.2)">🎞️</div>
+        <div>
+          <p class="font-semibold text-gray-800 text-sm" data-i18n="tool_video_to_gif_name">Video to GIF Converter</p>
+          <p class="text-xs text-gray-400" data-i18n="tool_video_to_gif_desc">Convert video clips to animated GIFs</p>
+        </div>
+      </a>
+    </div>
+  </section>
 
   <!-- ═════ FAQ (SEO Content) ═════ -->
   <section class="mt-12 max-w-3xl">
@@ -995,7 +1014,7 @@ function initCarousel() {
     slide.style.cssText = 'min-width:100%;display:flex;align-items:center;justify-content:center;max-height:260px;';
     const img = document.createElement('img');
     img.src = './demo/' + src;
-    img.alt = 'Demo ' + (i + 1);
+    img.alt = 'Tool screenshot ' + (i + 1);
     img.style.cssText = 'max-height:260px;max-width:100%;object-fit:contain;';
     slide.appendChild(img);
     track.appendChild(slide);
@@ -1010,7 +1029,7 @@ function initCarousel() {
     // thumb
     const thumb = document.createElement('img');
     thumb.src = './demo/' + src;
-    thumb.alt = 'Thumb ' + (i + 1);
+    thumb.alt = 'Thumbnail ' + (i + 1);
     thumb.style.cssText = 'width:60px;height:44px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;flex-shrink:0;transition:.2s;';
     thumb.onclick = () => goToSlide(i);
     thumbs.appendChild(thumb);

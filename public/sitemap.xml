@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- 首页 -->
   <url>
@@ -8,19 +7,15 @@
     <lastmod>2026-07-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://newTrekking.com/en/"/>
   </url>
 
-  <!-- 工具：自定义抽取器 -->
+  <!-- 工具：随机抽取器 -->
   <!-- ✅ 新增工具时，在此处复制一个 <url> 块，修改 loc 和 lastmod 即可 -->
   <url>
     <loc>https://newTrekking.com/tools/random-picker/</loc>
     <lastmod>2026-07-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/random-picker/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/random-picker/"/>
   </url>
 
   <!-- 工具：二维码生成器 -->
@@ -29,8 +24,6 @@
     <lastmod>2026-07-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/qr-generator/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/qr-generator/"/>
   </url>
 
   <!-- 工具：时间戳转换器 -->
@@ -39,8 +32,6 @@
     <lastmod>2026-07-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/timestamp-converter/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/timestamp-converter/"/>
   </url>
 
   <!-- 工具：Favicon 生成器 -->
@@ -49,8 +40,6 @@
     <lastmod>2026-07-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/favicon-generator/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/favicon-generator/"/>
   </url>
 
   <!-- 工具：视频转 GIF -->
@@ -59,8 +48,6 @@
     <lastmod>2026-07-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/video-to-gif/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/video-to-gif/"/>
   </url>
 
 </urlset>
