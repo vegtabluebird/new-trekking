@@ -12,5 +12,19 @@
     "isNew": true,
     "isFeatured": true,
     "component": "RandomPicker"
+  },
+  {
+    "slug": "timestamp-converter",
+    "nameKey": "tool_timestamp_converter_name",
+    "descKey": "tool_timestamp_converter_desc",
+    "longDescKey": "tool_timestamp_converter_longdesc",
+    "category": "developer",
+    "categoryKey": "cat_developer",
+    "icon": "⏱️",
+    "color": "purple",
+    "keywords": ["unix timestamp", "epoch converter", "timestamp to date", "date to timestamp", "时间戳转换", "Unix时间戳"],
+    "isNew": true,
+    "isFeatured": true,
+    "component": "TimestampConverter"
   }
 ]

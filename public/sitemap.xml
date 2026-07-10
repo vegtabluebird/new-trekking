@@ -33,4 +33,14 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/qr-generator/"/>
   </url>
 
+  <!-- 工具：时间戳转换器 -->
+  <url>
+    <loc>https://newTrekking.com/tools/timestamp-converter/</loc>
+    <lastmod>2025-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/timestamp-converter/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/timestamp-converter/"/>
+  </url>
+
 </urlset>

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <meta name="description" data-i18n="tool_timestamp_converter_meta_desc" content="Free online Unix timestamp converter — convert between Unix timestamps and human-readable dates instantly. Support seconds & milliseconds.">
+  <meta name="keywords" data-i18n="tool_timestamp_converter_keywords" content="unix timestamp converter,epoch converter,timestamp to date,date to timestamp,unix time converter">
+  <title data-i18n="tool_timestamp_converter_meta_title">Unix Timestamp Converter - Epoch to Date Online | ToolVerse</title>
+  <meta property="og:title" data-i18n="og_timestamp_converter_title" content="Unix Timestamp Converter - Epoch to Date Online | ToolVerse">
+  <meta property="og:description" data-i18n="og_timestamp_converter_desc" content="Free online Unix timestamp converter. Convert timestamps to dates and vice versa. Supports seconds and milliseconds. No upload, works offline.">
+  <meta property="og:url" content="https://newTrekking.com/tools/timestamp-converter/">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://newTrekking.com/tools/timestamp-converter/">
+  <link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/timestamp-converter/">
+  <link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/timestamp-converter/">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { display: ['Outfit','Noto Sans SC','sans-serif'], body: ['Noto Sans SC','Outfit','sans-serif'] } } }
+    }
+  </script>
+  <style>
+    :root { --grad: linear-gradient(135deg,#6366f1 0%,#8b5cf6 40%,#ec4899 100%); }
+    *{box-sizing:border-box}
+    body{font-family:'Noto Sans SC','Outfit',sans-serif;background:#f8f7ff;min-height:100vh}
+    .grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .grad-btn{background:var(--grad);background-size:200% 200%;transition:transform .2s,box-shadow .2s}
+    .grad-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(139,92,246,.4)}
+    .grad-btn:active{transform:translateY(0);box-shadow:none}
+    .grad-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+    .panel{background:white;border:1px solid rgba(139,92,246,.12);border-radius:18px;padding:20px 22px}
+    .section-title{font-size:13px;font-weight:600;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+
+    /* Input */
+    .tv-input{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-size:14px;font-family:'Noto Sans SC',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;color:#1e1b4b;background:white}
+    .tv-input:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.1)}
+
+    /* Timestamp display */
+    .ts-display{font-family:'SF Mono','Fira Code','Consolas',monospace;font-size:15px;background:#faf5ff;border:1.5px solid #e9d5ff;border-radius:10px;padding:10px 14px;color:#5b21b6;word-break:break-all;position:relative;transition:background .2s}
+    .ts-display.live{background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border-color:#bbf7d0;color:#166534;animation:pulse-green 2s ease-in-out infinite}
+    @keyframes pulse-green{0%,100%{border-color:#bbf7d0}50%{border-color:#86efac}}
+
+    .ts-label{font-size:11px;font-weight:600;color:#a78bfa;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+    .ts-value{font-size:22px;font-weight:700;color:#1e1b4b}
+    .ts-mono{font-family:'SF Mono','Fira Code','Consolas',monospace}
+
+    /* Copy btn */
+    .copy-btn{position:absolute;right:6px;top:6px;padding:4px 10px;border-radius:6px;border:1px solid #d8b4fe;background:white;font-size:12px;color:#7c3aed;cursor:pointer;transition:all .15s}
+    .copy-btn:hover{background:#f3e8ff;border-color:#8b5cf6}
+    .copy-btn.copied{background:#ecfdf5;border-color:#86efac;color:#166534}
+
+    /* Unit toggle */
+    .unit-pill{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid #e5e7eb;background:white;color:#6b7280;transition:all .2s}
+    .unit-pill.active{background:var(--grad);color:white;border-color:transparent}
+
+    /* Result row */
+    .result-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3e8ff}
+    .result-row:last-child{border-bottom:none}
+    .result-row .key{font-size:12px;color:#6b7280;font-weight:500}
+    .result-row .val{font-size:13px;color:#1e1b4b;font-weight:600;text-align:right;word-break:break-all;max-width:60%}
+
+    /* Date input styling */
+    input[type="datetime-local"]{color-scheme:light}
+
+    /* Language dropdown */
+    .language-dropdown{position:relative}
+    .language-btn{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;cursor:pointer;border:1.5px solid rgba(139,92,246,.3);background:white;font-size:14px;color:#5b21b6;transition:all .2s}
+    .language-btn:hover{border-color:#8b5cf6;background:#faf5ff}
+    .language-dropdown-auto{display:none;position:absolute;right:0;top:calc(100% + 8px);background:white;border:1px solid rgba(139,92,246,.2);border-radius:14px;box-shadow:0 10px 40px rgba(139,92,246,.15);min-width:130px;z-index:100;max-height:280px;overflow-y:auto;padding:6px}
+    .language-dropdown-auto.open{display:block}
+    .language-option{display:block;width:100%;text-align:left;padding:8px 14px;border-radius:8px;border:none;background:none;font-size:14px;color:#374151;cursor:pointer;transition:background .15s}
+    .language-option:hover{background:#f3e8ff;color:#7c3aed}
+    .breadcrumb a{color:#8b5cf6;text-decoration:none}
+    .breadcrumb a:hover{text-decoration:underline}
+    #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1e1b4b;color:white;padding:10px 20px;border-radius:30px;font-size:14px;opacity:0;transition:all .3s;pointer-events:none;z-index:999;white-space:nowrap}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"SoftwareApplication",
+        "name":"Unix Timestamp Converter",
+        "applicationCategory":"UtilitiesApplication",
+        "operatingSystem":"Web",
+        "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+        "url":"https://newTrekking.com/tools/timestamp-converter/",
+        "description":"Free online Unix timestamp converter with support for seconds and milliseconds.",
+        "provider":{"@type":"Organization","name":"ToolVerse","url":"https://newTrekking.com"}
+      },
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Home","item":"https://newTrekking.com/"},
+          {"@type":"ListItem","position":2,"name":"Unix Timestamp Converter","item":"https://newTrekking.com/tools/timestamp-converter/"}
+        ]
+      },
+      {
+        "@type":"FAQPage",
+        "mainEntity":[
+          {"@type":"Question","name":"What is a Unix timestamp?","acceptedAnswer":{"@type":"Answer","text":"A Unix timestamp is the number of seconds (or milliseconds) that have elapsed since January 1, 1970 00:00:00 UTC, also known as the Unix epoch. It is widely used in programming for storing and comparing dates."}},
+          {"@type":"Question","name":"What is the difference between seconds and milliseconds?","acceptedAnswer":{"@type":"Answer","text":"Unix timestamps in seconds are 10 digits (e.g., 1700000000), while millisecond timestamps are 13 digits (e.g., 1700000000000). JavaScript uses milliseconds, while most databases and system calls use seconds."}},
+          {"@type":"Question","name":"Does this tool work offline?","acceptedAnswer":{"@type":"Answer","text":"Yes. All conversions are computed entirely in your browser using JavaScript. No data is sent to any server."}}
+        ]
+      }
+    ]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5713173586841314"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-purple-100">
+  <nav class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 no-underline">
+      <div class="w-8 h-8 rounded-xl grad-btn flex items-center justify-center text-white font-bold text-sm">T</div>
+      <span class="font-display font-bold text-xl grad-text">ToolVerse</span>
+    </a>
+    <div class="hidden md:flex items-center gap-6">
+      <a href="/" class="text-sm text-gray-500 hover:text-purple-600 transition-colors no-underline" data-i18n="nav_home">Home</a>
+      <a href="/#all-tools" class="text-sm text-gray-500 hover:text-purple-600 transition-colors no-underline" data-i18n="nav_tools">All Tools</a>
+    </div>
+    <div class="language-dropdown">
+      <button class="language-btn" id="lang-btn" onclick="toggleLangMenu()" data-i18n-aria="aria_select_language" aria-label="Select language" aria-expanded="false">
+        <span>🌐</span><span id="current-language">English</span><span style="font-size:10px">▼</span>
+      </button>
+      <div class="language-dropdown-auto" id="lang-menu">
+        <button class="language-option" onclick="loadLang('zh')">🇨🇳 中文</button>
+        <button class="language-option" onclick="loadLang('en')">🇺🇸 English</button>
+        <button class="language-option" onclick="loadLang('ja')">🇯🇵 日本語</button>
+        <button class="language-option" onclick="loadLang('ko')">🇰🇷 한국어</button>
+        <button class="language-option" onclick="loadLang('es')">🇪🇸 Español</button>
+        <button class="language-option" onclick="loadLang('fr')">🇫🇷 Français</button>
+        <button class="language-option" onclick="loadLang('de')">🇩🇪 Deutsch</button>
+        <button class="language-option" onclick="loadLang('pt')">🇧🇷 Português</button>
+        <button class="language-option" onclick="loadLang('ru')">🇷🇺 Русский</button>
+        <button class="language-option" onclick="loadLang('ar')">🇸🇦 العربية</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Breadcrumb -->
+<div class="max-w-6xl mx-auto px-4 py-3 breadcrumb text-sm text-gray-400">
+  <a href="/" data-i18n="nav_home">Home</a>
+  <span class="mx-2">/</span>
+  <span class="text-gray-600" data-i18n="tool_timestamp_converter_name">Unix Timestamp Converter</span>
+</div>
+
+<main class="max-w-6xl mx-auto px-4 pb-16">
+
+  <!-- Tool Header -->
+  <article class="mb-8">
+    <div class="flex flex-col md:flex-row md:items-start gap-6">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-4 mb-2">
+          <div class="w-14 h-14 flex-shrink-0 rounded-2xl flex items-center justify-center text-3xl" style="background:linear-gradient(135deg,#ede9fe,#fce7f3);border:2px solid rgba(139,92,246,.2)">⏱️</div>
+          <div class="min-w-0">
+            <h1 class="font-display font-bold text-2xl md:text-3xl text-gray-900" data-i18n="tool_timestamp_converter_name">Unix Timestamp Converter</h1>
+            <p class="text-sm text-gray-500 mt-1" data-i18n="tool_timestamp_converter_desc">Convert between Unix timestamps and human-readable dates — supports seconds and milliseconds</p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-400 leading-relaxed mt-3 max-w-xl" data-i18n="tool_timestamp_converter_longdesc">
+          ToolVerse Unix Timestamp Converter lets you instantly convert between Unix timestamps and human-readable dates. Whether you're debugging, parsing logs, or working with APIs, this tool handles both second and millisecond timestamps with live updating and one-click copy.
+        </p>
+      </div>
+
+      <!-- Demo slot -->
+      <div id="demo-section" class="hidden md:w-80 lg:w-96 flex-shrink-0">
+        <p class="text-xs font-semibold text-purple-400 uppercase tracking-widest mb-2" data-i18n="demo_title">How It Works</p>
+        <div id="demo-video" class="hidden rounded-xl overflow-hidden border border-purple-100 shadow-sm">
+          <video id="demo-video-el" controls playsinline class="w-full" style="max-height:260px;object-fit:contain"></video>
+        </div>
+        <div id="demo-gif" class="hidden rounded-xl overflow-hidden border border-purple-100 shadow-sm">
+          <img id="demo-gif-el" alt="demo" class="w-full object-contain" style="max-height:260px">
+        </div>
+        <div id="demo-carousel" class="hidden">
+          <div class="relative rounded-xl overflow-hidden border border-purple-100 shadow-sm" style="background:#f8f7ff">
+            <div id="carousel-track" class="flex transition-transform duration-400 ease-in-out" style="will-change:transform"></div>
+            <button onclick="carouselPrev()" id="c-prev" class="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 border border-purple-100 shadow flex items-center justify-center text-purple-500 hover:bg-purple-50 transition-colors text-base" aria-label="Previous">‹</button>
+            <button onclick="carouselNext()" id="c-next" class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 border border-purple-100 shadow flex items-center justify-center text-purple-500 hover:bg-purple-50 transition-colors text-base" aria-label="Next">›</button>
+            <div id="carousel-dots" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5"></div>
+          </div>
+          <div id="carousel-thumbs" class="flex gap-1.5 mt-2 overflow-x-auto pb-1"></div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Tool Body -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <!-- LEFT COLUMN -->
+    <div class="space-y-4">
+
+      <!-- 1. Current Timestamp -->
+      <div class="panel">
+        <div class="flex items-center justify-between mb-3">
+          <p class="section-title mb-0" data-i18n="ts_current_title">Current Timestamp</p>
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+            <span class="text-xs text-green-600 font-medium">LIVE</span>
+          </div>
+        </div>
+
+        <!-- Seconds -->
+        <div class="mb-3">
+          <p class="ts-label" data-i18n="ts_current_unix_sec">Unix Seconds</p>
+          <div class="ts-display live relative">
+            <span id="live-sec" class="ts-mono">1700000000</span>
+            <button class="copy-btn" onclick="copyValue('live-sec',this)" data-i18n="ts_copy">Copy</button>
+          </div>
+        </div>
+
+        <!-- Milliseconds -->
+        <div class="mb-3">
+          <p class="ts-label" data-i18n="ts_current_unix_ms">Unix Milliseconds</p>
+          <div class="ts-display live relative">
+            <span id="live-ms" class="ts-mono">1700000000000</span>
+            <button class="copy-btn" onclick="copyValue('live-ms',this)" data-i18n="ts_copy">Copy</button>
+          </div>
+        </div>
+
+        <!-- ISO -->
+        <div class="mb-3">
+          <p class="ts-label" data-i18n="ts_current_iso">ISO 8601</p>
+          <div class="ts-display relative">
+            <span id="live-iso" class="ts-mono">2024-01-01T00:00:00.000Z</span>
+            <button class="copy-btn" onclick="copyValue('live-iso',this)" data-i18n="ts_copy">Copy</button>
+          </div>
+        </div>
+
+        <!-- Local -->
+        <div>
+          <p class="ts-label" data-i18n="ts_current_local">Local Time</p>
+          <div class="ts-display relative">
+            <span id="live-local" class="ts-mono">January 1, 2024, 08:00:00</span>
+            <button class="copy-btn" onclick="copyValue('live-local',this)" data-i18n="ts_copy">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Timestamp → Date -->
+      <div class="panel">
+        <p class="section-title" data-i18n="ts_convert_ts_title">Convert Timestamp to Date</p>
+
+        <!-- Unit toggle -->
+        <div class="flex gap-2 mb-3" id="unit-group">
+          <button class="unit-pill active" data-unit="sec" onclick="selectUnit('sec')" data-i18n="ts_unit_seconds">Seconds</button>
+          <button class="unit-pill" data-unit="ms" onclick="selectUnit('ms')" data-i18n="ts_unit_milliseconds">Milliseconds</button>
+        </div>
+
+        <div class="flex gap-2">
+          <input type="text" id="ts-input" class="tv-input" style="flex:1"
+            data-i18n-placeholder="ts_ts_input_placeholder"
+            placeholder="e.g. 1700000000"
+            onkeydown="if(event.key==='Enter')convertTsToDate()" aria-label="Unix timestamp input">
+          <button onclick="setTsNow()" class="px-4 py-2 rounded-xl border border-purple-200 text-sm text-purple-600 hover:bg-purple-50 transition-colors font-medium" data-i18n="ts_ts_btn_now">Now</button>
+          <button onclick="convertTsToDate()" class="px-5 py-2 rounded-xl grad-btn text-white text-sm font-semibold" data-i18n="ts_ts_btn_convert">Convert</button>
+        </div>
+        <p id="ts-input-error" class="text-xs text-red-400 mt-2 hidden"></p>
+
+        <!-- Result -->
+        <div id="ts-result" class="mt-4 hidden">
+          <div class="result-row">
+            <span class="key" data-i18n="ts_ts_result_local">Local Time</span>
+            <span class="val" id="ts-out-local">—</span>
+          </div>
+          <div class="result-row">
+            <span class="key" data-i18n="ts_ts_result_utc">UTC Time</span>
+            <span class="val" id="ts-out-utc">—</span>
+          </div>
+          <div class="result-row">
+            <span class="key" data-i18n="ts_ts_result_iso">ISO 8601</span>
+            <span class="val ts-mono" id="ts-out-iso">—</span>
+          </div>
+          <div class="result-row">
+            <span class="key" data-i18n="ts_ts_result_relative">Relative</span>
+            <span class="val" id="ts-out-relative">—</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="space-y-4">
+
+      <!-- 3. Date → Timestamp -->
+      <div class="panel">
+        <p class="section-title" data-i18n="ts_convert_date_title">Convert Date to Timestamp</p>
+
+        <label class="ts-label" data-i18n="ts_date_input_label">Date & Time</label>
+        <div class="flex gap-2 mt-1">
+          <input type="datetime-local" id="date-input" class="tv-input" style="flex:1" aria-label="Date and time input">
+          <button onclick="setDateNow()" class="px-4 py-2 rounded-xl border border-purple-200 text-sm text-purple-600 hover:bg-purple-50 transition-colors font-medium" data-i18n="ts_date_btn_now">Now</button>
+          <button onclick="convertDateToTs()" class="px-5 py-2 rounded-xl grad-btn text-white text-sm font-semibold" data-i18n="ts_date_btn_convert">Convert</button>
+        </div>
+        <p id="date-input-error" class="text-xs text-red-400 mt-2 hidden"></p>
+
+        <!-- Result -->
+        <div id="date-result" class="mt-4 hidden">
+          <p class="section-title" data-i18n="ts_date_result_title">Result</p>
+          <div class="mb-3">
+            <p class="ts-label" data-i18n="ts_date_result_unix_sec">Unix Seconds</p>
+            <div class="ts-display relative">
+              <span id="date-out-sec" class="ts-mono">—</span>
+              <button class="copy-btn" onclick="copyValue('date-out-sec',this)" data-i18n="ts_copy">Copy</button>
+            </div>
+          </div>
+          <div>
+            <p class="ts-label" data-i18n="ts_date_result_unix_ms">Unix Milliseconds</p>
+            <div class="ts-display relative">
+              <span id="date-out-ms" class="ts-mono">—</span>
+              <button class="copy-btn" onclick="copyValue('date-out-ms',this)" data-i18n="ts_copy">Copy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info card -->
+      <div class="panel" style="background:linear-gradient(135deg,#faf5ff,#fff0fb)">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-3xl">📘</span>
+          <div>
+            <p class="font-semibold text-gray-800 text-sm">Unix Epoch</p>
+            <p class="text-xs text-gray-500">January 1, 1970 00:00:00 UTC</p>
+          </div>
+        </div>
+        <ul class="text-xs text-gray-500 space-y-1.5 leading-relaxed list-none">
+          <li>💡 <span data-i18n="ts_faq_a1">A Unix timestamp is the number of seconds since January 1, 1970 (UTC).</span></li>
+          <li>🔢 <span data-i18n="ts_faq_a2">Seconds timestamps are 10 digits, milliseconds are 13 digits.</span></li>
+          <li>🔒 <span data-i18n="ts_faq_a4">All conversions happen locally in your browser — no data is uploaded.</span></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="mt-12 max-w-3xl">
+    <h2 class="font-display font-bold text-xl text-gray-800 mb-6" data-i18n="faq_title">Frequently Asked Questions</h2>
+    <div class="space-y-4">
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="ts_faq_q1">What is a Unix timestamp?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="ts_faq_a1">A Unix timestamp is the number of seconds (or milliseconds) that have elapsed since January 1, 1970 00:00:00 UTC, also known as the Unix epoch. It is widely used in programming for storing and comparing dates in a timezone-independent way.</p>
+      </details>
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="ts_faq_q2">What is the Year 2038 problem?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="ts_faq_a2">The Year 2038 problem affects systems that store Unix timestamps as signed 32-bit integers. The maximum value (2,147,483,647) corresponds to January 19, 2038. After this date, the value overflows. Most modern systems use 64-bit integers, avoiding this issue.</p>
+      </details>
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="ts_faq_q3">Does this tool work offline?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="ts_faq_a3">Yes. All timestamp conversions are computed entirely in your browser using JavaScript. No data is ever sent to any server, so the tool works perfectly offline once the page is loaded.</p>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="border-t border-purple-100 bg-white mt-8">
+  <div class="max-w-6xl mx-auto px-4 py-10">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg grad-btn flex items-center justify-center text-white font-bold text-xs">T</div>
+        <span class="font-display font-semibold grad-text">ToolVerse</span>
+      </div>
+      <nav class="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+        <a href="/privacy/" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="/terms/" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_terms">Terms of Service</a>
+        <a href="mailto:zhefanshen3@gmail.com" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_contact">Contact Us</a>
+      </nav>
+      <p class="text-xs text-gray-400" data-i18n="footer_copyright">© 2025 ToolVerse. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<!-- ═══ SHARED JS ═══ -->
+<script>
+let currentLang = localStorage.getItem('tv_lang') || 'en';
+let T = {};
+const LANG_NAMES = {zh:'中文',en:'English',ja:'日本語',ko:'한국어',es:'Español',fr:'Français',de:'Deutsch',pt:'Português',ru:'Русский',ar:'العربية'};
+
+function toggleLangMenu() {
+  const menu = document.getElementById('lang-menu');
+  const btn  = document.getElementById('lang-btn');
+  const open = menu.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+}
+function closeLangMenu() {
+  const menu = document.getElementById('lang-menu');
+  const btn  = document.getElementById('lang-btn');
+  if (menu) { menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.language-dropdown')) closeLangMenu();
+});
+async function loadLang(lang) {
+  try {
+    const res = await fetch('/locales/' + lang + '.json');
+    if (!res.ok) throw new Error();
+    T = await res.json();
+    applyT();
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
+    localStorage.setItem('tv_lang', lang);
+    currentLang = lang;
+    document.getElementById('current-language').textContent = LANG_NAMES[lang] || lang;
+    closeLangMenu();
+  } catch(e) { console.warn('Lang load failed:', lang); }
+}
+function applyT() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    const v = T[el.dataset.i18n]; if (!v) return;
+    if (el.tagName === 'META') { el.content = v; }
+    else if (el.tagName === 'TITLE') { document.title = v; }
+    else { el.textContent = v; }
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+    const v = T[el.dataset.i18nPlaceholder]; if (v) el.placeholder = v;
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach(function(el) {
+    const v = T[el.dataset.i18nAria]; if (v) el.setAttribute('aria-label', v);
+  });
+}
+function t(key, fallback) { return T[key] || fallback || key; }
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+// Demo loader
+let carouselIndex = 0, carouselItems = [];
+async function loadDemo() {
+  try {
+    const res = await fetch('./demo/manifest.json');
+    if (!res.ok) return;
+    const manifest = await res.json();
+    if (!manifest.items || manifest.items.length === 0) return;
+    document.getElementById('demo-section').classList.remove('hidden');
+    if (manifest.type === 'video') {
+      document.getElementById('demo-video-el').src = './demo/' + manifest.items[0];
+      document.getElementById('demo-video').classList.remove('hidden');
+    } else if (manifest.type === 'gif') {
+      document.getElementById('demo-gif-el').src = './demo/' + manifest.items[0];
+      document.getElementById('demo-gif').classList.remove('hidden');
+    } else if (manifest.type === 'images') {
+      carouselItems = manifest.items; initCarousel();
+    }
+  } catch(e) {}
+}
+function initCarousel() {
+  if (!carouselItems.length) return;
+  document.getElementById('demo-carousel').classList.remove('hidden');
+  const track = document.getElementById('carousel-track');
+  const dots  = document.getElementById('carousel-dots');
+  const thumbs = document.getElementById('carousel-thumbs');
+  carouselItems.forEach(function(src, i) {
+    const slide = document.createElement('div');
+    slide.style.cssText = 'min-width:100%;display:flex;align-items:center;justify-content:center;max-height:260px;';
+    const img = document.createElement('img'); img.src = './demo/'+src; img.alt='Demo '+(i+1);
+    img.style.cssText = 'max-height:260px;max-width:100%;object-fit:contain;';
+    slide.appendChild(img); track.appendChild(slide);
+    const dot = document.createElement('button');
+    dot.style.cssText = 'width:8px;height:8px;border-radius:50%;border:none;cursor:pointer;transition:.2s;';
+    dot.setAttribute('aria-label','Slide '+(i+1)); dot.onclick = function(){ goToSlide(i); };
+    dots.appendChild(dot);
+    const thumb = document.createElement('img'); thumb.src='./demo/'+src; thumb.alt='Thumb '+(i+1);
+    thumb.style.cssText='width:60px;height:44px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;flex-shrink:0;transition:.2s;';
+    thumb.onclick = function(){ goToSlide(i); }; thumbs.appendChild(thumb);
+  });
+  if (carouselItems.length <= 1) {
+    document.getElementById('c-prev').style.display='none';
+    document.getElementById('c-next').style.display='none';
+    document.getElementById('carousel-dots').style.display='none';
+  }
+  goToSlide(0);
+}
+function goToSlide(i) {
+  carouselIndex = i;
+  document.getElementById('carousel-track').style.transform='translateX(-'+(i*100)+'%)';
+  document.querySelectorAll('#carousel-dots button').forEach(function(d,j){
+    d.style.background=j===i?'#8b5cf6':'#d8b4fe'; d.style.width=j===i?'20px':'8px'; d.style.borderRadius='4px';
+  });
+  document.querySelectorAll('#carousel-thumbs img').forEach(function(t,j){
+    t.style.borderColor=j===i?'#8b5cf6':'transparent'; t.style.opacity=j===i?'1':'0.6';
+  });
+}
+function carouselPrev(){ goToSlide((carouselIndex-1+carouselItems.length)%carouselItems.length); }
+function carouselNext(){ goToSlide((carouselIndex+1)%carouselItems.length); }
+</script>
+
+<!-- ═══ TOOL JS ═══ -->
+<script>
+// ── State ──
+let inputUnit = 'sec';
+let liveTimer = null;
+
+// ── Unit toggle ──
+function selectUnit(unit) {
+  inputUnit = unit;
+  document.querySelectorAll('#unit-group .unit-pill').forEach(function(p) {
+    p.classList.toggle('active', p.dataset.unit === unit);
+  });
+  // Update placeholder
+  const input = document.getElementById('ts-input');
+  if (unit === 'sec') {
+    input.placeholder = t('ts_ts_input_placeholder', 'e.g. 1700000000');
+  } else {
+    input.placeholder = t('ts_ts_input_placeholder_ms', 'e.g. 1700000000000');
+  }
+}
+
+// ── Live clock ──
+function updateLiveClock() {
+  const now = new Date();
+  const sec = Math.floor(now.getTime() / 1000);
+  const ms = now.getTime();
+
+  document.getElementById('live-sec').textContent = sec.toLocaleString('en-US');
+  document.getElementById('live-ms').textContent = ms.toLocaleString('en-US');
+  document.getElementById('live-iso').textContent = now.toISOString();
+  document.getElementById('live-local').textContent = now.toLocaleString('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: false
+  });
+}
+
+function startLiveClock() {
+  updateLiveClock();
+  liveTimer = setInterval(updateLiveClock, 1000);
+}
+
+// ── Format helpers ──
+function formatLocal(d) {
+  return d.toLocaleString('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: false, timeZoneName: 'short'
+  });
+}
+
+function formatUTC(d) {
+  return d.toUTCString();
+}
+
+function formatRelative(d) {
+  const now = Date.now();
+  const diff = d.getTime() - now;
+  const abs = Math.abs(diff);
+  const isPast = diff < 0;
+
+  const seconds = Math.floor(abs / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  let str;
+  if (seconds < 60) { str = seconds + ' second' + (seconds !== 1 ? 's' : ''); }
+  else if (minutes < 60) { str = minutes + ' minute' + (minutes !== 1 ? 's' : ''); }
+  else if (hours < 24) { str = hours + ' hour' + (hours !== 1 ? 's' : ''); }
+  else if (days < 365) { str = days + ' day' + (days !== 1 ? 's' : ''); }
+  else { str = Math.floor(days/365) + ' year' + (Math.floor(days/365) !== 1 ? 's' : ''); }
+
+  return isPast ? (str + ' ago') : ('in ' + str);
+}
+
+// ── Convert Timestamp → Date ──
+function convertTsToDate() {
+  const raw = document.getElementById('ts-input').value.trim();
+  const errEl = document.getElementById('ts-input-error');
+  const resEl = document.getElementById('ts-result');
+
+  if (!raw) {
+    errEl.textContent = t('ts_error_empty', 'Please enter a timestamp');
+    errEl.classList.remove('hidden');
+    resEl.classList.add('hidden');
+    return;
+  }
+
+  const num = parseInt(raw, 10);
+  if (isNaN(num) || num < 0) {
+    errEl.textContent = t('ts_error_invalid', 'Invalid timestamp — must be a positive integer');
+    errEl.classList.remove('hidden');
+    resEl.classList.add('hidden');
+    return;
+  }
+
+  // Convert ms → sec if needed
+  const tsMs = inputUnit === 'sec' ? num * 1000 : num;
+  const d = new Date(tsMs);
+
+  if (isNaN(d.getTime())) {
+    errEl.textContent = t('ts_error_invalid', 'Invalid timestamp');
+    errEl.classList.remove('hidden');
+    resEl.classList.add('hidden');
+    return;
+  }
+
+  errEl.classList.add('hidden');
+  resEl.classList.remove('hidden');
+
+  document.getElementById('ts-out-local').textContent = formatLocal(d);
+  document.getElementById('ts-out-utc').textContent = formatUTC(d);
+  document.getElementById('ts-out-iso').textContent = d.toISOString();
+  document.getElementById('ts-out-relative').textContent = formatRelative(d);
+}
+
+// ── Convert Date → Timestamp ──
+function convertDateToTs() {
+  const raw = document.getElementById('date-input').value;
+  const errEl = document.getElementById('date-input-error');
+  const resEl = document.getElementById('date-result');
+
+  if (!raw) {
+    errEl.textContent = t('ts_error_empty', 'Please select a date and time');
+    errEl.classList.remove('hidden');
+    resEl.classList.add('hidden');
+    return;
+  }
+
+  const d = new Date(raw);
+  if (isNaN(d.getTime())) {
+    errEl.textContent = t('ts_error_invalid', 'Invalid date');
+    errEl.classList.remove('hidden');
+    resEl.classList.add('hidden');
+    return;
+  }
+
+  errEl.classList.add('hidden');
+  resEl.classList.remove('hidden');
+
+  const ms = d.getTime();
+  const sec = Math.floor(ms / 1000);
+
+  document.getElementById('date-out-sec').textContent = sec.toLocaleString('en-US');
+  document.getElementById('date-out-ms').textContent = ms.toLocaleString('en-US');
+}
+
+// ── Copy to clipboard ──
+function copyValue(elId, btn) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const text = el.textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.classList.add('copied');
+    btn.textContent = t('ts_copied', 'Copied!');
+    showToast(t('ts_copied', 'Copied!'));
+    setTimeout(function() {
+      btn.classList.remove('copied');
+      btn.textContent = t('ts_copy', 'Copy');
+    }, 1500);
+  }).catch(function() {
+    showToast('Copy failed');
+  });
+}
+
+// ── "Now" buttons ──
+function setTsNow() {
+  const now = Math.floor(Date.now() / 1000);
+  if (inputUnit === 'ms') {
+    document.getElementById('ts-input').value = Date.now();
+  } else {
+    document.getElementById('ts-input').value = now;
+  }
+  convertTsToDate();
+}
+
+function setDateNow() {
+  const now = new Date();
+  // Format for datetime-local: YYYY-MM-DDTHH:mm:ss
+  const pad = function(n) { return String(n).padStart(2, '0'); };
+  const val = now.getFullYear() + '-' +
+    pad(now.getMonth() + 1) + '-' +
+    pad(now.getDate()) + 'T' +
+    pad(now.getHours()) + ':' +
+    pad(now.getMinutes()) + ':' +
+    pad(now.getSeconds());
+  document.getElementById('date-input').value = val;
+  convertDateToTs();
+}
+
+// ── Init ──
+loadLang(currentLang);
+loadDemo();
+startLiveClock();
+</script>
+
+</body>
+</html>
