@@ -1,10 +1,7 @@
 User-agent: *
 Allow: /
 
-# 禁止爬取多语言重复内容（以主域为准）
-Disallow: /zh/
-Disallow: /en/
-Disallow: /ja/
-Disallow: /ko/
+# 语言通过 JS localStorage 切换（无物理子目录）
+# hreflang 指向同一 URL，搜索引擎会理解多语言支持
 
 Sitemap: https://newTrekking.com/sitemap.xml

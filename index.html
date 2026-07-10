@@ -15,7 +15,13 @@
   <meta property="og:description" data-i18n="og_site_desc" content="ToolVerse offers free, fast, install-free online tools including random pickers, text processors, and developer utilities to boost your productivity.">
   <meta property="og:url" content="https://newTrekking.com/">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://newTrekking.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" data-i18n="og_site_title" content="Free Online Tools - Random Picker, QR Generator & More | ToolVerse">
+  <meta name="twitter:description" data-i18n="og_site_desc" content="ToolVerse offers free, fast, install-free online tools including random pickers, text processors, and developer utilities to boost your productivity.">
+  <meta name="twitter:image" content="https://newTrekking.com/og-image.png">
   <link rel="canonical" href="https://newTrekking.com/">
   <link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/">
   <link rel="alternate" hreflang="en" href="https://newTrekking.com/en/">
@@ -181,15 +187,26 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "ToolVerse",
-    "url": "https://newTrekking.com/",
-    "description": "ToolVerse offers free, fast, install-free online tools including random pickers, text processors, and developer utilities.",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://newTrekking.com/search?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "ToolVerse",
+        "url": "https://newTrekking.com",
+        "logo": "https://newTrekking.com/favicon.svg",
+        "description": "ToolVerse offers free, fast, install-free online tools including random pickers, text processors, QR generators, and developer utilities."
+      },
+      {
+        "@type": "WebSite",
+        "name": "ToolVerse",
+        "url": "https://newTrekking.com/",
+        "description": "ToolVerse offers free, fast, install-free online tools including random pickers, text processors, and developer utilities.",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://newTrekking.com/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
   }
   </script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5713173586841314"
@@ -262,7 +279,7 @@
     <div class="text-6xl mb-6 animate-float inline-block">🌌</div>
 
     <h1 class="font-display font-800 text-4xl md:text-6xl mb-4 leading-tight text-gray-900">
-      <span data-i18n="hero_title">Your Online Tool Universe</span>
+      <span data-i18n="hero_title">Free Online Tools — Random Picker, QR Generator, Timestamp Converter & More</span>
     </h1>
     <p class="text-lg md:text-xl text-gray-500 mb-10 max-w-2xl mx-auto animate-fade-up stagger-1" data-i18n="hero_sub">
       Free, fast, no installation needed. From random pickers to text tools, all in one place.
