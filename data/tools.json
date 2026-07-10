@@ -26,5 +26,19 @@
     "isNew": true,
     "isFeatured": true,
     "component": "TimestampConverter"
+  },
+  {
+    "slug": "favicon-generator",
+    "nameKey": "tool_favicon_generator_name",
+    "descKey": "tool_favicon_generator_desc",
+    "longDescKey": "tool_favicon_generator_longdesc",
+    "category": "developer",
+    "categoryKey": "cat_developer",
+    "icon": "🖼️",
+    "color": "purple",
+    "keywords": ["favicon", "ico", "icon generator", "favicon maker", "website icon", "favicon.ico", "PNG to ICO"],
+    "isNew": true,
+    "isFeatured": true,
+    "component": "FaviconGenerator"
   }
 ]

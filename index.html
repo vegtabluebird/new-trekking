@@ -7,6 +7,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="description" data-i18n="site_description" content="ToolVerse 提供免费、快速、无需安装的在线工具集合，涵盖随机抽取、文字处理、开发工具等，助力提升效率。">
   <meta name="keywords" data-i18n="site_keywords" content="在线工具,免费工具,随机抽取,工具集合,效率工具">
   <title data-i18n="site_name">Free Online Tools - Random Picker, QR Generator & More | ToolVerse</title>
@@ -201,7 +202,19 @@
   <nav class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
     <!-- Logo -->
     <a href="/" class="flex items-center gap-2 no-underline">
-      <div class="w-8 h-8 rounded-xl grad-btn flex items-center justify-center text-white font-bold text-sm">T</div>
+      <div class="w-8 h-8 rounded-xl grad-btn flex items-center justify-center text-white font-bold text-sm">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px">
+          <circle cx="16" cy="16" r="3.5" fill="white"/>
+          <circle cx="5" cy="7" r="2.5" fill="white" opacity="0.9"/>
+          <circle cx="27" cy="7" r="2.5" fill="white" opacity="0.9"/>
+          <circle cx="5" cy="25" r="2.5" fill="white" opacity="0.9"/>
+          <circle cx="27" cy="25" r="2.5" fill="white" opacity="0.9"/>
+          <line x1="16" y1="16" x2="5" y2="7" stroke="white" stroke-width="1.4" opacity="0.55"/>
+          <line x1="16" y1="16" x2="27" y2="7" stroke="white" stroke-width="1.4" opacity="0.55"/>
+          <line x1="16" y1="16" x2="5" y2="25" stroke="white" stroke-width="1.4" opacity="0.55"/>
+          <line x1="16" y1="16" x2="27" y2="25" stroke="white" stroke-width="1.4" opacity="0.55"/>
+        </svg>
+      </div>
       <span class="font-display font-700 text-xl grad-text">ToolVerse</span>
     </a>
 
@@ -246,7 +259,7 @@
 
   <div class="relative max-w-4xl mx-auto text-center">
     <!-- Floating emoji -->
-    <div class="text-6xl mb-6 animate-float inline-block">🎲</div>
+    <div class="text-6xl mb-6 animate-float inline-block">🌌</div>
 
     <h1 class="font-display font-800 text-4xl md:text-6xl mb-4 leading-tight text-gray-900">
       <span data-i18n="hero_title">Your Online Tool Universe</span>
@@ -351,6 +364,31 @@
       </div>
     </article>
 
+    <!-- Tool Card: Favicon Generator -->
+    <article class="glass-card rounded-2xl p-6 animate-fade-up stagger-2">
+      <div class="flex items-start justify-between mb-4">
+        <div class="tool-icon-ring w-14 h-14 rounded-xl flex items-center justify-center text-3xl">🖼️</div>
+        <div class="flex gap-2">
+          <span class="badge-new" data-i18n="new_badge">New</span>
+        </div>
+      </div>
+      <h3 class="font-display font-600 text-lg text-gray-800 mb-2">
+        <a href="/tools/favicon-generator/" class="no-underline text-gray-800 hover:text-purple-600 transition-colors" data-i18n="tool_favicon_generator_name" title="Favicon Generator - Free Online Favicon Maker & ICO Converter">
+          Favicon Generator
+        </a>
+      </h3>
+      <p class="text-sm text-gray-500 leading-relaxed mb-4" data-i18n="tool_favicon_generator_desc">
+        Upload any image and generate favicon.ico, PNG icons in all standard sizes, and SVG favicons — free & local processing
+      </p>
+      <div class="flex items-center justify-between">
+        <span class="text-xs px-3 py-1 rounded-full text-purple-700" style="background:rgba(139,92,246,0.1)" data-i18n="cat_developer">Developer</span>
+        <a href="/tools/favicon-generator/" class="text-sm font-500 text-purple-600 hover:text-purple-800 transition-colors no-underline flex items-center gap-1">
+          <span data-i18n="use_now">Use Now</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </article>
+
     <!-- Placeholder card (upcoming tools teaser) -->
     <article class="glass-card rounded-2xl p-6 opacity-50 hidden md:block">
       <div class="tool-icon-ring w-14 h-14 rounded-xl flex items-center justify-center text-3xl mb-4">🔧</div>
@@ -418,6 +456,21 @@
       </p>
       <span class="text-xs px-2.5 py-1 rounded-full text-purple-700" style="background:rgba(139,92,246,0.1)" data-i18n="cat_developer">Developer</span>
     </article>
+
+    <!-- Tool: Favicon Generator -->
+    <article class="glass-card rounded-2xl p-5 tool-card" data-cat="developer" data-name="Favicon Generator favicon icon maker ico converter">
+      <div class="flex items-start justify-between mb-3">
+        <div class="tool-icon-ring w-12 h-12 rounded-xl flex items-center justify-center text-2xl">🖼️</div>
+        <span class="badge-new" data-i18n="new_badge">New</span>
+      </div>
+      <h3 class="font-600 text-base text-gray-800 mb-1">
+        <a href="/tools/favicon-generator/" class="no-underline text-gray-800 hover:text-purple-600 transition-colors" data-i18n="tool_favicon_generator_name">Favicon Generator</a>
+      </h3>
+      <p class="text-xs text-gray-500 leading-relaxed mb-3 line-clamp-2" data-i18n="tool_favicon_generator_desc">
+        Upload any image and generate favicon.ico, PNG icons in all standard sizes, and SVG favicons — free & local processing
+      </p>
+      <span class="text-xs px-2.5 py-1 rounded-full text-purple-700" style="background:rgba(139,92,246,0.1)" data-i18n="cat_developer">Developer</span>
+    </article>
   </div>
 
   <!-- No results -->
@@ -432,7 +485,19 @@
   <div class="max-w-6xl mx-auto px-4 py-10">
     <div class="flex flex-col md:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-2">
-        <div class="w-7 h-7 rounded-lg grad-btn flex items-center justify-center text-white font-bold text-xs">T</div>
+        <div class="w-7 h-7 rounded-lg grad-btn flex items-center justify-center text-white font-bold text-xs">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px">
+            <circle cx="16" cy="16" r="3.5" fill="white"/>
+            <circle cx="5" cy="7" r="2.5" fill="white" opacity="0.9"/>
+            <circle cx="27" cy="7" r="2.5" fill="white" opacity="0.9"/>
+            <circle cx="5" cy="25" r="2.5" fill="white" opacity="0.9"/>
+            <circle cx="27" cy="25" r="2.5" fill="white" opacity="0.9"/>
+            <line x1="16" y1="16" x2="5" y2="7" stroke="white" stroke-width="1.4" opacity="0.55"/>
+            <line x1="16" y1="16" x2="27" y2="7" stroke="white" stroke-width="1.4" opacity="0.55"/>
+            <line x1="16" y1="16" x2="5" y2="25" stroke="white" stroke-width="1.4" opacity="0.55"/>
+            <line x1="16" y1="16" x2="27" y2="25" stroke="white" stroke-width="1.4" opacity="0.55"/>
+          </svg>
+        </div>
         <span class="font-display font-600 grad-text">ToolVerse</span>
       </div>
       <nav class="flex flex-wrap justify-center gap-6 text-sm text-gray-500">

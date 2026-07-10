@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="description" data-i18n="tool_favicon_generator_meta_desc" content="Free online favicon generator — upload any image and generate favicon.ico, PNG icons in all sizes, and SVG favicons instantly in your browser.">
+  <meta name="keywords" data-i18n="tool_favicon_generator_keywords" content="favicon generator,favicon maker,ico converter,website icon generator,favicon.ico generator,PNG to ICO">
+  <title data-i18n="tool_favicon_generator_meta_title">Favicon Generator - Free Online Favicon Maker & ICO Converter | ToolVerse</title>
+  <meta property="og:title" data-i18n="og_favicon_generator_title" content="Favicon Generator - Free Online Favicon Maker & ICO Converter | ToolVerse">
+  <meta property="og:description" data-i18n="og_favicon_generator_desc" content="Generate favicons from any image — upload PNG, SVG, or JPG and get favicon.ico, 16/32/48/180px PNGs, and SVG favicons. All processed in your browser.">
+  <meta property="og:url" content="https://newTrekking.com/tools/favicon-generator/">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://newTrekking.com/tools/favicon-generator/">
+  <link rel="alternate" hreflang="zh" href="https://newTrekking.com/zh/tools/favicon-generator/">
+  <link rel="alternate" hreflang="en" href="https://newTrekking.com/en/tools/favicon-generator/">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { display: ['Outfit','Noto Sans SC','sans-serif'], body: ['Noto Sans SC','Outfit','sans-serif'] } } }
+    }
+  </script>
+  <style>
+    :root { --grad: linear-gradient(135deg,#6366f1 0%,#8b5cf6 40%,#ec4899 100%); }
+    *{box-sizing:border-box}
+    body{font-family:'Noto Sans SC','Outfit',sans-serif;background:#f8f7ff;min-height:100vh}
+    .grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .grad-btn{background:var(--grad);background-size:200% 200%;transition:transform .2s,box-shadow .2s}
+    .grad-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(139,92,246,.4)}
+    .grad-btn:active{transform:translateY(0);box-shadow:none}
+    .panel{background:white;border:1px solid rgba(139,92,246,.12);border-radius:18px;padding:20px 22px}
+    .section-title{font-size:13px;font-weight:600;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+
+    /* Language dropdown */
+    .language-dropdown{position:relative}
+    .language-btn{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;cursor:pointer;border:1.5px solid rgba(139,92,246,.3);background:white;font-size:14px;color:#5b21b6;transition:all .2s}
+    .language-btn:hover{border-color:#8b5cf6;background:#faf5ff}
+    .language-dropdown-auto{display:none;position:absolute;right:0;top:calc(100% + 8px);background:white;border:1px solid rgba(139,92,246,.2);border-radius:14px;box-shadow:0 10px 40px rgba(139,92,246,.15);min-width:130px;z-index:100;max-height:280px;overflow-y:auto;padding:6px}
+    .language-dropdown-auto.open{display:block}
+    .language-option{display:block;width:100%;text-align:left;padding:8px 14px;border-radius:8px;border:none;background:none;font-size:14px;color:#374151;cursor:pointer;transition:background .15s}
+    .language-option:hover{background:#f3e8ff;color:#7c3aed}
+    .breadcrumb a{color:#8b5cf6;text-decoration:none}
+    .breadcrumb a:hover{text-decoration:underline}
+    #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1e1b4b;color:white;padding:10px 20px;border-radius:30px;font-size:14px;opacity:0;transition:all .3s;pointer-events:none;z-index:999;white-space:nowrap}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    /* Drop zone */
+    #drop-zone{border:2px dashed rgba(139,92,246,.3);border-radius:18px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .25s;background:linear-gradient(135deg,#faf5ff,#fff0fb)}
+    #drop-zone:hover,#drop-zone.drag-over{border-color:#8b5cf6;background:linear-gradient(135deg,#f3e8ff,#fce7f3);transform:translateY(-2px);box-shadow:0 12px 40px rgba(139,92,246,.12)}
+    #drop-zone.has-image{padding:24px 20px}
+
+    /* Preview grid */
+    .preview-card{background:white;border:1px solid rgba(139,92,246,.1);border-radius:14px;padding:16px;text-align:center;transition:all .2s}
+    .preview-card:hover{border-color:rgba(139,92,246,.3);box-shadow:0 4px 16px rgba(139,92,246,.08)}
+    .preview-img-wrap{display:flex;align-items:center;justify-content:center;margin-bottom:10px;position:relative}
+    .preview-img-wrap.checker{background-image:linear-gradient(45deg,#eee 25%,transparent 25%,transparent 75%,#eee 75%,#eee),linear-gradient(45deg,#eee 25%,transparent 25%,transparent 75%,#eee 75%,#eee);background-size:12px 12px;background-position:0 0,6px 6px;border-radius:8px}
+    .preview-label{font-size:12px;font-weight:600;color:#6b7280;margin-bottom:2px}
+    .preview-dims{font-size:11px;color:#9ca3af;margin-bottom:8px}
+
+    /* Download btn */
+    .dl-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid #d8b4fe;background:white;color:#7c3aed;transition:all .15s;display:inline-flex;align-items:center;gap:4px}
+    .dl-btn:hover{background:#f3e8ff;border-color:#8b5cf6}
+    .dl-btn.primary{background:var(--grad);color:white;border-color:transparent}
+    .dl-btn.primary:hover{box-shadow:0 4px 16px rgba(139,92,246,.3)}
+
+    /* Size tabs */
+    .size-tabs{display:flex;gap:6px;flex-wrap:wrap}
+    .size-tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid #e5e7eb;background:white;color:#6b7280;transition:all .2s}
+    .size-tab.active{background:var(--grad);color:white;border-color:transparent}
+
+    /* Info tip */
+    .info-tip{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;background:#fefce8;border:1px solid #fde68a;border-radius:10px;font-size:12px;color:#92400e;margin-top:8px}
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"SoftwareApplication",
+        "name":"Favicon Generator",
+        "applicationCategory":"UtilitiesApplication",
+        "operatingSystem":"Web",
+        "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+        "url":"https://newTrekking.com/tools/favicon-generator/",
+        "description":"Free online favicon generator — upload any image and get favicon.ico, PNG icons in all standard sizes, and SVG favicons. All processed locally in your browser.",
+        "provider":{"@type":"Organization","name":"ToolVerse","url":"https://newTrekking.com"}
+      },
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Home","item":"https://newTrekking.com/"},
+          {"@type":"ListItem","position":2,"name":"Favicon Generator","item":"https://newTrekking.com/tools/favicon-generator/"}
+        ]
+      },
+      {
+        "@type":"FAQPage",
+        "mainEntity":[
+          {"@type":"Question","name":"What is a favicon?","acceptedAnswer":{"@type":"Answer","text":"A favicon (favorite icon) is the small icon that appears in browser tabs, bookmarks, and search results next to your website's name. It helps users identify your site at a glance."}},
+          {"@type":"Question","name":"What sizes do I need for a favicon?","acceptedAnswer":{"@type":"Answer","text":"Modern websites typically need: favicon.ico (16x16 + 32x32 + 48x48), favicon-16x16.png, favicon-32x32.png, apple-touch-icon.png (180x180), and optionally favicon.svg for modern browsers."}},
+          {"@type":"Question","name":"Can I use SVG as a favicon?","acceptedAnswer":{"@type":"Answer","text":"Yes! Modern browsers (Chrome, Firefox, Edge) support SVG favicons. They look crisp at any size and are lightweight. You should still provide a favicon.ico as a fallback for older browsers."}},
+          {"@type":"Question","name":"What image formats can I upload?","acceptedAnswer":{"@type":"Answer","text":"This tool accepts SVG, PNG, JPEG, WebP, and GIF images. For best results, use a square image (1:1 aspect ratio) at least 260x260 pixels. SVG source images produce the sharpest results at all sizes."}}
+        ]
+      }
+    ]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5713173586841314"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-purple-100">
+  <nav class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 no-underline">
+      <div class="w-8 h-8 rounded-xl grad-btn flex items-center justify-center text-white font-bold text-sm">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px">
+          <circle cx="16" cy="16" r="3.5" fill="white"/>
+          <circle cx="5" cy="7" r="2.5" fill="white" opacity="0.9"/>
+          <circle cx="27" cy="7" r="2.5" fill="white" opacity="0.9"/>
+          <circle cx="5" cy="25" r="2.5" fill="white" opacity="0.9"/>
+          <circle cx="27" cy="25" r="2.5" fill="white" opacity="0.9"/>
+          <line x1="16" y1="16" x2="5" y2="7" stroke="white" stroke-width="1.4" opacity="0.55"/>
+          <line x1="16" y1="16" x2="27" y2="7" stroke="white" stroke-width="1.4" opacity="0.55"/>
+          <line x1="16" y1="16" x2="5" y2="25" stroke="white" stroke-width="1.4" opacity="0.55"/>
+          <line x1="16" y1="16" x2="27" y2="25" stroke="white" stroke-width="1.4" opacity="0.55"/>
+        </svg>
+      </div>
+      <span class="font-display font-bold text-xl grad-text">ToolVerse</span>
+    </a>
+    <div class="hidden md:flex items-center gap-6">
+      <a href="/" class="text-sm text-gray-500 hover:text-purple-600 transition-colors no-underline" data-i18n="nav_home">Home</a>
+      <a href="/#all-tools" class="text-sm text-gray-500 hover:text-purple-600 transition-colors no-underline" data-i18n="nav_tools">All Tools</a>
+    </div>
+    <div class="language-dropdown">
+      <button class="language-btn" id="lang-btn" onclick="toggleLangMenu()" data-i18n-aria="aria_select_language" aria-label="Select language" aria-expanded="false">
+        <span>🌐</span><span id="current-language">English</span><span style="font-size:10px">▼</span>
+      </button>
+      <div class="language-dropdown-auto" id="lang-menu">
+        <button class="language-option" onclick="loadLang('zh')">🇨🇳 中文</button>
+        <button class="language-option" onclick="loadLang('en')">🇺🇸 English</button>
+        <button class="language-option" onclick="loadLang('ja')">🇯🇵 日本語</button>
+        <button class="language-option" onclick="loadLang('ko')">🇰🇷 한국어</button>
+        <button class="language-option" onclick="loadLang('es')">🇪🇸 Español</button>
+        <button class="language-option" onclick="loadLang('fr')">🇫🇷 Français</button>
+        <button class="language-option" onclick="loadLang('de')">🇩🇪 Deutsch</button>
+        <button class="language-option" onclick="loadLang('pt')">🇧🇷 Português</button>
+        <button class="language-option" onclick="loadLang('ru')">🇷🇺 Русский</button>
+        <button class="language-option" onclick="loadLang('ar')">🇸🇦 العربية</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Breadcrumb -->
+<div class="max-w-6xl mx-auto px-4 py-3 breadcrumb text-sm text-gray-400">
+  <a href="/" data-i18n="nav_home">Home</a>
+  <span class="mx-2">/</span>
+  <span class="text-gray-600" data-i18n="tool_favicon_generator_name">Favicon Generator</span>
+</div>
+
+<main class="max-w-6xl mx-auto px-4 pb-16">
+
+  <!-- Tool Header -->
+  <article class="mb-8">
+    <div class="flex flex-col md:flex-row md:items-start gap-6">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-4 mb-2">
+          <div class="w-14 h-14 flex-shrink-0 rounded-2xl flex items-center justify-center text-3xl" style="background:linear-gradient(135deg,#ede9fe,#fce7f3);border:2px solid rgba(139,92,246,.2)">🖼️</div>
+          <div class="min-w-0">
+            <h1 class="font-display font-bold text-2xl md:text-3xl text-gray-900" data-i18n="tool_favicon_generator_name">Favicon Generator</h1>
+            <p class="text-sm text-gray-500 mt-1" data-i18n="tool_favicon_generator_desc">Upload any image and generate favicon.ico, PNG icons in all standard sizes, and SVG favicons — free & local processing</p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-400 leading-relaxed mt-3 max-w-xl" data-i18n="tool_favicon_generator_longdesc">
+          ToolVerse Favicon Generator creates all the icon files your website needs from a single image. Upload a logo and instantly download favicon.ico, 16×16/32×32/48×48/180×180 PNGs, and a modern SVG favicon. Everything runs locally in your browser — no uploads, no privacy concerns.
+        </p>
+      </div>
+
+      <div id="demo-section" class="hidden md:w-80 lg:w-96 flex-shrink-0">
+        <p class="text-xs font-semibold text-purple-400 uppercase tracking-widest mb-2" data-i18n="demo_title">How It Works</p>
+        <div id="demo-video" class="hidden rounded-xl overflow-hidden border border-purple-100 shadow-sm">
+          <video id="demo-video-el" controls playsinline class="w-full" style="max-height:260px;object-fit:contain"></video>
+        </div>
+        <div id="demo-gif" class="hidden rounded-xl overflow-hidden border border-purple-100 shadow-sm">
+          <img id="demo-gif-el" alt="demo" class="w-full object-contain" style="max-height:260px">
+        </div>
+        <div id="demo-carousel" class="hidden">
+          <div class="relative rounded-xl overflow-hidden border border-purple-100 shadow-sm" style="background:#f8f7ff">
+            <div id="carousel-track" class="flex transition-transform duration-400 ease-in-out" style="will-change:transform"></div>
+            <button onclick="carouselPrev()" id="c-prev" class="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 border border-purple-100 shadow flex items-center justify-center text-purple-500 hover:bg-purple-50 transition-colors text-base" aria-label="Previous">‹</button>
+            <button onclick="carouselNext()" id="c-next" class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 border border-purple-100 shadow flex items-center justify-center text-purple-500 hover:bg-purple-50 transition-colors text-base" aria-label="Next">›</button>
+            <div id="carousel-dots" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5"></div>
+          </div>
+          <div id="carousel-thumbs" class="flex gap-1.5 mt-2 overflow-x-auto pb-1"></div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Tool Body -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- LEFT: Upload + Controls -->
+    <div class="space-y-4">
+
+      <!-- Upload area -->
+      <div class="panel">
+        <p class="section-title" data-i18n="fv_upload_title">Upload Image</p>
+        <div id="drop-zone" onclick="document.getElementById('file-input').click()">
+          <div id="drop-zone-empty">
+            <div class="text-4xl mb-3">📤</div>
+            <p class="font-semibold text-gray-700 mb-1" data-i18n="fv_drop_hint">Drag & drop or click to upload</p>
+            <p class="text-xs text-gray-400" data-i18n="fv_drop_formats">PNG, SVG, JPG, WebP, GIF — recommended ≥260×260px</p>
+          </div>
+          <div id="drop-zone-preview" class="hidden">
+            <div class="flex items-center gap-4 justify-center">
+              <img id="upload-preview" alt="Preview" style="max-width:120px;max-height:120px;object-fit:contain;border-radius:8px">
+              <div class="text-left">
+                <p id="upload-filename" class="font-semibold text-gray-700 text-sm"></p>
+                <p id="upload-dims" class="text-xs text-gray-400"></p>
+                <button class="text-xs text-red-400 hover:text-red-600 mt-1" onclick="event.stopPropagation();resetImage()" data-i18n="fv_remove">Remove</button>
+              </div>
+            </div>
+          </div>
+          <input type="file" id="file-input" accept="image/png,image/svg+xml,image/jpeg,image/webp,image/gif" class="hidden" onchange="handleFile(this.files[0])">
+        </div>
+
+        <!-- Resize mode -->
+        <div class="mt-4">
+          <p class="text-xs font-semibold text-gray-500 mb-2" data-i18n="fv_resize_mode">Resize Mode</p>
+          <div class="size-tabs" id="resize-mode-group">
+            <button class="size-tab active" data-mode="cover" onclick="setResizeMode('cover')" data-i18n="fv_mode_cover">Cover (crop edges)</button>
+            <button class="size-tab" data-mode="contain" onclick="setResizeMode('contain')" data-i18n="fv_mode_contain">Contain (add padding)</button>
+          </div>
+        </div>
+
+        <!-- Background color for contain mode / checker toggle -->
+        <div class="mt-3 flex items-center gap-3 flex-wrap">
+          <label class="text-xs font-semibold text-gray-500 flex items-center gap-2">
+            <span data-i18n="fv_bg_color">BG Color:</span>
+            <input type="color" id="bg-color" value="#ffffff" onchange="regeneratePreviews()" class="w-7 h-7 rounded cursor-pointer border-0">
+          </label>
+          <label class="text-xs font-semibold text-gray-500 flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="show-checker" onchange="regeneratePreviews()" class="rounded accent-purple-600">
+            <span data-i18n="fv_checker_bg">Checkerboard BG</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Batch download -->
+      <div class="panel" id="download-panel" style="display:none">
+        <p class="section-title" data-i18n="fv_download_all">Download All</p>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="downloadAllPng()" class="dl-btn primary" data-i18n="fv_dl_all_png">⬇ All PNGs (ZIP)</button>
+          <button onclick="downloadIco()" class="dl-btn" data-i18n="fv_dl_ico">⬇ favicon.ico</button>
+          <button onclick="downloadSvg()" class="dl-btn" id="dl-svg-btn" data-i18n="fv_dl_svg">⬇ favicon.svg</button>
+        </div>
+        <p class="text-xs text-gray-400 mt-2" data-i18n="fv_html_hint">Copy this HTML to your &lt;head&gt; after uploading icons to your site:</p>
+        <pre id="html-snippet" class="text-xs mt-1 p-3 rounded-xl overflow-x-auto" style="background:#f8f7ff;border:1px solid #e9d5ff;color:#5b21b6;white-space:pre-wrap;word-break:break-all" data-i18n="fv_html_snippet"></pre>
+        <button onclick="copySnippet()" class="text-xs text-purple-500 hover:text-purple-700 mt-1" data-i18n="fv_copy_snippet">📋 Copy snippet</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: Preview grid -->
+    <div class="lg:col-span-2 space-y-4">
+      <div class="panel">
+        <p class="section-title" data-i18n="fv_previews_title">Generated Icons</p>
+
+        <div id="previews-empty" class="text-center py-12 text-gray-400">
+          <div class="text-5xl mb-3">🎨</div>
+          <p data-i18n="fv_empty_hint">Upload an image to see generated favicons</p>
+        </div>
+
+        <div id="previews-grid" class="hidden">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+
+            <!-- 16x16 -->
+            <div class="preview-card">
+              <div class="preview-label">favicon-16x16.png</div>
+              <div class="preview-dims">16 × 16</div>
+              <div class="preview-img-wrap" style="height:80px" id="wrap-16">
+                <canvas id="cv-16" width="16" height="16" style="image-rendering:pixelated;border-radius:2px"></canvas>
+              </div>
+              <button onclick="downloadPng(16)" class="dl-btn">⬇ PNG</button>
+            </div>
+
+            <!-- 32x32 -->
+            <div class="preview-card">
+              <div class="preview-label">favicon-32x32.png</div>
+              <div class="preview-dims">32 × 32</div>
+              <div class="preview-img-wrap" style="height:80px" id="wrap-32">
+                <canvas id="cv-32" width="32" height="32" style="image-rendering:pixelated;border-radius:3px;width:32px;height:32px"></canvas>
+              </div>
+              <button onclick="downloadPng(32)" class="dl-btn">⬇ PNG</button>
+            </div>
+
+            <!-- 48x48 -->
+            <div class="preview-card">
+              <div class="preview-label">favicon-48x48.png</div>
+              <div class="preview-dims">48 × 48</div>
+              <div class="preview-img-wrap" style="height:80px" id="wrap-48">
+                <canvas id="cv-48" width="48" height="48" style="image-rendering:pixelated;border-radius:4px;width:48px;height:48px"></canvas>
+              </div>
+              <button onclick="downloadPng(48)" class="dl-btn">⬇ PNG</button>
+            </div>
+
+            <!-- 180x180 -->
+            <div class="preview-card">
+              <div class="preview-label">apple-touch-icon.png</div>
+              <div class="preview-dims">180 × 180</div>
+              <div class="preview-img-wrap" style="height:80px" id="wrap-180">
+                <canvas id="cv-180" width="180" height="180" style="border-radius:8px;max-width:72px;max-height:72px"></canvas>
+              </div>
+              <button onclick="downloadPng(180)" class="dl-btn">⬇ PNG</button>
+            </div>
+
+            <!-- SVG -->
+            <div class="preview-card">
+              <div class="preview-label">favicon.svg</div>
+              <div class="preview-dims" data-i18n="fv_svg_size">Scalable</div>
+              <div class="preview-img-wrap" style="height:80px" id="wrap-svg">
+                <div id="svg-preview" style="width:64px;height:64px;display:flex;align-items:center;justify-content:center"></div>
+              </div>
+              <button onclick="downloadSvg()" class="dl-btn">⬇ SVG</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Size guide info -->
+      <div class="panel" style="background:linear-gradient(135deg,#faf5ff,#f0f4ff)">
+        <p class="section-title" data-i18n="fv_guide_title">📘 Favicon Size Guide</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div>
+            <p class="font-semibold text-gray-700">16×16</p>
+            <p class="text-gray-400" data-i18n="fv_guide_16">Browser tab & history. Included in .ico.</p>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-700">32×32</p>
+            <p class="text-gray-400" data-i18n="fv_guide_32">Bookmarks bar & taskbar. Included in .ico.</p>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-700">48×48</p>
+            <p class="text-gray-400" data-i18n="fv_guide_48">Windows tiles. Included in .ico.</p>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-700">180×180</p>
+            <p class="text-gray-400" data-i18n="fv_guide_180">iOS Safari & Android home screen.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="mt-12 max-w-3xl">
+    <h2 class="font-display font-bold text-xl text-gray-800 mb-6" data-i18n="faq_title">Frequently Asked Questions</h2>
+    <div class="space-y-4">
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="fv_faq_q1">What is a favicon?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="fv_faq_a1">A favicon (favorite icon) is the small icon that appears in browser tabs, bookmarks, and search results next to your website's name. It helps users identify your site at a glance and is essential for brand recognition.</p>
+      </details>
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="fv_faq_q2">What sizes do I need?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="fv_faq_a2">Modern websites need: favicon.ico (multi-size, 16+32+48px), favicon-16x16.png, favicon-32x32.png, apple-touch-icon.png (180×180px), and optionally favicon.svg (SVG vector icon for modern browsers). You can download all from this tool.</p>
+      </details>
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="fv_faq_q3">Can I use SVG as a favicon?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="fv_faq_a3">Yes! Chrome, Firefox, and Edge all support SVG favicons. They look crisp at any size and are tiny in file size. It's best to still provide a favicon.ico as fallback for older browsers that don't support SVG favicons.</p>
+      </details>
+      <details class="panel cursor-pointer group">
+        <summary class="font-semibold text-gray-700 list-none flex justify-between items-center">
+          <span data-i18n="fv_faq_q4">Is my image uploaded to a server?</span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform">▼</span>
+        </summary>
+        <p class="text-sm text-gray-500 leading-relaxed mt-3" data-i18n="fv_faq_a4">No. All processing happens entirely in your browser using the Canvas API and JavaScript. Your image never leaves your computer. You can even use this tool offline once the page is loaded.</p>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="border-t border-purple-100 bg-white mt-8">
+  <div class="max-w-6xl mx-auto px-4 py-10">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg grad-btn flex items-center justify-center text-white font-bold text-xs">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px">
+            <circle cx="16" cy="16" r="3.5" fill="white"/>
+            <circle cx="5" cy="7" r="2.5" fill="white" opacity="0.9"/>
+            <circle cx="27" cy="7" r="2.5" fill="white" opacity="0.9"/>
+            <circle cx="5" cy="25" r="2.5" fill="white" opacity="0.9"/>
+            <circle cx="27" cy="25" r="2.5" fill="white" opacity="0.9"/>
+            <line x1="16" y1="16" x2="5" y2="7" stroke="white" stroke-width="1.4" opacity="0.55"/>
+            <line x1="16" y1="16" x2="27" y2="7" stroke="white" stroke-width="1.4" opacity="0.55"/>
+            <line x1="16" y1="16" x2="5" y2="25" stroke="white" stroke-width="1.4" opacity="0.55"/>
+            <line x1="16" y1="16" x2="27" y2="25" stroke="white" stroke-width="1.4" opacity="0.55"/>
+          </svg>
+        </div>
+        <span class="font-display font-semibold grad-text">ToolVerse</span>
+      </div>
+      <nav class="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+        <a href="/privacy/" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="/terms/" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_terms">Terms of Service</a>
+        <a href="mailto:zhefanshen3@gmail.com" class="hover:text-purple-600 transition-colors no-underline" data-i18n="footer_contact">Contact Us</a>
+      </nav>
+      <p class="text-xs text-gray-400" data-i18n="footer_copyright">© 2025 ToolVerse. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<!-- ═══ SHARED JS ═══ -->
+<script>
+let currentLang = localStorage.getItem('tv_lang') || 'en';
+let T = {};
+const LANG_NAMES = {zh:'中文',en:'English',ja:'日本語',ko:'한국어',es:'Español',fr:'Français',de:'Deutsch',pt:'Português',ru:'Русский',ar:'العربية'};
+
+function toggleLangMenu() {
+  const menu = document.getElementById('lang-menu');
+  const btn  = document.getElementById('lang-btn');
+  const open = menu.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+}
+function closeLangMenu() {
+  const menu = document.getElementById('lang-menu');
+  const btn  = document.getElementById('lang-btn');
+  if (menu) { menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.language-dropdown')) closeLangMenu();
+});
+async function loadLang(lang) {
+  try {
+    const res = await fetch('/locales/' + lang + '.json');
+    if (!res.ok) throw new Error();
+    T = await res.json();
+    applyT();
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
+    localStorage.setItem('tv_lang', lang);
+    currentLang = lang;
+    document.getElementById('current-language').textContent = LANG_NAMES[lang] || lang;
+    closeLangMenu();
+  } catch(e) { console.warn('Lang load failed:', lang); }
+}
+function applyT() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    const v = T[el.dataset.i18n]; if (!v) return;
+    if (el.tagName === 'META') { el.content = v; }
+    else if (el.tagName === 'TITLE') { document.title = v; }
+    else { el.textContent = v; }
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+    const v = T[el.dataset.i18nPlaceholder]; if (v) el.placeholder = v;
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach(function(el) {
+    const v = T[el.dataset.i18nAria]; if (v) el.setAttribute('aria-label', v);
+  });
+}
+function t(key, fallback) { return T[key] || fallback || key; }
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(function() { el.classList.remove('show'); }, 2200);
+}
+
+// Demo loader
+let carouselIndex = 0, carouselItems = [];
+async function loadDemo() {
+  try {
+    const res = await fetch('./demo/manifest.json');
+    if (!res.ok) return;
+    const manifest = await res.json();
+    if (!manifest.items || manifest.items.length === 0) return;
+    document.getElementById('demo-section').classList.remove('hidden');
+    if (manifest.type === 'video') {
+      document.getElementById('demo-video-el').src = './demo/' + manifest.items[0];
+      document.getElementById('demo-video').classList.remove('hidden');
+    } else if (manifest.type === 'gif') {
+      document.getElementById('demo-gif-el').src = './demo/' + manifest.items[0];
+      document.getElementById('demo-gif').classList.remove('hidden');
+    } else if (manifest.type === 'images') {
+      carouselItems = manifest.items; initCarousel();
+    }
+  } catch(e) {}
+}
+function initCarousel() {
+  if (!carouselItems.length) return;
+  document.getElementById('demo-carousel').classList.remove('hidden');
+  const track = document.getElementById('carousel-track');
+  const dots  = document.getElementById('carousel-dots');
+  const thumbs = document.getElementById('carousel-thumbs');
+  carouselItems.forEach(function(src, i) {
+    const slide = document.createElement('div');
+    slide.style.cssText = 'min-width:100%;display:flex;align-items:center;justify-content:center;max-height:260px;';
+    const img = document.createElement('img'); img.src = './demo/'+src; img.alt='Demo '+(i+1);
+    img.style.cssText = 'max-height:260px;max-width:100%;object-fit:contain;';
+    slide.appendChild(img); track.appendChild(slide);
+    const dot = document.createElement('button');
+    dot.style.cssText = 'width:8px;height:8px;border-radius:50%;border:none;cursor:pointer;transition:.2s;';
+    dot.setAttribute('aria-label','Slide '+(i+1)); dot.onclick = function(){ goToSlide(i); };
+    dots.appendChild(dot);
+    const thumb = document.createElement('img'); thumb.src='./demo/'+src; thumb.alt='Thumb '+(i+1);
+    thumb.style.cssText='width:60px;height:44px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;flex-shrink:0;transition:.2s;';
+    thumb.onclick = function(){ goToSlide(i); }; thumbs.appendChild(thumb);
+  });
+  if (carouselItems.length <= 1) {
+    document.getElementById('c-prev').style.display='none';
+    document.getElementById('c-next').style.display='none';
+    document.getElementById('carousel-dots').style.display='none';
+  }
+  goToSlide(0);
+}
+function goToSlide(i) {
+  carouselIndex = i;
+  document.getElementById('carousel-track').style.transform='translateX(-'+(i*100)+'%)';
+  document.querySelectorAll('#carousel-dots button').forEach(function(d,j){
+    d.style.background=j===i?'#8b5cf6':'#d8b4fe'; d.style.width=j===i?'20px':'8px'; d.style.borderRadius='4px';
+  });
+  document.querySelectorAll('#carousel-thumbs img').forEach(function(t,j){
+    t.style.borderColor=j===i?'#8b5cf6':'transparent'; t.style.opacity=j===i?'1':'0.6';
+  });
+}
+function carouselPrev(){ goToSlide((carouselIndex-1+carouselItems.length)%carouselItems.length); }
+function carouselNext(){ goToSlide((carouselIndex+1)%carouselItems.length); }
+</script>
+
+<!-- ═══ TOOL JS ═══ -->
+<script>
+// ── State ──
+let sourceImage = null;
+let isSvgSource = false;
+let sourceSvgText = null;
+let resizeMode = 'cover';
+const SIZES = [16, 32, 48, 180];
+const ICO_SIZES = [16, 32, 48];
+
+// ── Drag & Drop ──
+const dropZone = document.getElementById('drop-zone');
+dropZone.addEventListener('dragover', function(e) {
+  e.preventDefault();
+  dropZone.classList.add('drag-over');
+});
+dropZone.addEventListener('dragleave', function() {
+  dropZone.classList.remove('drag-over');
+});
+dropZone.addEventListener('drop', function(e) {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) handleFile(file);
+});
+
+// ── File handling ──
+function handleFile(file) {
+  if (!file || !file.type.match(/image\/(png|svg\+xml|jpeg|webp|gif)/)) {
+    showToast(t('fv_error_format', 'Unsupported format. Use PNG, SVG, JPG, WebP, or GIF.'));
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    if (file.type === 'image/svg+xml') {
+      isSvgSource = true;
+      sourceSvgText = e.target.result;
+      // Load SVG as image for canvas rendering
+      const svgBlob = new Blob([sourceSvgText], {type: 'image/svg+xml'});
+      const url = URL.createObjectURL(svgBlob);
+      const img = new Image();
+      img.onload = function() {
+        sourceImage = img;
+        onImageLoaded(file);
+        URL.revokeObjectURL(url);
+      };
+      img.src = url;
+    } else {
+      isSvgSource = false;
+      sourceSvgText = null;
+      const img = new Image();
+      img.onload = function() {
+        sourceImage = img;
+        onImageLoaded(file);
+      };
+      img.src = e.target.result;
+    }
+  };
+
+  if (file.type === 'image/svg+xml') {
+    reader.readAsText(file);
+  } else {
+    reader.readAsDataURL(file);
+  }
+}
+
+function onImageLoaded(file) {
+  // Update UI
+  document.getElementById('drop-zone-empty').classList.add('hidden');
+  document.getElementById('drop-zone-preview').classList.remove('hidden');
+  document.getElementById('drop-zone').classList.add('has-image');
+  document.getElementById('upload-preview').src = sourceImage.src;
+  document.getElementById('upload-filename').textContent = file.name;
+  document.getElementById('upload-dims').textContent = sourceImage.naturalWidth + ' × ' + sourceImage.naturalHeight;
+
+  // Show download panel
+  document.getElementById('download-panel').style.display = '';
+  document.getElementById('previews-empty').classList.add('hidden');
+  document.getElementById('previews-grid').classList.remove('hidden');
+
+  // Generate favicons
+  generateAll();
+}
+
+function resetImage() {
+  sourceImage = null;
+  isSvgSource = false;
+  sourceSvgText = null;
+  document.getElementById('drop-zone-empty').classList.remove('hidden');
+  document.getElementById('drop-zone-preview').classList.add('hidden');
+  document.getElementById('drop-zone').classList.remove('has-image');
+  document.getElementById('download-panel').style.display = 'none';
+  document.getElementById('previews-empty').classList.remove('hidden');
+  document.getElementById('previews-grid').classList.add('hidden');
+  document.getElementById('file-input').value = '';
+}
+
+// ── Resize mode ──
+function setResizeMode(mode) {
+  resizeMode = mode;
+  document.querySelectorAll('#resize-mode-group .size-tab').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.mode === mode);
+  });
+  if (sourceImage) generateAll();
+}
+
+// ── Generate all sizes ──
+function generateAll() {
+  if (!sourceImage) return;
+  SIZES.forEach(function(size) {
+    drawCanvas(size);
+  });
+  updateSvgPreview();
+  updateHtmlSnippet();
+}
+
+function drawCanvas(size) {
+  const canvas = document.getElementById('cv-' + size);
+  const ctx = canvas.getContext('2d');
+  canvas.width = size;
+  canvas.height = size;
+
+  const bgColor = document.getElementById('bg-color').value;
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, size, size);
+
+  const img = sourceImage;
+  const iw = img.naturalWidth;
+  const ih = img.naturalHeight;
+
+  let sx, sy, sw, sh;
+  if (resizeMode === 'cover') {
+    // Scale to cover, crop from center
+    const scale = Math.max(size / iw, size / ih);
+    sw = size / scale;
+    sh = size / scale;
+    sx = (iw - sw) / 2;
+    sy = (ih - sh) / 2;
+  } else {
+    // Contain: letterbox
+    const scale = Math.min(size / iw, size / ih);
+    sw = iw;
+    sh = ih;
+    const dx = (size - iw * scale) / 2;
+    const dy = (size - ih * scale) / 2;
+    ctx.drawImage(img, 0, 0, iw, ih, dx, dy, iw * scale, ih * scale);
+    return;
+  }
+
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, size, size);
+}
+
+function regeneratePreviews() {
+  // Toggle checkerboard background
+  const useChecker = document.getElementById('show-checker').checked;
+  SIZES.forEach(function(size) {
+    const wrap = document.getElementById('wrap-' + size);
+    wrap.classList.toggle('checker', useChecker);
+  });
+  document.getElementById('wrap-svg').classList.toggle('checker', useChecker);
+  if (sourceImage) generateAll();
+}
+
+function updateSvgPreview() {
+  const container = document.getElementById('svg-preview');
+  if (isSvgSource && sourceSvgText) {
+    container.innerHTML = '<div style="width:64px;height:64px;display:flex;align-items:center;justify-content:center">' +
+      sourceSvgText.replace(/<svg/, '<svg width="64" height="64"') + '</div>';
+  } else if (sourceImage) {
+    container.innerHTML = '<img src="' + sourceImage.src + '" style="max-width:64px;max-height:64px;object-fit:contain;border-radius:4px" alt="SVG preview">';
+  }
+}
+
+// ── HTML snippet ──
+function updateHtmlSnippet() {
+  const snippet = '<link rel="icon" type="image/x-icon" href="/favicon.ico">\n' +
+    '<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">\n' +
+    '<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">\n' +
+    '<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">\n' +
+    '<link rel="icon" type="image/svg+xml" href="/favicon.svg">';
+  document.getElementById('html-snippet').textContent = snippet;
+}
+
+function copySnippet() {
+  const text = document.getElementById('html-snippet').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    showToast(t('fv_copied', 'Copied!'));
+  });
+}
+
+// ── Download individual PNG ──
+function downloadPng(size) {
+  const canvas = document.getElementById('cv-' + size);
+  canvas.toBlob(function(blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const name = size === 180 ? 'apple-touch-icon.png' : 'favicon-' + size + 'x' + size + '.png';
+    a.href = url;
+    a.download = name;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(t('fv_downloaded', 'Downloaded!') + ' ' + name);
+  }, 'image/png');
+}
+
+// ── Download all PNGs as individual files ──
+function downloadAllPng() {
+  if (!sourceImage) return;
+  SIZES.forEach(function(size, i) {
+    setTimeout(function() {
+      downloadPng(size);
+    }, i * 300);
+  });
+  showToast(t('fv_downloading_all', 'Downloading all PNGs…'));
+}
+
+// ── Download SVG ──
+function downloadSvg() {
+  let svgContent;
+  if (isSvgSource && sourceSvgText) {
+    svgContent = sourceSvgText;
+  } else if (sourceImage) {
+    // Embed PNG as data URI inside SVG
+    const canvas = document.getElementById('cv-48');
+    const dataUri = canvas.toDataURL('image/png');
+    svgContent = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48">\n' +
+      '  <image width="48" height="48" xlink:href="' + dataUri + '"/>\n</svg>';
+  } else {
+    return;
+  }
+  const blob = new Blob([svgContent], {type: 'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'favicon.svg';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(t('fv_downloaded', 'Downloaded!') + ' favicon.svg');
+}
+
+// ── Download ICO ──
+function downloadIco() {
+  if (!sourceImage) return;
+  generateIcoBlob().then(function(blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'favicon.ico';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(t('fv_downloaded', 'Downloaded!') + ' favicon.ico');
+  });
+}
+
+function generateIcoBlob() {
+  const promises = ICO_SIZES.map(function(size) {
+    return new Promise(function(resolve) {
+      const canvas = document.getElementById('cv-' + size);
+      canvas.toBlob(function(blob) {
+        blob.arrayBuffer().then(function(buf) {
+          resolve({ size: size, buffer: new Uint8Array(buf) });
+        });
+      }, 'image/png');
+    });
+  });
+
+  return Promise.all(promises).then(function(pngs) {
+    const count = pngs.length;
+    const headerSize = 6;
+    const dirEntrySize = 16;
+    let dataOffset = headerSize + count * dirEntrySize;
+    const dataSize = pngs.reduce(function(s, p) { return s + p.buffer.length; }, 0);
+    const totalSize = headerSize + count * dirEntrySize + dataSize;
+    const buf = new ArrayBuffer(totalSize);
+    const view = new DataView(buf);
+    let pos = 0;
+
+    // ICO header
+    view.setUint16(pos, 0, true); pos += 2;       // reserved
+    view.setUint16(pos, 1, true); pos += 2;       // type: ICO
+    view.setUint16(pos, count, true); pos += 2;   // count
+
+    // Directory entries
+    pngs.forEach(function(p) {
+      const s = p.size === 256 ? 0 : p.size;
+      const len = p.buffer.length;
+      view.setUint8(pos, s); pos += 1;             // width
+      view.setUint8(pos, s); pos += 1;             // height
+      view.setUint8(pos, 0); pos += 1;             // color palette
+      view.setUint8(pos, 0); pos += 1;             // reserved
+      view.setUint16(pos, 1, true); pos += 2;      // planes
+      view.setUint16(pos, 32, true); pos += 2;     // bpp
+      view.setUint32(pos, len, true); pos += 4;    // data size
+      view.setUint32(pos, dataOffset, true); pos += 4; // offset
+      dataOffset += len;
+    });
+
+    // Image data
+    const u8 = new Uint8Array(buf);
+    pngs.forEach(function(p) {
+      u8.set(p.buffer, pos);
+      pos += p.buffer.length;
+    });
+
+    return new Blob([buf], { type: 'image/x-icon' });
+  });
+}
+
+// ── Init ──
+loadLang(currentLang);
+loadDemo();
+</script>
+
+</body>
+</html>

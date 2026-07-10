@@ -1,0 +1,20 @@
+# Build tools & dependencies
+node_modules/
+package.json
+package-lock.json
+
+# Dev scripts (replaced by online Favicon Generator)
+scripts/
+
+# Local dev tooling
+.gstack/
+.claude/
+
+# Dev scaffolding template
+tools/_template/
+
+# Server config (not a web root file)
+nginx.conf
+
+# Documentation
+README.md
